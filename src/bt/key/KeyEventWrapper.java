@@ -2,6 +2,7 @@ package bt.key;
 
 import java.awt.Button;
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
@@ -17,6 +18,7 @@ public class KeyEventWrapper extends KeyEvent
     private boolean isAltDown;
     private int keyCode;
     private char keyChar;
+    private Component component;
 
     private KeyEventWrapper(
             Component source,
@@ -33,6 +35,7 @@ public class KeyEventWrapper extends KeyEvent
     public KeyEventWrapper(KeyEvent e)
     {
         super(new Button("DUMMY FILLER COMPONENT"), -1, -1, 0, -1, '0');
+        this.component = e.getComponent();
         this.isCtrlDown = e.isControlDown();
         this.isShiftDown = e.isShiftDown();
         this.isAltDown = e.isAltDown();
@@ -43,11 +46,18 @@ public class KeyEventWrapper extends KeyEvent
     public KeyEventWrapper(GlobalKeyEvent e)
     {
         super(new Button("DUMMY FILLER COMPONENT"), -1, -1, 0, -1, '0');
+        this.component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
         this.isCtrlDown = e.isControlPressed();
         this.isShiftDown = e.isShiftPressed();
         this.isAltDown = e.isMenuPressed();
         this.keyCode = e.getVirtualKeyCode();
         this.keyChar = e.getKeyChar();
+    }
+
+    @Override
+    public Component getComponent()
+    {
+        return this.component;
     }
 
     @Override

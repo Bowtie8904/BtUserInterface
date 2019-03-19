@@ -164,7 +164,7 @@ public class KeyAction
         {
             boolean execute = false;
             Component comp = e.getComponent();
-
+            System.out.println(comp);
             if (comp == null)
             {
                 return;
@@ -173,6 +173,7 @@ public class KeyAction
             {
                 while ((comp = comp.getParent()) != null)
                 {
+                    System.out.println("parent " + comp);
                     if (comp.equals(this.component))
                     {
                         execute = true;
@@ -187,6 +188,7 @@ public class KeyAction
 
             if (!execute)
             {
+                System.out.println("no execute");
                 return;
             }
         }

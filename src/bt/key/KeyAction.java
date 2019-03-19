@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
+import bt.utils.log.Logger;
+
 /**
  * @author &#8904
  *
@@ -160,22 +162,26 @@ public class KeyAction
 
     public void execute(Action actionType, KeyEvent e)
     {
+        Logger.global().print("enter");
+        Logger.global().print(e);
         if (this.component != null)
         {
             boolean execute = false;
             Component comp = e.getComponent();
-            System.out.println(comp);
+            Logger.global().print(comp);
             if (comp == null)
             {
+                Logger.global().print("comp == null");
                 return;
             }
             else if (!comp.equals(this.component))
             {
                 while ((comp = comp.getParent()) != null)
                 {
-                    System.out.println("parent " + comp);
+                    Logger.global().print("parent " + comp);
                     if (comp.equals(this.component))
                     {
+                        Logger.global().print("found match");
                         execute = true;
                         break;
                     }
@@ -183,12 +189,13 @@ public class KeyAction
             }
             else
             {
+                Logger.global().print("set execute true");
                 execute = true;
             }
 
             if (!execute)
             {
-                System.out.println("no execute");
+                Logger.global().print("no execute");
                 return;
             }
         }

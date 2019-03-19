@@ -1,5 +1,6 @@
 package bt.key;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
@@ -38,6 +39,7 @@ public class KeyAction
         return sMod;
     }
 
+    private Component component;
     private Consumer<KeyEvent> keyPressed;
     private Consumer<KeyEvent> keyReleased;
     private int keyCode;
@@ -99,8 +101,96 @@ public class KeyAction
         this.keyReleased = keyReleased;
     }
 
+    public KeyAction(Component component, Consumer<KeyEvent> keyPressed)
+    {
+        this.component = component;
+        this.keyCode = UNDEFINED_KEY_ACTION_CODE;
+        this.keyPressed = keyPressed;
+        this.keyReleased = (e) ->
+        {
+        };
+    }
+
+    public KeyAction(Component component, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
+    {
+        this.component = component;
+        this.keyCode = UNDEFINED_KEY_ACTION_CODE;
+        this.keyPressed = keyPressed;
+        this.keyReleased = keyReleased;
+    }
+
+    public KeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed)
+    {
+        this.component = component;
+        this.keyCode = keyCode;
+        this.keyPressed = keyPressed;
+        this.keyReleased = (e) ->
+        {
+        };
+    }
+
+    public KeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
+    {
+        this.component = component;
+        this.keyCode = keyCode;
+        this.keyPressed = keyPressed;
+        this.keyReleased = keyReleased;
+    }
+
+    public KeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed)
+    {
+        this.component = component;
+        this.modifier = modifier;
+        this.keyCode = keyCode;
+        this.keyPressed = keyPressed;
+        this.keyReleased = (e) ->
+        {
+        };
+    }
+
+    public KeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed,
+            Consumer<KeyEvent> keyReleased)
+    {
+        this.component = component;
+        this.modifier = modifier;
+        this.keyCode = keyCode;
+        this.keyPressed = keyPressed;
+        this.keyReleased = keyReleased;
+    }
+
     public void execute(Action actionType, KeyEvent e)
     {
+        if (this.component != null)
+        {
+            boolean execute = false;
+            Component comp = e.getComponent();
+
+            if (comp == null)
+            {
+                return;
+            }
+            else if (!comp.equals(this.component))
+            {
+                while ((comp = comp.getParent()) != null)
+                {
+                    if (comp.equals(this.component))
+                    {
+                        execute = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                execute = true;
+            }
+
+            if (!execute)
+            {
+                return;
+            }
+        }
+
         if (this.modifier == NO_MODIFIER
                 || this.modifier == SHIFT_MODIFIER && e.isShiftDown()
                 || this.modifier == ALT_MODIFIER && e.isAltDown()
@@ -153,6 +243,11 @@ public class KeyAction
         return this.keyCode;
     }
 
+    public Component getComponent()
+    {
+        return this.component;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -160,11 +255,14 @@ public class KeyAction
         {
             return true;
         }
-        else
+        else if (o instanceof KeyAction)
         {
             return this.keyCode == ((KeyAction)o).getKeyCode()
-                    && this.modifier == ((KeyAction)o).getModifier();
+                    && this.modifier == ((KeyAction)o).getModifier()
+                    && (this.component == null || this.component.equals(((KeyAction)o).getComponent()));
         }
+
+        return false;
     }
 
     @Override

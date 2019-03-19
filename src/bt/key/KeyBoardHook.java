@@ -1,5 +1,6 @@
 package bt.key;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.function.Consumer;
@@ -103,6 +104,38 @@ public class KeyBoardHook implements Killable
             Consumer<KeyEvent> keyReleased)
     {
         actionSet.addKeyAction(new KeyAction(keyCode, modifier, keyPressed, keyReleased));
+    }
+
+    public void addKeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed)
+    {
+        actionSet.addKeyAction(new KeyAction(component, keyCode, keyPressed));
+    }
+
+    public void addKeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed,
+            Consumer<KeyEvent> keyReleased)
+    {
+        actionSet.addKeyAction(new KeyAction(component, keyCode, keyPressed, keyReleased));
+    }
+
+    public void addKeyAction(Component component, Consumer<KeyEvent> keyPressed)
+    {
+        actionSet.addKeyAction(new KeyAction(component, keyPressed));
+    }
+
+    public void addKeyAction(Component component, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
+    {
+        actionSet.addKeyAction(new KeyAction(component, keyPressed, keyReleased));
+    }
+
+    public void addKeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed)
+    {
+        actionSet.addKeyAction(new KeyAction(component, keyCode, modifier, keyPressed));
+    }
+
+    public void addKeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed,
+            Consumer<KeyEvent> keyReleased)
+    {
+        actionSet.addKeyAction(new KeyAction(component, keyCode, modifier, keyPressed, keyReleased));
     }
 
     public void removeKeyAction(KeyAction action)

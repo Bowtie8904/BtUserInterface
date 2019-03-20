@@ -30,7 +30,7 @@ public class KeyBoardHook implements Killable
             instance = new KeyBoardHook();
             Logger.global().registerSource(instance, "GLOBAL_KEYBOARD_HOOK");
             instance.setup();
-            InstanceKiller.closeOnShutdown(instance, 1);
+            InstanceKiller.killOnShutdown(instance, 1);
         }
         return instance;
     }

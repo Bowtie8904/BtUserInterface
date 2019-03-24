@@ -268,8 +268,8 @@ public class KeyAction
     @Override
     public String toString()
     {
-        return "KeyCode: " + this.getKeyCode() + "\n"
-                + "KeyLiteral: " + KeyEvent.getKeyText(this.getKeyCode()) + "\n"
-                + "Modifier: " + KeyAction.modifierToString(this.getModifier());
+        return "[KeyCode = " + this.getKeyCode() + "] "
+                + "[KeyLiteral = " + KeyEvent.getKeyText(this.getKeyCode()) + "] "
+                + "[Modifier = " + KeyAction.modifierToString(this.getModifier()) + "]";
     }
 }

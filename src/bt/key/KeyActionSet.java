@@ -55,7 +55,7 @@ public class KeyActionSet
         List<KeyAction> actions = this.keyActions.get(keyCode);
         actions.add(action);
 
-        Logger.global().print(KeyBoardHook.get(), "Registered KeyAction\n" + action);
+        Logger.global().print(KeyBoardHook.get(), "Registered KeyAction: " + action);
     }
 
     protected void removeKeyAction(KeyAction action)

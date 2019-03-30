@@ -191,7 +191,7 @@ public class KeyAction
             }
         }
 
-        if (this.modifier == NO_MODIFIER
+        if ((this.modifier == NO_MODIFIER && !(e.isShiftDown() || e.isAltDown() || e.isControlDown()))
                 || this.modifier == SHIFT_MODIFIER && e.isShiftDown()
                 || this.modifier == ALT_MODIFIER && e.isAltDown()
                 || this.modifier == CTRL_MODIFIER && e.isControlDown())

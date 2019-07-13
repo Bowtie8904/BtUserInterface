@@ -28,34 +28,40 @@ public class KeyBoardHook implements Killable
         if (instance == null)
         {
             instance = new KeyBoardHook();
-            Logger.global().registerSource(instance, "GLOBAL_KEYBOARD_HOOK");
+            Logger.global()
+                  .registerSource(instance,
+                                  "GLOBAL_KEYBOARD_HOOK");
             instance.setup();
-            InstanceKiller.killOnShutdown(instance, 1);
+            InstanceKiller.killOnShutdown(instance,
+                                          1);
         }
         return instance;
     }
 
     private void setup()
     {
-        Logger.global().print(this, "Setting up a global keyboard hook.");
+        Logger.global()
+              .print(this,
+                     "Setting up a global keyboard hook.");
 
         keyboardHook = new GlobalKeyboardHook(false);
         actionSet = new KeyActionSet();
 
-        keyboardHook.addKeyListener(new GlobalKeyAdapter()
-        {
+        keyboardHook.addKeyListener(new GlobalKeyAdapter() {
             @Override
             public void keyPressed(GlobalKeyEvent e)
             {
                 KeyEventWrapper eventWrapper = new KeyEventWrapper(e);
-                actionSet.dispatchEvent(Action.KEY_PRESSED, eventWrapper);
+                actionSet.dispatchEvent(Action.KEY_PRESSED,
+                                        eventWrapper);
             }
 
             @Override
             public void keyReleased(GlobalKeyEvent e)
             {
                 KeyEventWrapper eventWrapper = new KeyEventWrapper(e);
-                actionSet.dispatchEvent(Action.KEY_RELEASED, eventWrapper);
+                actionSet.dispatchEvent(Action.KEY_RELEASED,
+                                        eventWrapper);
             }
         });
     }
@@ -66,7 +72,9 @@ public class KeyBoardHook implements Killable
         if (keyboardHook != null)
         {
             keyboardHook.shutdownHook();
-            Logger.global().print(this, "Killed keyboard hook.");
+            Logger.global()
+                  .print(this,
+                         "Killed keyboard hook.");
         }
     }
 
@@ -77,12 +85,15 @@ public class KeyBoardHook implements Killable
 
     public void addKeyAction(int keyCode, Consumer<KeyEvent> keyPressed)
     {
-        actionSet.addKeyAction(new KeyAction(keyCode, keyPressed));
+        actionSet.addKeyAction(new KeyAction(keyCode,
+                                             keyPressed));
     }
 
     public void addKeyAction(int keyCode, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
     {
-        actionSet.addKeyAction(new KeyAction(keyCode, keyPressed, keyReleased));
+        actionSet.addKeyAction(new KeyAction(keyCode,
+                                             keyPressed,
+                                             keyReleased));
     }
 
     public void addKeyAction(Consumer<KeyEvent> keyPressed)
@@ -92,50 +103,71 @@ public class KeyBoardHook implements Killable
 
     public void addKeyAction(Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
     {
-        actionSet.addKeyAction(new KeyAction(keyPressed, keyReleased));
+        actionSet.addKeyAction(new KeyAction(keyPressed,
+                                             keyReleased));
     }
 
     public void addKeyAction(int keyCode, int modifier, Consumer<KeyEvent> keyPressed)
     {
-        actionSet.addKeyAction(new KeyAction(keyCode, modifier, keyPressed));
+        actionSet.addKeyAction(new KeyAction(keyCode,
+                                             modifier,
+                                             keyPressed));
     }
 
     public void addKeyAction(int keyCode, int modifier, Consumer<KeyEvent> keyPressed,
-            Consumer<KeyEvent> keyReleased)
+                             Consumer<KeyEvent> keyReleased)
     {
-        actionSet.addKeyAction(new KeyAction(keyCode, modifier, keyPressed, keyReleased));
+        actionSet.addKeyAction(new KeyAction(keyCode,
+                                             modifier,
+                                             keyPressed,
+                                             keyReleased));
     }
 
     public void addKeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed)
     {
-        actionSet.addKeyAction(new KeyAction(component, keyCode, keyPressed));
+        actionSet.addKeyAction(new KeyAction(component,
+                                             keyCode,
+                                             keyPressed));
     }
 
     public void addKeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed,
-            Consumer<KeyEvent> keyReleased)
+                             Consumer<KeyEvent> keyReleased)
     {
-        actionSet.addKeyAction(new KeyAction(component, keyCode, keyPressed, keyReleased));
+        actionSet.addKeyAction(new KeyAction(component,
+                                             keyCode,
+                                             keyPressed,
+                                             keyReleased));
     }
 
     public void addKeyAction(Component component, Consumer<KeyEvent> keyPressed)
     {
-        actionSet.addKeyAction(new KeyAction(component, keyPressed));
+        actionSet.addKeyAction(new KeyAction(component,
+                                             keyPressed));
     }
 
     public void addKeyAction(Component component, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
     {
-        actionSet.addKeyAction(new KeyAction(component, keyPressed, keyReleased));
+        actionSet.addKeyAction(new KeyAction(component,
+                                             keyPressed,
+                                             keyReleased));
     }
 
     public void addKeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed)
     {
-        actionSet.addKeyAction(new KeyAction(component, keyCode, modifier, keyPressed));
+        actionSet.addKeyAction(new KeyAction(component,
+                                             keyCode,
+                                             modifier,
+                                             keyPressed));
     }
 
     public void addKeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed,
-            Consumer<KeyEvent> keyReleased)
+                             Consumer<KeyEvent> keyReleased)
     {
-        actionSet.addKeyAction(new KeyAction(component, keyCode, modifier, keyPressed, keyReleased));
+        actionSet.addKeyAction(new KeyAction(component,
+                                             keyCode,
+                                             modifier,
+                                             keyPressed,
+                                             keyReleased));
     }
 
     public void removeKeyAction(KeyAction action)
@@ -155,6 +187,7 @@ public class KeyBoardHook implements Killable
 
     public void registerKeyListener(KeyListener listener)
     {
-        addKeyAction(new KeyAction(listener::keyPressed, listener::keyReleased));
+        addKeyAction(new KeyAction(listener::keyPressed,
+                                   listener::keyReleased));
     }
 }

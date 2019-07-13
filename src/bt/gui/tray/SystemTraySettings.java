@@ -24,11 +24,12 @@ public class SystemTraySettings
      */
     public SystemTraySettings(Image trayImage)
     {
-        this.trayIcon = new TrayIcon(trayImage, null, null);
+        this.trayIcon = new TrayIcon(trayImage,
+                                     null,
+                                     null);
         this.trayIcon.setImageAutoSize(true);
         this.trayIcon.addActionListener((e) ->
-        {
-        });
+        {});
     }
 
     /**

@@ -28,7 +28,8 @@ public class KeyActionSet
         {
             for (KeyAction action : undefinedKeyActions)
             {
-                action.execute(actionType, e);
+                action.execute(actionType,
+                               e);
             }
         }
 
@@ -38,7 +39,8 @@ public class KeyActionSet
         {
             for (KeyAction action : actions)
             {
-                action.execute(actionType, e);
+                action.execute(actionType,
+                               e);
             }
         }
     }
@@ -49,13 +51,16 @@ public class KeyActionSet
 
         if (!this.keyActions.containsKey(keyCode))
         {
-            this.keyActions.put(keyCode, new ArrayList<KeyAction>());
+            this.keyActions.put(keyCode,
+                                new ArrayList<KeyAction>());
         }
 
         List<KeyAction> actions = this.keyActions.get(keyCode);
         actions.add(action);
 
-        Logger.global().print(KeyBoardHook.get(), "Registered KeyAction: " + action);
+        Logger.global()
+              .print(KeyBoardHook.get(),
+                     "Registered KeyAction: " + action);
     }
 
     protected void removeKeyAction(KeyAction action)

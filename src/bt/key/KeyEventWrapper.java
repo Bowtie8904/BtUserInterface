@@ -21,20 +21,31 @@ public class KeyEventWrapper extends KeyEvent
     private Component component;
 
     private KeyEventWrapper(
-            Component source,
-            int id,
-            long when,
-            int modifiers,
-            int keyCode,
-            char keyChar,
-            int keyLocation)
+                            Component source,
+                            int id,
+                            long when,
+                            int modifiers,
+                            int keyCode,
+                            char keyChar,
+                            int keyLocation)
     {
-        super(source, id, when, modifiers, keyCode, keyChar, keyLocation);
+        super(source,
+              id,
+              when,
+              modifiers,
+              keyCode,
+              keyChar,
+              keyLocation);
     }
 
     public KeyEventWrapper(KeyEvent e)
     {
-        super(new Button("DUMMY FILLER COMPONENT"), -1, -1, 0, -1, '0');
+        super(new Button("DUMMY FILLER COMPONENT"),
+              -1,
+              -1,
+              0,
+              -1,
+              '0');
         this.component = e.getComponent();
         this.isCtrlDown = e.isControlDown();
         this.isShiftDown = e.isShiftDown();
@@ -45,7 +56,12 @@ public class KeyEventWrapper extends KeyEvent
 
     public KeyEventWrapper(GlobalKeyEvent e)
     {
-        super(new Button("DUMMY FILLER COMPONENT"), -1, -1, 0, -1, '0');
+        super(new Button("DUMMY FILLER COMPONENT"),
+              -1,
+              -1,
+              0,
+              -1,
+              '0');
         this.component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
         this.isCtrlDown = e.isControlPressed();
         this.isShiftDown = e.isShiftPressed();

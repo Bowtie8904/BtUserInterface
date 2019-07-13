@@ -81,7 +81,7 @@ public class DefaultSystemTrayFrame extends JFrame implements SystemTrayItem
         if (SystemTrayUtils.isInTray(this))
         {
             throw new IllegalStateException(
-                    "Can't change the configuration of an item that is currently in the system tray.");
+                                            "Can't change the configuration of an item that is currently in the system tray.");
         }
         else
         {

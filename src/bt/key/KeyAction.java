@@ -20,20 +20,22 @@ public class KeyAction
     {
         String sMod = "Invalid modifier";
 
-        switch (modifier)
+        switch (
+            modifier
+        )
         {
-        case NO_MODIFIER:
-            sMod = "No modifier";
-            break;
-        case SHIFT_MODIFIER:
-            sMod = "Shift modifier";
-            break;
-        case ALT_MODIFIER:
-            sMod = "Alt modifier";
-            break;
-        case CTRL_MODIFIER:
-            sMod = "Ctrl modifier";
-            break;
+            case NO_MODIFIER:
+                sMod = "No modifier";
+                break;
+            case SHIFT_MODIFIER:
+                sMod = "Shift modifier";
+                break;
+            case ALT_MODIFIER:
+                sMod = "Alt modifier";
+                break;
+            case CTRL_MODIFIER:
+                sMod = "Ctrl modifier";
+                break;
         }
 
         return sMod;
@@ -56,8 +58,7 @@ public class KeyAction
         this.keyCode = UNDEFINED_KEY_ACTION_CODE;
         this.keyPressed = keyPressed;
         this.keyReleased = (e) ->
-        {
-        };
+        {};
     }
 
     public KeyAction(Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
@@ -72,8 +73,7 @@ public class KeyAction
         this.keyCode = keyCode;
         this.keyPressed = keyPressed;
         this.keyReleased = (e) ->
-        {
-        };
+        {};
     }
 
     public KeyAction(int keyCode, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
@@ -89,8 +89,7 @@ public class KeyAction
         this.keyCode = keyCode;
         this.keyPressed = keyPressed;
         this.keyReleased = (e) ->
-        {
-        };
+        {};
     }
 
     public KeyAction(int keyCode, int modifier, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
@@ -107,8 +106,7 @@ public class KeyAction
         this.keyCode = UNDEFINED_KEY_ACTION_CODE;
         this.keyPressed = keyPressed;
         this.keyReleased = (e) ->
-        {
-        };
+        {};
     }
 
     public KeyAction(Component component, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
@@ -125,8 +123,7 @@ public class KeyAction
         this.keyCode = keyCode;
         this.keyPressed = keyPressed;
         this.keyReleased = (e) ->
-        {
-        };
+        {};
     }
 
     public KeyAction(Component component, int keyCode, Consumer<KeyEvent> keyPressed, Consumer<KeyEvent> keyReleased)
@@ -144,12 +141,11 @@ public class KeyAction
         this.keyCode = keyCode;
         this.keyPressed = keyPressed;
         this.keyReleased = (e) ->
-        {
-        };
+        {};
     }
 
     public KeyAction(Component component, int keyCode, int modifier, Consumer<KeyEvent> keyPressed,
-            Consumer<KeyEvent> keyReleased)
+                     Consumer<KeyEvent> keyReleased)
     {
         this.component = component;
         this.modifier = modifier;
@@ -192,18 +188,20 @@ public class KeyAction
         }
 
         if ((this.modifier == NO_MODIFIER && !(e.isShiftDown() || e.isAltDown() || e.isControlDown()))
-                || this.modifier == SHIFT_MODIFIER && e.isShiftDown()
-                || this.modifier == ALT_MODIFIER && e.isAltDown()
-                || this.modifier == CTRL_MODIFIER && e.isControlDown())
+            || this.modifier == SHIFT_MODIFIER && e.isShiftDown()
+            || this.modifier == ALT_MODIFIER && e.isAltDown()
+            || this.modifier == CTRL_MODIFIER && e.isControlDown())
         {
-            switch (actionType)
+            switch (
+                actionType
+            )
             {
-            case KEY_PRESSED:
-                this.keyPressed.accept(e);
-                break;
-            case KEY_RELEASED:
-                this.keyReleased.accept(e);
-                break;
+                case KEY_PRESSED:
+                    this.keyPressed.accept(e);
+                    break;
+                case KEY_RELEASED:
+                    this.keyReleased.accept(e);
+                    break;
             }
         }
     }
@@ -258,8 +256,8 @@ public class KeyAction
         else if (o instanceof KeyAction)
         {
             return this.keyCode == ((KeyAction)o).getKeyCode()
-                    && this.modifier == ((KeyAction)o).getModifier()
-                    && (this.component == null || this.component.equals(((KeyAction)o).getComponent()));
+                   && this.modifier == ((KeyAction)o).getModifier()
+                   && (this.component == null || this.component.equals(((KeyAction)o).getComponent()));
         }
 
         return false;
@@ -269,7 +267,7 @@ public class KeyAction
     public String toString()
     {
         return "[KeyCode = " + this.getKeyCode() + "] "
-                + "[KeyLiteral = " + KeyEvent.getKeyText(this.getKeyCode()) + "] "
-                + "[Modifier = " + KeyAction.modifierToString(this.getModifier()) + "]";
+               + "[KeyLiteral = " + KeyEvent.getKeyText(this.getKeyCode()) + "] "
+               + "[Modifier = " + KeyAction.modifierToString(this.getModifier()) + "]";
     }
 }

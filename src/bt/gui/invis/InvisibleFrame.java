@@ -17,7 +17,8 @@ public class InvisibleFrame extends JFrame
     public InvisibleFrame()
     {
         setUndecorated(true);
-        setBackground(new Color(0, true));
+        setBackground(new Color(0,
+                                true));
     }
 
     /**

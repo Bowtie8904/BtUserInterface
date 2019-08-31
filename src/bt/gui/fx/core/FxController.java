@@ -92,6 +92,7 @@ public abstract class FxController extends Application
         Parent root = view.load();
         view.prepareStage(stage);
         stage.setScene(new Scene(root, view.getWidth(), view.getHeight()));
+        stage.show();
     }
 
     private <T extends FxView> T constructViewInstance(Class<T> viewType)

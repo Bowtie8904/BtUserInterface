@@ -16,19 +16,19 @@ import javafx.stage.Stage;
  * @author &#8904
  *
  */
-public abstract class FxController extends Application
+public abstract class FxViewManager extends Application
 {
-    private static FxController instance;
+    private static FxViewManager instance;
 
     protected Stage primaryStage;
     protected Map<Class<? extends FxView>, FxView> views;
 
-    public static FxController get()
+    public static FxViewManager get()
     {
         return instance;
     }
 
-    public FxController()
+    public FxViewManager()
     {
         instance = this;
         this.views = new HashMap<>();

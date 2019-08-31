@@ -58,18 +58,11 @@ public abstract class FxView
 
             try
             {
-                this.root = loadFxml(this.viewName + ".fxml");
+                this.root = loadFxml("/" + this.viewName + ".fxml");
             }
             catch (IOException e)
             {
-                try
-                {
-                    this.root = loadFxml("/" + this.viewName + ".fxml");
-                }
-                catch (IOException e1)
-                {
-                    Logger.global().print(e1);
-                }
+                Logger.global().print(e);
             }
         }
 

@@ -65,24 +65,17 @@ public abstract class FxController extends Application
         setView(viewType, false);
     }
 
-    public <T extends FxView> void setView(Class<T> viewType, double width, double height)
+    public <T extends FxView> void setView(Class<T> viewType, Stage stage)
     {
-        setView(viewType, width, height, false);
+        setView(viewType, stage, false);
     }
 
     public <T extends FxView> void setView(Class<T> viewType, boolean forceReload)
     {
-        Parent root = loadView(viewType, forceReload);
-        this.primaryStage.setScene(new Scene(root));
+        setView(viewType, this.primaryStage, forceReload);
     }
 
-    public <T extends FxView> void setView(Class<T> viewType, double width, double height, boolean forceReload)
-    {
-        Parent root = loadView(viewType, forceReload);
-        this.primaryStage.setScene(new Scene(root, width, height));
-    }
-
-    private <T extends FxView> Parent loadView(Class<T> viewType, boolean forceReload)
+    public <T extends FxView> void setView(Class<T> viewType, Stage stage, boolean forceReload)
     {
         FxView view = this.views.get(viewType);
 
@@ -96,7 +89,8 @@ public abstract class FxController extends Application
             view = constructViewInstance(viewType);
         }
 
-        return view.load();
+        Parent root = view.load();
+        stage.setScene(new Scene(root, view.getWidth(), view.getHeight()));
     }
 
     private <T extends FxView> T constructViewInstance(Class<T> viewType)

@@ -27,11 +27,11 @@ public abstract class FxView
 
     private Parent loadFxml(String fxmlFile) throws IOException
     {
+        Logger.global().print("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
+
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
         prepareView(this.loader);
-
-        Logger.global().print("Loaded FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
 
         return root;
     }

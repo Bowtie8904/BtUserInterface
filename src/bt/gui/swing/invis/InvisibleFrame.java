@@ -1,4 +1,4 @@
-package bt.gui.invis;
+package bt.gui.swing.invis;
 
 import java.awt.Color;
 

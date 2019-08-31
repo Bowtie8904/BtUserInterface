@@ -6,6 +6,7 @@ import bt.gui.fx.core.exc.BowtieFxException;
 import bt.utils.log.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -31,7 +32,7 @@ public abstract class FxView
 
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
-        prepareView(this.loader);
+        prepareView();
 
         return root;
     }
@@ -85,7 +86,9 @@ public abstract class FxView
         this.loader = null;
     }
 
-    protected abstract void prepareView(FXMLLoader loader);
+    protected abstract void prepareView();
 
     protected abstract void prepareStage(Stage stage);
+
+    protected abstract void prepareScene(Scene scene);
 }

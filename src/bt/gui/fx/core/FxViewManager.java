@@ -91,7 +91,9 @@ public abstract class FxViewManager extends Application
 
         Parent root = view.load();
         view.prepareStage(stage);
-        stage.setScene(new Scene(root, view.getWidth(), view.getHeight()));
+        Scene scene = new Scene(root, view.getWidth(), view.getHeight());
+        view.prepareScene(scene);
+        stage.setScene(scene);
         stage.show();
     }
 

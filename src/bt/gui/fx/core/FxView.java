@@ -14,10 +14,10 @@ import javafx.scene.Parent;
 public abstract class FxView
 {
     protected FXMLLoader loader;
-
     protected String viewName;
-
     protected Parent root;
+    protected double width = -1;
+    protected double height = -1;
 
     public FxView()
     {
@@ -73,6 +73,16 @@ public abstract class FxView
         }
 
         return this.root;
+    }
+
+    public double getWidth()
+    {
+        return this.width;
+    }
+
+    public double getHeight()
+    {
+        return this.height;
     }
 
     public void reset()

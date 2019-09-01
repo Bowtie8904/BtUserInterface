@@ -94,7 +94,16 @@ public abstract class FxViewManager extends Application
         Scene scene = new Scene(root, view.getWidth(), view.getHeight());
         view.prepareScene(scene);
         stage.setScene(scene);
-        stage.centerOnScreen();
+
+        if (view.shouldMaximize())
+        {
+            stage.setMaximized(true);
+        }
+        else
+        {
+            stage.setMaximized(false);
+            stage.centerOnScreen();
+        }
         stage.show();
     }
 

@@ -20,6 +20,8 @@ public abstract class FxView
     protected Parent root;
     protected double width = -1;
     protected double height = -1;
+    protected boolean shouldMaximize;
+
 
     public FxView()
     {
@@ -84,6 +86,23 @@ public abstract class FxView
     {
         this.root = null;
         this.loader = null;
+    }
+
+    /**
+     * @return the shouldMaximize
+     */
+    public boolean shouldMaximize()
+    {
+        return this.shouldMaximize;
+    }
+
+    /**
+     * @param shouldMaximize
+     *            the shouldMaximize to set
+     */
+    public void setShouldMaximize(boolean shouldMaximize)
+    {
+        this.shouldMaximize = shouldMaximize;
     }
 
     protected abstract void prepareView();

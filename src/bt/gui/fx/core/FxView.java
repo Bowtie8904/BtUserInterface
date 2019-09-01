@@ -59,7 +59,7 @@ public abstract class FxView
 
             try
             {
-                this.root = loadFxml("/" + this.viewName + ".fxml");
+                this.root = loadFxml("/" + this.viewName.toLowerCase() + ".fxml");
             }
             catch (IOException e)
             {

@@ -90,6 +90,7 @@ public abstract class FxViewManager extends Application
         }
 
         Parent root = view.load();
+        view.setStage(stage);
         view.prepareStage(stage);
         Scene scene = new Scene(root, view.getWidth(), view.getHeight());
         view.prepareScene(scene);
@@ -100,12 +101,31 @@ public abstract class FxViewManager extends Application
         {
             stage.setMaximized(true);
         }
+        else if (view.getParentStage() != null)
+        {
+            double centerXPosition = view.getParentStage().getX() + view.getParentStage().getWidth() / 2d;
+            double centerYPosition = view.getParentStage().getY() + view.getParentStage().getHeight() / 2d;
+
+            stage.setOnShowing(ev -> stage.hide());
+
+            stage.setOnShown(ev ->
+            {
+                stage.setX(centerXPosition - stage.getWidth() / 2d);
+                stage.setY(centerYPosition - stage.getHeight() / 2d);
+                stage.show();
+            });
+        }
         else
         {
             stage.setMaximized(false);
             stage.centerOnScreen();
         }
-        stage.show();
+        view.show();
+    }
+
+    public <T extends FxView> void setPopUpView(Class<T> viewType, Stage stage, boolean forceReload)
+    {
+
     }
 
     private <T extends FxView> T constructViewInstance(Class<T> viewType)

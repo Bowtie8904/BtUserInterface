@@ -18,6 +18,8 @@ public abstract class FxView
     protected FXMLLoader loader;
     protected String viewName;
     protected Parent root;
+    protected Stage stage;
+    protected Stage parentStage;
     protected double width = -1;
     protected double height = -1;
     protected boolean shouldMaximize;
@@ -103,6 +105,45 @@ public abstract class FxView
     public void setShouldMaximize(boolean shouldMaximize)
     {
         this.shouldMaximize = shouldMaximize;
+    }
+
+    /**
+     * @return the stage
+     */
+    public Stage getStage()
+    {
+        return this.stage;
+    }
+
+    /**
+     * @param stage
+     *            the stage to set
+     */
+    public void setStage(Stage stage)
+    {
+        this.stage = stage;
+    }
+
+    /**
+     * @return the parentStage
+     */
+    public Stage getParentStage()
+    {
+        return this.parentStage;
+    }
+
+    /**
+     * @param parentStage
+     *            the parentStage to set
+     */
+    public void setParentStage(Stage parentStage)
+    {
+        this.parentStage = parentStage;
+    }
+
+    public void show()
+    {
+        this.stage.show();
     }
 
     protected abstract void prepareView();

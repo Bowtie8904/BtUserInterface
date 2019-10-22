@@ -18,5 +18,5 @@ public @interface FxmlElement
      *
      * @return
      */
-    String value();
+    String value() default "";
 }

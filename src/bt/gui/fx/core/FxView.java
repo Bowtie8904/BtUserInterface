@@ -42,13 +42,9 @@ public abstract class FxView
         for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxmlElement.class))
         {
             FxmlElement annot = field.getAnnotation(FxmlElement.class);
-            String elementID = null;
+            String elementID = annot.value();
 
-            if (annot != null)
-            {
-                elementID = annot.value();
-            }
-            else
+            if (elementID.isEmpty())
             {
                 elementID = field.getName();
             }

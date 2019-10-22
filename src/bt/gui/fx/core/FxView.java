@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import bt.gui.fx.core.exc.BowtieFxException;
 import bt.utils.log.Logger;
+import bt.utils.refl.anot.Annotations;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,21 +25,45 @@ public abstract class FxView
     protected double height = -1;
     protected boolean shouldMaximize;
 
-
-    public FxView()
-    {
-
-    }
-
     private Parent loadFxml(String fxmlFile) throws IOException
     {
         Logger.global().print("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
 
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
+        populateFxmlElements();
         prepareView();
 
         return root;
+    }
+
+    protected void populateFxmlElements()
+    {
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxmlElement.class))
+        {
+            FxmlElement annot = field.getAnnotation(FxmlElement.class);
+            String elementID = null;
+
+            if (annot != null)
+            {
+                elementID = annot.value();
+            }
+            else
+            {
+                elementID = field.getName();
+            }
+
+            field.setAccessible(true);
+
+            try
+            {
+                field.set(this, getElement(field.getType(), elementID));
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
+            }
+        }
     }
 
     public <T> T getElement(Class<T> type, String elementID)

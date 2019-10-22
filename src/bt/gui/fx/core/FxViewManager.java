@@ -123,18 +123,13 @@ public abstract class FxViewManager extends Application
         view.show();
     }
 
-    public <T extends FxView> void setPopUpView(Class<T> viewType, Stage stage, boolean forceReload)
-    {
-
-    }
-
     private <T extends FxView> T constructViewInstance(Class<T> viewType)
     {
         T view = null;
 
         try
         {
-            Constructor<T> construct = viewType.getDeclaredConstructor();
+            Constructor<T> construct = viewType.getConstructor();
             construct.setAccessible(true);
             view = construct.newInstance();
             this.views.put(viewType, view);

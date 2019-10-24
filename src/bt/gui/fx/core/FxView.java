@@ -68,8 +68,14 @@ public abstract class FxView
         {
             throw new BowtieFxException("FXMLLoader has not been constructed yet. Call load() first.");
         }
+        T element = (T)this.loader.getNamespace().get(elementID);
 
-        return (T)this.loader.getNamespace().get(elementID);
+        if (element == null)
+        {
+            throw new BowtieFxException("Could not find an FX element with the fx:id '" + elementID + "'.");
+        }
+
+        return element;
     }
 
     public Parent load()

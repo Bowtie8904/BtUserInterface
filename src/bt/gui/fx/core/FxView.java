@@ -2,7 +2,7 @@ package bt.gui.fx.core;
 
 import java.io.IOException;
 
-import bt.gui.fx.core.exc.BowtieFxException;
+import bt.gui.fx.core.exc.FxException;
 import bt.utils.log.Logger;
 import bt.utils.refl.anot.Annotations;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +21,7 @@ public abstract class FxView
     protected Parent root;
     protected Stage stage;
     protected Stage parentStage;
+    protected Scene scene;
     protected double width = -1;
     protected double height = -1;
     protected boolean shouldMaximize;
@@ -66,13 +67,13 @@ public abstract class FxView
     {
         if (this.loader == null)
         {
-            throw new BowtieFxException("FXMLLoader has not been constructed yet. Call load() first.");
+            throw new FxException("FXMLLoader has not been constructed yet. Call load() first.");
         }
         T element = (T)this.loader.getNamespace().get(elementID);
 
         if (element == null)
         {
-            throw new BowtieFxException("Could not find an FX element with the fx:id '" + elementID + "'.");
+            throw new FxException("Could not find an FX element with the fx:id '" + elementID + "'.");
         }
 
         return element;
@@ -166,6 +167,16 @@ public abstract class FxView
     public void setParentStage(Stage parentStage)
     {
         this.parentStage = parentStage;
+    }
+
+    public void setScene(Scene scene)
+    {
+        this.scene = scene;
+    }
+
+    public Scene getScene()
+    {
+        return this.scene;
     }
 
     public void show()

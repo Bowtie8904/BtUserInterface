@@ -6,8 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author &#8904
+ * Marks a field as an JavaFX element that is configured in the views fxml file.
  *
+ * @author &#8904
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

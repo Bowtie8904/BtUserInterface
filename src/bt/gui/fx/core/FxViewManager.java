@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import bt.gui.fx.core.exc.BowtieFxException;
+import bt.gui.fx.core.exc.FxException;
 import bt.utils.log.Logger;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -93,6 +93,7 @@ public abstract class FxViewManager extends Application
         view.setStage(stage);
         view.prepareStage(stage);
         Scene scene = new Scene(root, view.getWidth(), view.getHeight());
+        view.setScene(scene);
         view.prepareScene(scene);
         stage.hide();
         stage.setScene(scene);
@@ -141,7 +142,7 @@ public abstract class FxViewManager extends Application
         }
         catch (NoSuchMethodException noEx)
         {
-            throw new BowtieFxException("View class must implement a constructor without arguments.");
+            throw new FxException("View class must implement a constructor without arguments.");
         }
 
         return view;

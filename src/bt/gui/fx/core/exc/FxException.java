@@ -4,12 +4,12 @@ package bt.gui.fx.core.exc;
  * @author &#8904
  *
  */
-public class BowtieFxException extends RuntimeException
+public class FxException extends RuntimeException
 {
     /**
      * Creates a new instance without a message.
      */
-    public BowtieFxException()
+    public FxException()
     {
         super();
     }
@@ -20,7 +20,7 @@ public class BowtieFxException extends RuntimeException
      * @param message
      *            The message to use.
      */
-    public BowtieFxException(String message)
+    public FxException(String message)
     {
         super(message);
     }
@@ -33,7 +33,7 @@ public class BowtieFxException extends RuntimeException
      * @param cause
      *            The error that caused this exception.
      */
-    public BowtieFxException(String message, Throwable cause)
+    public FxException(String message, Throwable cause)
     {
         super(message,
               cause);

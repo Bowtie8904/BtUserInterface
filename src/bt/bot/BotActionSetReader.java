@@ -15,7 +15,7 @@ public class BotActionSetReader
 {
     private List actionSet;
 
-    public BotActionSetReader(File sequenceFile)
+    public BotActionSetReader()
     {
         this.actionSet = new ArrayList<>();
     }

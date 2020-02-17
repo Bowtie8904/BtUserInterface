@@ -4,6 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import bt.bot.action.BotAction;
+import bt.bot.action.BotDoAction;
+import bt.bot.action.BotKeyAction;
+import bt.bot.action.BotMouseClickAction;
+import bt.bot.action.BotMouseMoveAction;
+import bt.bot.action.BotRepeatAction;
+import bt.bot.action.BotWaitAction;
 import bt.utils.files.FileUtils;
 import bt.utils.log.Logger;
 
@@ -58,13 +65,11 @@ public class BotActionSetReader
                 try
                 {
                     int from = Integer.parseInt(line.split(" ")[1]);
-                    currentActions.add(new BotAction(BotAction.REPEAT,
-                                                     from));
+                    currentActions.add(new BotRepeatAction(from));
                 }
                 catch (IndexOutOfBoundsException e)
                 {
-                    currentActions.add(new BotAction(BotAction.REPEAT,
-                                                     0));
+                    currentActions.add(new BotRepeatAction(0));
                 }
                 catch (Exception e1)
                 {
@@ -77,8 +82,7 @@ public class BotActionSetReader
                 try
                 {
                     int wait = Integer.parseInt(line.split(" ")[1]);
-                    currentActions.add(new BotAction(BotAction.WAIT,
-                                                     wait));
+                    currentActions.add(new BotWaitAction(wait));
                 }
                 catch (Exception e)
                 {
@@ -91,8 +95,7 @@ public class BotActionSetReader
                 try
                 {
                     int doRuns = Integer.parseInt(line.split(" ")[1]);
-                    currentActions.add(new BotAction(BotAction.DO,
-                                                     doRuns));
+                    currentActions.add(new BotDoAction(doRuns));
                 }
                 catch (Exception e1)
                 {
@@ -108,8 +111,8 @@ public class BotActionSetReader
 
                 if (key != null)
                 {
-                    currentActions.add(new BotAction(key,
-                                                     BotAction.PRESS));
+                    currentActions.add(new BotKeyAction(key,
+                                                        BotKeyAction.PRESS));
                 }
                 else
                 {
@@ -124,12 +127,44 @@ public class BotActionSetReader
 
                 if (key != null)
                 {
-                    currentActions.add(new BotAction(key,
-                                                     BotAction.RELEASE));
+                    currentActions.add(new BotKeyAction(key,
+                                                        BotKeyAction.RELEASE));
                 }
                 else
                 {
                     Logger.global().print("Invalid key line '" + line + "'.");
+                }
+            }
+            else if (line.trim().toLowerCase().startsWith("move:"))
+            {
+                try
+                {
+                    String[] parts = line.replace("move:", "").split(" ");
+                    int x = Integer.parseInt(parts[0]);
+                    int y = Integer.parseInt(parts[1]);
+                    currentActions.add(new BotMouseMoveAction(x, y));
+                }
+                catch (Exception e1)
+                {
+                    Logger.global().print("Invalid move line '" + line + "'.");
+                    Logger.global().print(e1);
+                }
+            }
+            else if (line.trim().toLowerCase().startsWith("click:"))
+            {
+                String button = line.toLowerCase().split(" ")[1].trim();
+
+                switch (button)
+                {
+                    case "left":
+                        currentActions.add(new BotMouseClickAction(BotMouseClickAction.LEFT));
+                        break;
+                    case "middle":
+                        currentActions.add(new BotMouseClickAction(BotMouseClickAction.MIDDLE));
+                        break;
+                    case "right":
+                        currentActions.add(new BotMouseClickAction(BotMouseClickAction.RIGHT));
+                        break;
                 }
             }
         }

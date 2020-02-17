@@ -4,6 +4,8 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.util.List;
 
+import bt.bot.action.BotAction;
+import bt.bot.action.BotRepeatAction;
 import bt.utils.log.Logger;
 
 /**
@@ -64,7 +66,7 @@ public class BotActionExecutor
         {
             action = actions.get(index);
 
-            if (action.isRepeat())
+            if (action instanceof BotRepeatAction)
             {
                 runs ++ ;
 
@@ -77,8 +79,8 @@ public class BotActionExecutor
                 }
                 else
                 {
-                    index = action.getRepeatLine();
-                    Logger.global().print("Repeating from " + action.getRepeatLine() + "  [Run: " + runs + "]");
+                    index = ((BotRepeatAction)action).from();
+                    Logger.global().print("Repeating from " + ((BotRepeatAction)action).from() + "  [Run: " + runs + "]");
                 }
             }
             else

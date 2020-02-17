@@ -139,7 +139,7 @@ public class BotActionSetReader
             {
                 try
                 {
-                    String[] parts = line.replace("move:", "").split(" ");
+                    String[] parts = line.replace("move:", "").trim().split(" ");
                     int x = Integer.parseInt(parts[0]);
                     int y = Integer.parseInt(parts[1]);
                     currentActions.add(new BotMouseMoveAction(x, y));

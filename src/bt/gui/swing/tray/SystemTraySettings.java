@@ -30,6 +30,9 @@ public class SystemTraySettings
         this.trayIcon.setImageAutoSize(true);
         this.trayIcon.addActionListener((e) ->
         {});
+
+        this.popup = new PopupMenu();
+        this.trayIcon.setPopupMenu(this.popup);
     }
 
     /**
@@ -50,11 +53,6 @@ public class SystemTraySettings
      */
     public void addOption(MenuItem option)
     {
-        if (this.popup == null)
-        {
-            this.popup = new PopupMenu();
-            this.trayIcon.setPopupMenu(this.popup);
-        }
         this.popup.add(option);
     }
 

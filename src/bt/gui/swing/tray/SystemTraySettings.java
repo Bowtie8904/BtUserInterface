@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 /**
  * A class which holds configuration settings for a {@link SystemTrayItem}.
- * 
+ *
  * @author &#8904
  */
 public class SystemTraySettings
@@ -18,7 +18,7 @@ public class SystemTraySettings
 
     /**
      * Creates a new configuration instance which mirrors its settings in a {@link TrayIcon}.
-     * 
+     *
      * @param trayImage
      *            The image that should be displayed in the system tray.
      */
@@ -34,7 +34,7 @@ public class SystemTraySettings
 
     /**
      * Calls {@link TrayIcon#setToolTip(String)} and passes the given tooltip.
-     * 
+     *
      * @see java.awt.TrayIcon#setToolTip(String)
      */
     public void setToolTip(String tooltip)
@@ -44,7 +44,7 @@ public class SystemTraySettings
 
     /**
      * Adds the given {@link MenuItem} to the pop-up menu of the {@link TrayIcon}.
-     * 
+     *
      * @param option
      *            The option to add.
      */
@@ -60,7 +60,7 @@ public class SystemTraySettings
 
     /**
      * Adds a new option to the pop-up menu of the {@link TrayIcon}.
-     * 
+     *
      * @param name
      *            The name of the new option in the pop-up menu.
      * @param action
@@ -73,9 +73,19 @@ public class SystemTraySettings
         addOption(item);
     }
 
+    public void addLabel(String label)
+    {
+        this.popup.add(label);
+    }
+
+    public void addSeparator()
+    {
+        this.popup.addSeparator();
+    }
+
     /**
      * Sets the image that is displayed in the system tray.
-     * 
+     *
      * @param image
      *            The new image.
      */
@@ -86,7 +96,7 @@ public class SystemTraySettings
 
     /**
      * Gets the {@link TrayIcon} that uses the set values of this settings instance.
-     * 
+     *
      * @return The TrayIcon.
      */
     public TrayIcon getTrayIcon()

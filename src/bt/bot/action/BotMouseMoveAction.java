@@ -35,35 +35,18 @@ public class BotMouseMoveAction extends BotAction
         if (this.steps == 0)
         {
             executor.getRobot().mouseMove(this.x, this.y);
-            Logger.global().print("Moved [" + this.x + " | " + this.y + "]");
         }
         else
         {
             var currentPosition = MouseInfo.getPointerInfo().getLocation();
-            int currentX = currentPosition.x;
-            int currentY = currentPosition.y;
+            double currentX = currentPosition.x;
+            double currentY = currentPosition.y;
 
+            // calculate distance for each step
             double xStep = (this.x - currentX) / (double)this.steps;
-
-            if (xStep < 0)
-            {
-                xStep = Math.ceil(Math.abs(xStep)) * -1;
-            }
-            else
-            {
-                xStep = Math.ceil(xStep);
-            }
-
             double yStep = (this.y - currentY) / (double)this.steps;
 
-            if (yStep < 0)
-            {
-                yStep = Math.ceil(Math.abs(yStep)) * -1;
-            }
-            else
-            {
-                yStep = Math.ceil(yStep);
-            }
+            Logger.global().print(xStep + "   " + yStep);
 
             for (int i = 0; i < this.steps; i ++ )
             {
@@ -77,7 +60,7 @@ public class BotMouseMoveAction extends BotAction
                     currentY += yStep;
                 }
 
-                executor.getRobot().mouseMove(currentX, currentY);
+                executor.getRobot().mouseMove((int)currentX, (int)currentY);
                 Exceptions.ignoreThrow(Thread::sleep, 1);
 
                 if (currentX == this.x && currentY == this.y)
@@ -85,6 +68,11 @@ public class BotMouseMoveAction extends BotAction
                     break;
                 }
             }
+
+            // just to be save
+            executor.getRobot().mouseMove(this.x, this.y);
         }
+
+        Logger.global().print("Moved [" + this.x + " | " + this.y + "]");
     }
 }

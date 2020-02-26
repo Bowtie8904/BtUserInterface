@@ -1,5 +1,6 @@
 package bt.bot;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,87 @@ public class BotActionSetReader
      * All loaded actions will be added to the list of all loaded actions. Accessible via {@link #getBotActions()}.
      * </p>
      *
+     * <h1>Available actions</h1>
+     *
+     * Any line that does not start with any of the action commands below will be ignored.
+     *
+     * <pre>
+     * <b>press: {key}</b>
+     * <b>press: f</b>
+     * Presses (and holds) the given key.
+     * The literals for the keys are determined by {@link KeyEvent#getKeyText}.
+     * A list of all available keys can be obtained from {@link BotKey#keys}.
+     * Each key offers a {@link BotKey#getLiteral() getLiteral} method.
+     * </pre>
+     *
+     * <pre>
+     * <b>release: {key}</b>
+     * <b>release: f</b>
+     * Releases the given key.
+     * The literals for the keys are determined by {@link KeyEvent#getKeyText}.
+     * A list of all available keys can be obtained from {@link BotKey#keys}.
+     * Each key offers a {@link BotKey#getLiteral() getLiteral} method.
+     * </pre>
+     *
+     * <pre>
+     * <b>mouse press: {mouseKey}</b>
+     * <b>mouse press: left</b>
+     * Presses (and holds) the given mouse key.
+     * Available mouse keys are left, right and middle.
+     * </pre>
+     *
+     * <pre>
+     * <b>mouse release: {mouseKey}</b>
+     * <b>mouse release: left</b>
+     * Releases the given mouse key.
+     * Available mouse keys are left, right and middle.
+     * </pre>
+     *
+     * <pre>
+     * <b>move fast: {x} {y}</b>
+     * <b>move fast: 123 456</b>
+     * Moves the mouse cursor to the given x and y coordinates with a single
+     * action.
+     * </pre>
+     *
+     * <pre>
+     * <b>move slow {steps}: {x} {y}</b>
+     * <b>move slow 500: 123 456</b>
+     * Moves the mouse cursor to the given x and y coordinates with the given
+     * amount of steps. If 500 steps are given, then this action will move
+     * the cursor 500 times until it reaches its final coordinates.
+     * </pre>
+     *
+     * <pre>
+     * <b>wait: {time}</b>
+     * <b>wait: 1000</b>
+     * Waits for the given amount of milliseconds before continueing with the
+     * next action.
+     * </pre>
+     *
+     * <pre>
+     * <b>repeatfrom: {actionIndex}</b>
+     * <b>repeatFrom: 1</b>
+     * Restarts the sequence from the given zero based action index.
+     * This is not necessarely equal to the line number in the sequence file.
+     * Comment lines and empty lines are not taken into account.
+     * </pre>
+     *
+     * <pre>
+     * <b>do: {loops}</b>
+     * <b>do: 10</b>
+     * Sets how many times the next repeatfrom action should be executed
+     * before exiting that loop. The action 'do: 10' means that the next
+     * repeatfrom action will be executed 10 times, including the repeated
+     * block, before the loop exits and the next acttion is executed.
+     * The do line has to appear before the repeatfrom line but does need
+     * to appear before the repeated block of actions.
+     * It is not possible to create a loop inside another loop with this.
+     * </pre>
+     *
      * @param sequenceFile
+     *            The file to load the action sequence from. Each action has to be on a separate line. Empty lines and
+     *            lines with content that is not an action are allowed.
      * @return A list containing all actions that were loaded from the given file.
      */
     public List<BotAction> load(File sequenceFile)

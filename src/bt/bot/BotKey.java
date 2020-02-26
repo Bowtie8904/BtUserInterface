@@ -14,6 +14,14 @@ import bt.utils.log.Logger;
  */
 public class BotKey
 {
+    /**
+     * Filled in a static block when this class is first loaded.
+     *
+     * <p>
+     * This list may be edited at will to extend or limit the available keys that the {@link BotActionSetReader} can
+     * parse.
+     * </p>
+     */
     public static List<BotKey> keys;
     private String literal;
     private int code;
@@ -44,6 +52,13 @@ public class BotKey
         }
     }
 
+    /**
+     * Trys to retrieve a {@link BotKey} instance for the given case-insensitive literal.
+     *
+     * @param literal
+     *            The key literal i.e. 'g' or 'f1'.
+     * @return The {@link BotKey} instance or null if no key was found.
+     */
     public static BotKey forLiteral(String literal)
     {
         var opt = keys.stream().filter(k -> k.getLiteral().equalsIgnoreCase(literal)).findAny();

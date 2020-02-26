@@ -18,7 +18,8 @@ public class BotRepeatAction extends BotAction
     @Override
     public void execute(BotActionExecutor executor)
     {
-
+        // no actualy action
+        // this is just used as a type to check for
     }
 
     public int from()

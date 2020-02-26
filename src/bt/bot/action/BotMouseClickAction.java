@@ -11,15 +11,20 @@ import bt.utils.log.Logger;
  */
 public class BotMouseClickAction extends BotAction
 {
+    public static final int RELEASE = 1;
+    public static final int PRESS = 2;
+
     public static final int LEFT = InputEvent.BUTTON1_DOWN_MASK;
     public static final int MIDDLE = InputEvent.BUTTON2_DOWN_MASK;
     public static final int RIGHT = InputEvent.BUTTON3_DOWN_MASK;
 
     private int button;
+    private int pressRelease;
 
-    public BotMouseClickAction(int button)
+    public BotMouseClickAction(int button, int pressRelease)
     {
         this.button = button;
+        this.pressRelease = pressRelease;
     }
 
     /**
@@ -28,9 +33,16 @@ public class BotMouseClickAction extends BotAction
     @Override
     public void execute(BotActionExecutor executor)
     {
-        executor.getRobot().mousePress(this.button);
-        executor.getRobot().mouseRelease(this.button);
-        Logger.global().print("Clicked [" + buttonToString(this.button) + "]");
+        if (this.pressRelease == PRESS)
+        {
+            executor.getRobot().mousePress(this.button);
+            Logger.global().print("Pressed [" + buttonToString(this.button) + "]");
+        }
+        else if (this.pressRelease == RELEASE)
+        {
+            executor.getRobot().mouseRelease(this.button);
+            Logger.global().print("Released [" + buttonToString(this.button) + "]");
+        }
     }
 
     private String buttonToString(int button)
@@ -40,13 +52,13 @@ public class BotMouseClickAction extends BotAction
         switch (button)
         {
             case LEFT:
-                literal = "Left";
+                literal = "Mouse Left";
                 break;
             case MIDDLE:
-                literal = "Middle";
+                literal = "Mouse Middle";
                 break;
             case RIGHT:
-                literal = "Right";
+                literal = "Mouse Right";
                 break;
         }
 

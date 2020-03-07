@@ -14,10 +14,10 @@ import javafx.stage.Stage;
  * @author &#8904
  *
  */
-public abstract class FxView
+public abstract class FxScreen
 {
     protected FXMLLoader loader;
-    protected String viewName;
+    protected String screenName;
     protected Parent root;
     protected Stage stage;
     protected Stage parentStage;
@@ -33,7 +33,7 @@ public abstract class FxView
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
         populateFxmlElements();
-        prepareView();
+        prepareScreen();
 
         return root;
     }
@@ -83,15 +83,15 @@ public abstract class FxView
     {
         if (this.root == null)
         {
-            if (this.viewName == null)
+            if (this.screenName == null)
             {
                 String className = getClass().getSimpleName();
-                this.viewName = className.substring(0, className.contains("View") ? className.lastIndexOf("View") : className.length());
+                this.screenName = className.substring(0, className.contains("Screen") ? className.lastIndexOf("Screen") : className.length());
             }
 
             try
             {
-                this.root = loadFxml("/" + this.viewName.toLowerCase() + ".fxml");
+                this.root = loadFxml("/" + this.screenName.toLowerCase() + ".fxml");
             }
             catch (IOException e)
             {
@@ -184,7 +184,7 @@ public abstract class FxView
         this.stage.show();
     }
 
-    protected abstract void prepareView();
+    protected abstract void prepareScreen();
 
     protected abstract void prepareStage(Stage stage);
 

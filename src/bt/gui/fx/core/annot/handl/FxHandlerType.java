@@ -13,6 +13,11 @@ import javafx.event.EventHandler;
  */
 public abstract class FxHandlerType
 {
+    public FxHandlerType()
+    {
+
+    }
+
     public void setHandlerMethod(Object actionObj, Object handlingObj, String handlerMethodName, boolean withParameters)
     {
         try

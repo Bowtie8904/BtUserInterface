@@ -309,6 +309,7 @@ public class BotActionSetReader
             throw new BotActionFormatException("Invalid bot action format. keyword='" + keyword + "' value='" + value + "'.", e);
         }
 
+        action.setKeyword(keyword);
         return action;
     }
 }

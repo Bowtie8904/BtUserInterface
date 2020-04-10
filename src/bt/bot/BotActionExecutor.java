@@ -46,7 +46,7 @@ public class BotActionExecutor
         return this.robot;
     }
 
-    public void execute(List<BotAction> actions)
+    public void execute(List<? extends BotAction> actions)
     {
         int index = 0;
         BotAction action;

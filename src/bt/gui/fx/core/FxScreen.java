@@ -97,7 +97,7 @@ public abstract class FxScreen
     {
         try
         {
-            Method handlerMethod = obj.getClass().getMethod(handlerMethodName);
+            Method handlerMethod = getClass().getMethod(handlerMethodName);
             handlerType.getConstructor().newInstance().setHandlerMethod(obj, () ->
             {
                 try

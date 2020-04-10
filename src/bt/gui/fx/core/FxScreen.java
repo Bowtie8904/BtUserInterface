@@ -1,7 +1,12 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
+import bt.gui.fx.core.annot.FxmlElement;
+import bt.gui.fx.core.annot.handl.FxHandler;
+import bt.gui.fx.core.annot.handl.FxHandlerType;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;
@@ -69,12 +74,54 @@ public abstract class FxScreen
         }
     }
 
+    protected void populateFxHandlers()
+    {
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandler.class))
+        {
+            FxHandler annot = field.getAnnotation(FxHandler.class);
+            field.setAccessible(true);
+
+            try
+            {
+                populateFxHandler(field.get(this), annot.method(), annot.type());
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
+            }
+        }
+    }
+
+    private <T extends FxHandlerType> void populateFxHandler(Object obj, String handlerMethodName, Class<T> handlerType)
+    {
+        try
+        {
+            Method handlerMethod = obj.getClass().getMethod(handlerMethodName);
+            handlerType.getConstructor().newInstance().setHandlerMethod(obj, () ->
+            {
+                try
+                {
+                    handlerMethod.invoke(this);
+                }
+                catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+                {
+                    Logger.global().print(e);
+                }
+            });
+        }
+        catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        {
+            Logger.global().print(e);
+        }
+    }
+
     public <T> T getElement(Class<T> type, String elementID)
     {
         if (this.loader == null)
         {
             throw new FxException("FXMLLoader has not been constructed yet. Call load() first.");
         }
+
         T element = (T)this.loader.getNamespace().get(elementID);
 
         if (element == null)

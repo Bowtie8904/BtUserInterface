@@ -1,4 +1,4 @@
-package bt.gui.fx.core;
+package bt.gui.fx.core.annot;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -75,4 +75,10 @@ public class BotMouseMoveAction extends BotAction
 
         Logger.global().print("Moved [" + this.x + " | " + this.y + "]");
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getName() + " [x=" + this.x + ", y=" + this.y + ", steps=" + this.steps + "]";
+    }
 }

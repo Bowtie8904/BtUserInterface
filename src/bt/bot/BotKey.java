@@ -110,4 +110,10 @@ public class BotKey
     {
         this.code = code;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.literal;
+    }
 }

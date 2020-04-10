@@ -37,7 +37,12 @@ public class BotKeyAction extends BotAction
                 executor.getRobot().keyRelease(this.key.getCode());
                 Logger.global().print("Released [" + this.key.getLiteral() + "]");
             }
-
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getName() + " [key=" + this.key.toString() + ", pressRelease=" + (this.pressRelease == RELEASE ? "release" : "press") + "]";
     }
 }

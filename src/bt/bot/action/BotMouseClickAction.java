@@ -64,4 +64,11 @@ public class BotMouseClickAction extends BotAction
 
         return literal;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getName() + " [button=" + (this.button == LEFT ? "left" : this.button == RIGHT ? "right" : "middle") +
+               ", pressRelease=" + (this.pressRelease == RELEASE ? "release" : "press") + "]";
+    }
 }

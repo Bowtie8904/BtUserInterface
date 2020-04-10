@@ -20,4 +20,10 @@ public class BotDoAction extends BotAction
     {
         executor.setMaxRuns(this.runs);
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getName() + " [runs=" + this.runs + "]";
+    }
 }

@@ -12,8 +12,8 @@ import bt.bot.action.BotMouseClickAction;
 import bt.bot.action.BotMouseMoveAction;
 import bt.bot.action.BotRepeatAction;
 import bt.bot.action.BotWaitAction;
+import bt.bot.exc.BotActionFormatException;
 import bt.utils.files.FileUtils;
-import bt.utils.log.Logger;
 
 /**
  * @author &#8904
@@ -130,8 +130,9 @@ public class BotActionSetReader
      *            The file to load the action sequence from. Each action has to be on a separate line. Empty lines and
      *            lines with content that is not an action are allowed.
      * @return A list containing all actions that were loaded from the given file.
+     * @throws BotActionFormatException
      */
-    public List<BotAction> load(File sequenceFile)
+    public List<BotAction> load(File sequenceFile) throws BotActionFormatException
     {
         String[] lines = FileUtils.readLines(sequenceFile);
 
@@ -144,168 +145,43 @@ public class BotActionSetReader
 
             if (line.startsWith("repeatfrom:"))
             {
-                try
-                {
-                    int from = Integer.parseInt(line.split(" ")[1]);
-                    currentActions.add(new BotRepeatAction(from));
-                }
-                catch (IndexOutOfBoundsException e)
-                {
-                    currentActions.add(new BotRepeatAction(0));
-                }
-                catch (Exception e1)
-                {
-                    Logger.global().print("Invalid repeatfrom line '" + line + "'.");
-                    Logger.global().print("Example: 'repeatfrom: 1'");
-                    Logger.global().print(e1);
-                }
+                currentActions.add(createBotAction("repeatfrom", line.split(" ")[1]));
             }
             else if (line.startsWith("wait:"))
             {
-                try
-                {
-                    int wait = Integer.parseInt(line.split(" ")[1]);
-                    currentActions.add(new BotWaitAction(wait));
-                }
-                catch (Exception e)
-                {
-                    Logger.global().print("Invalid wait line '" + line + "'.");
-                    Logger.global().print("Example: 'wait: 1000'");
-                    Logger.global().print(e);
-                }
+                currentActions.add(createBotAction("wait", line.split(" ")[1]));
             }
             else if (line.startsWith("do:"))
             {
-                try
-                {
-                    int doRuns = Integer.parseInt(line.split(" ")[1]);
-                    currentActions.add(new BotDoAction(doRuns));
-                }
-                catch (Exception e1)
-                {
-                    Logger.global().print("Invalid do line '" + line + "'.");
-                    Logger.global().print("Example: 'do: 10'");
-                    Logger.global().print(e1);
-                }
+                currentActions.add(createBotAction("do", line.split(" ")[1]));
             }
             else if (line.startsWith("press:"))
             {
-                BotKey key = BotKey.forLiteral(line.replace("press:", "").trim());
-
-                if (key != null)
-                {
-                    currentActions.add(new BotKeyAction(key, BotKeyAction.PRESS));
-                }
-                else
-                {
-                    Logger.global().print("Invalid key line '" + line + "'.");
-                    Logger.global().print("Example: 'press: f'");
-                }
+                currentActions.add(createBotAction("press", line.replace("press:", "").trim()));
             }
             else if (line.startsWith("release:"))
             {
-                BotKey key = BotKey.forLiteral(line.replace("release:", "").trim());
-
-                if (key != null)
-                {
-                    currentActions.add(new BotKeyAction(key, BotKeyAction.RELEASE));
-                }
-                else
-                {
-                    Logger.global().print("Invalid key line '" + line + "'.");
-                    Logger.global().print("Example: 'release: f'");
-                }
+                currentActions.add(createBotAction("release", line.replace("release:", "").trim()));
             }
             else if (line.startsWith("move fast:"))
             {
-                try
-                {
-                    String[] parts = line.replace("move fast:", "").trim().split(" ");
-                    int x = Integer.parseInt(parts[0]);
-                    int y = Integer.parseInt(parts[1]);
-                    currentActions.add(new BotMouseMoveAction(x, y));
-                }
-                catch (Exception e1)
-                {
-                    Logger.global().print("Invalid move line '" + line + "'.");
-                    Logger.global().print("Example: 'move fast: 123 456'");
-                    Logger.global().print(e1);
-                }
+                currentActions.add(createBotAction("move fast", line.replace("move fast:", "").trim()));
             }
             else if (line.startsWith("move slow"))
             {
-                try
-                {
-                    String[] parts = line.split(":");
-                    int x = Integer.parseInt(parts[1].trim().split(" ")[0]);
-                    int y = Integer.parseInt(parts[1].trim().split(" ")[1]);
-
-                    long time = Long.parseLong(parts[0].replace("move slow", "").trim());
-
-                    currentActions.add(new BotMouseMoveAction(x, y, time));
-                }
-                catch (Exception e1)
-                {
-                    Logger.global().print("Invalid move line '" + line + "'.");
-                    Logger.global().print("Example: 'move slow 500: 123 456'");
-                    Logger.global().print(e1);
-                }
+                currentActions.add(createBotAction("move slow", line.replace("move slow", "").trim()));
             }
             else if (line.startsWith("mouse press:"))
             {
-                try
-                {
-                    String button = line.replace("mouse press:", "").split(" ")[1].trim();
-
-                    switch (button)
-                    {
-                        case "left":
-                            currentActions.add(new BotMouseClickAction(BotMouseClickAction.LEFT, BotMouseClickAction.PRESS));
-                            break;
-                        case "middle":
-                            currentActions.add(new BotMouseClickAction(BotMouseClickAction.MIDDLE, BotMouseClickAction.PRESS));
-                            break;
-                        case "right":
-                            currentActions.add(new BotMouseClickAction(BotMouseClickAction.RIGHT, BotMouseClickAction.PRESS));
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Use [left, right, middle]");
-                    }
-                }
-                catch (Exception e1)
-                {
-                    Logger.global().print("Invalid mouse press line '" + line + "'.");
-                    Logger.global().print("Example: 'mouse press: right'");
-                    Logger.global().print(e1);
-                }
+                currentActions.add(createBotAction("mouse press", line.replace("mouse press:", "").trim()));
             }
             else if (line.startsWith("mouse release:"))
             {
-                try
-                {
-                    String button = line.replace("mouse release:", "").split(" ")[1].trim();
-
-                    switch (button)
-                    {
-                        case "left":
-                            currentActions.add(new BotMouseClickAction(BotMouseClickAction.LEFT, BotMouseClickAction.RELEASE));
-                            break;
-                        case "middle":
-                            currentActions.add(new BotMouseClickAction(BotMouseClickAction.MIDDLE, BotMouseClickAction.RELEASE));
-                            break;
-                        case "right":
-                            currentActions.add(new BotMouseClickAction(BotMouseClickAction.RIGHT, BotMouseClickAction.RELEASE));
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Use [left, right, middle]");
-                    }
-                }
-                catch (Exception e1)
-                {
-                    Logger.global().print("Invalid mouse release line '" + line + "'.");
-                    Logger.global().print("Example: 'mouse release: left'");
-                    Logger.global().print(e1);
-                }
+                currentActions.add(createBotAction("mouse release", line.replace("mouse release:", "").trim()));
+            }
+            else if (!line.isEmpty())
+            {
+                throw new IllegalArgumentException("Invalid line: " + line);
             }
         }
 
@@ -314,4 +190,125 @@ public class BotActionSetReader
         return currentActions;
     }
 
+    /**
+     * @throws BotActionFormatException
+     * @see {@link #load(File)}
+     */
+    public BotAction createBotAction(String keyword, String value) throws BotActionFormatException
+    {
+        BotAction action = null;
+        keyword = keyword.toLowerCase().trim();
+        value = value.toLowerCase().trim();
+
+        try
+        {
+            if (keyword.equals("repeatfrom"))
+            {
+                try
+                {
+                    int from = Integer.parseInt(value);
+                    action = new BotRepeatAction(from);
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    action = new BotRepeatAction(0);
+                }
+            }
+            else if (keyword.equals("wait"))
+            {
+                action = new BotWaitAction(Integer.parseInt(value));
+            }
+            else if (keyword.equals("do"))
+            {
+                action = new BotDoAction(Integer.parseInt(value));
+            }
+            else if (keyword.equals("press"))
+            {
+                BotKey key = BotKey.forLiteral(value);
+
+                if (key != null)
+                {
+                    action = new BotKeyAction(key, BotKeyAction.PRESS);
+                }
+                else
+                {
+                    throw new IllegalArgumentException("Invalid key literal: " + value);
+                }
+            }
+            else if (keyword.equals("release"))
+            {
+                BotKey key = BotKey.forLiteral(value);
+
+                if (key != null)
+                {
+                    action = new BotKeyAction(key, BotKeyAction.RELEASE);
+                }
+                else
+                {
+                    throw new IllegalArgumentException("Invalid key literal: " + value);
+                }
+            }
+            else if (keyword.equals("move fast"))
+            {
+                String[] parts = value.split(" ");
+                int x = Integer.parseInt(parts[0]);
+                int y = Integer.parseInt(parts[1]);
+                action = new BotMouseMoveAction(x, y);
+            }
+            else if (keyword.equals("move slow"))
+            {
+                String[] parts = value.split(":");
+                int x = Integer.parseInt(parts[1].trim().split(" ")[0]);
+                int y = Integer.parseInt(parts[1].trim().split(" ")[1]);
+
+                long time = Long.parseLong(parts[0].trim());
+
+                action = new BotMouseMoveAction(x, y, time);
+            }
+            else if (keyword.equals("mouse press"))
+            {
+                switch (value)
+                {
+                    case "left":
+                        action = new BotMouseClickAction(BotMouseClickAction.LEFT, BotMouseClickAction.PRESS);
+                        break;
+                    case "middle":
+                        action = new BotMouseClickAction(BotMouseClickAction.MIDDLE, BotMouseClickAction.PRESS);
+                        break;
+                    case "right":
+                        action = new BotMouseClickAction(BotMouseClickAction.RIGHT, BotMouseClickAction.PRESS);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Use [left, right, middle]");
+                }
+            }
+            else if (keyword.equals("mouse release"))
+            {
+                switch (value)
+                {
+                    case "left":
+                        action = new BotMouseClickAction(BotMouseClickAction.LEFT, BotMouseClickAction.RELEASE);
+                        break;
+                    case "middle":
+                        action = new BotMouseClickAction(BotMouseClickAction.MIDDLE, BotMouseClickAction.RELEASE);
+                        break;
+                    case "right":
+                        action = new BotMouseClickAction(BotMouseClickAction.RIGHT, BotMouseClickAction.RELEASE);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Use [left, right, middle]");
+                }
+            }
+            else
+            {
+                throw new IllegalArgumentException("Invalid keyword: " + keyword);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new BotActionFormatException("Invalid bot action format. keyword='" + keyword + "' value='" + value + "'.", e);
+        }
+
+        return action;
+    }
 }

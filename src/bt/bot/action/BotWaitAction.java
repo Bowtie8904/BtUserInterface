@@ -30,4 +30,10 @@ public class BotWaitAction extends BotAction
             {}
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getName() + " [time=" + this.waitTime + "]";
+    }
 }

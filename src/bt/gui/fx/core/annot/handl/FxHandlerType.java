@@ -52,6 +52,9 @@ public abstract class FxHandlerType
             if (withParameters)
             {
                 handlerMethod = handlingObj.getClass().getMethod(handlerMethodName, getHandlerParameterTypes());
+
+                handlerMethod.setAccessible(true);
+
                 eventhandler = e ->
                 {
                     try
@@ -67,6 +70,9 @@ public abstract class FxHandlerType
             else
             {
                 handlerMethod = handlingObj.getClass().getMethod(handlerMethodName);
+
+                handlerMethod.setAccessible(true);
+
                 eventhandler = e ->
                 {
                     try

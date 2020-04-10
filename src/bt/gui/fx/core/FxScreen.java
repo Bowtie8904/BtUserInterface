@@ -3,6 +3,7 @@ package bt.gui.fx.core;
 import java.io.IOException;
 
 import bt.gui.fx.core.exc.FxException;
+import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;
 import bt.utils.refl.anot.Annotations;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,11 @@ public abstract class FxScreen
     protected double width = -1;
     protected double height = -1;
     protected boolean shouldMaximize;
+
+    public FxScreen()
+    {
+        ScreenInstanceDispatcher.get().dispatch(this);
+    }
 
     private Parent loadFxml(String fxmlFile) throws IOException
     {

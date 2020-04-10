@@ -44,6 +44,7 @@ public abstract class FxScreen
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
         populateFxmlElements();
+        populateFxHandlers();
         prepareScreen();
 
         return root;

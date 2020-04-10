@@ -1,23 +1,23 @@
 package bt.gui.fx.core.annot.handl.type;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
-import javafx.event.ActionEvent;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.input.KeyEvent;
 
 /**
- * Marks a field to be handled by a method with either no arguments or an {@link ActionEvent} parameter.
- * 
- * @see {@link ButtonBase#onActionProperty()}
+ * Marks a field to be handled by a method with either no arguments or an {@link KeyEvent} parameter.
+ *
+ * @see {@link ButtonBase#onKeyTypedProperty()}
  * @author &#8904
  */
-public class FxOnAction extends FxHandlerType
+public class FxOnKeyTyped extends FxHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()
     {
         return new Class[]
         {
-          ActionEvent.class
+          KeyEvent.class
         };
     }
 }

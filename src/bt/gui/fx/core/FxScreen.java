@@ -2,11 +2,9 @@ package bt.gui.fx.core;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.annot.handl.FxHandler;
-import bt.gui.fx.core.annot.handl.FxHandlerType;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;
@@ -84,37 +82,15 @@ public abstract class FxScreen
 
             try
             {
-                populateFxHandler(field.get(this), annot.method(), annot.type());
+                annot.type()
+                     .getConstructor()
+                     .newInstance()
+                     .setHandlerMethod(field.get(this), this, annot.method(), annot.withParameters());
             }
-            catch (IllegalArgumentException | IllegalAccessException e)
+            catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
             {
-                Logger.global().print(e);
+                Logger.global().print(e1);
             }
-        }
-    }
-
-    private <T extends FxHandlerType> void populateFxHandler(Object obj, String handlerMethodName, Class<T> handlerType)
-    {
-        try
-        {
-            Method handlerMethod = getClass().getDeclaredMethod(handlerMethodName);
-            handlerMethod.setAccessible(true);
-
-            handlerType.getConstructor().newInstance().setHandlerMethod(obj, () ->
-            {
-                try
-                {
-                    handlerMethod.invoke(this);
-                }
-                catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-                {
-                    Logger.global().print(e);
-                }
-            });
-        }
-        catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-        {
-            Logger.global().print(e);
         }
     }
 

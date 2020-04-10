@@ -2,29 +2,12 @@ package bt.gui.fx.core.annot.handl.type;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 /**
- * @author &#8904
+ * Marks a field to be handled by a method with either no arguments or an {@link ActionEvent} parameter.
  *
+ * @author &#8904
  */
-public class FxOnAction extends FxHandlerType<ActionEvent>
+public abstract class FxOnAction extends FxHandlerType
 {
-    /**
-     * @see bt.gui.fx.core.annot.handl.FxHandlerType#getHandlerSetMethodName()
-     */
-    @Override
-    protected String getHandlerSetMethodName()
-    {
-        return "setOnAction";
-    }
-
-    /**
-     * @see bt.gui.fx.core.annot.handl.FxHandlerType#createEventHandler(java.lang.Runnable)
-     */
-    @Override
-    protected EventHandler<ActionEvent> createEventHandler(Runnable handler)
-    {
-        return e -> handler.run();
-    }
 }

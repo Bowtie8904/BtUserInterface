@@ -27,4 +27,13 @@ public @interface FxHandler
      * @return
      */
     String method();
+
+    /**
+     * Whether the parameters of the given type should be used.
+     *
+     * If this is set to false then the method may not have any parameters.
+     *
+     * @return
+     */
+    boolean withParameters() default true;
 }

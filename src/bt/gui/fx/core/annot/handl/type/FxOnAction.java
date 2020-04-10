@@ -8,6 +8,6 @@ import javafx.event.ActionEvent;
  *
  * @author &#8904
  */
-public abstract class FxOnAction extends FxHandlerType
+public class FxOnAction extends FxHandlerType
 {
 }

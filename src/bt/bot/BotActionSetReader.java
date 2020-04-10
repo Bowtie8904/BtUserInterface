@@ -310,6 +310,8 @@ public class BotActionSetReader
         }
 
         action.setKeyword(keyword);
+        action.setValue(value);
+
         return action;
     }
 }

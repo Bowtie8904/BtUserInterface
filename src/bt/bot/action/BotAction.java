@@ -9,6 +9,7 @@ import bt.bot.BotActionExecutor;
 public abstract class BotAction
 {
     protected String keyword;
+    protected String value;
 
     /**
      * @return the keyword
@@ -25,6 +26,23 @@ public abstract class BotAction
     public void setKeyword(String keyword)
     {
         this.keyword = keyword;
+    }
+
+    /**
+     * @return the value
+     */
+    public String getValue()
+    {
+        return this.value;
+    }
+
+    /**
+     * @param value
+     *            the value to set
+     */
+    public void setValue(String value)
+    {
+        this.value = value;
     }
 
     public abstract void execute(BotActionExecutor executor);

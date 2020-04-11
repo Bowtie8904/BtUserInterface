@@ -52,7 +52,7 @@ public @interface FxHandler
      *
      * @return
      */
-    String method();
+    String method() default "";
 
     /**
      * Whether the parameters of the given type should be used.

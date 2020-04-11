@@ -91,9 +91,17 @@ public abstract class FxScreen
                     }
                     else
                     {
-                        methodClassObj = annot.methodClass()
-                                              .getConstructor()
-                                              .newInstance();
+                        try
+                        {
+                            methodClassObj = annot.methodClass()
+                                                  .getConstructor()
+                                                  .newInstance();
+                        }
+                        catch (InstantiationException | NoSuchMethodException e1)
+                        {
+                            // class might be final
+                            // this is fine, the method will be static, passing null is fine
+                        }
                     }
 
                     annot.type()

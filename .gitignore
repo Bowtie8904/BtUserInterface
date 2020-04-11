@@ -28,3 +28,4 @@ hs_err_pid*
 *.prefs
 src/test/Test.java
 sequence.txt
+src/test/Macro.java

@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.input.ContextMenuEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.ContextMenuEvent;
  * @see {@link ButtonBase#onContextMenuRequestedProperty()}
  * @author &#8904
  */
-public class FxOnContextMenuRequested extends FxHandlerType
+public class FxOnContextMenuRequested extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.DragEvent;
  * @see {@link Node#onDragExitedProperty()}
  * @author &#8904
  */
-public class FxOnDragExited extends FxHandlerType
+public class FxOnDragExited extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

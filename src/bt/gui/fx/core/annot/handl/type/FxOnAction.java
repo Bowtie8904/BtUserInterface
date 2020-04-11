@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ButtonBase;
 
@@ -10,7 +10,7 @@ import javafx.scene.control.ButtonBase;
  * @see {@link ButtonBase#onActionProperty()}
  * @author &#8904
  */
-public class FxOnAction extends FxHandlerType
+public class FxOnAction extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

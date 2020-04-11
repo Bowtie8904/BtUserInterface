@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.Node;
 import javafx.scene.input.SwipeEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.SwipeEvent;
  * @see {@link Node#onSwipeUpProperty()}
  * @author &#8904
  */
-public class FxOnSwipeUp extends FxHandlerType
+public class FxOnSwipeUp extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

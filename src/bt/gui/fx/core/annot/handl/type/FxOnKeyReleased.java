@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.input.KeyEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
  * @see {@link ButtonBase#onKeyReleasedProperty()}
  * @author &#8904
  */
-public class FxOnKeyReleased extends FxHandlerType
+public class FxOnKeyReleased extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

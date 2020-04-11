@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.Node;
 import javafx.scene.input.RotateEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.RotateEvent;
  * @see {@link Node#onRotateProperty()}
  * @author &#8904
  */
-public class FxOnRotate extends FxHandlerType
+public class FxOnRotate extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

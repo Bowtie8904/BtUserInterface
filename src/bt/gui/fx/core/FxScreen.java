@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import bt.gui.fx.core.annot.FxmlElement;
-import bt.gui.fx.core.annot.handl.FxHandler;
-import bt.gui.fx.core.annot.handl.FxHandlers;
+import bt.gui.fx.core.annot.handl.FxEventHandler;
+import bt.gui.fx.core.annot.handl.FxEventHandlers;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;
@@ -74,12 +74,12 @@ public abstract class FxScreen
 
     protected void populateFxHandlers()
     {
-        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandler.class, FxHandlers.class))
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxEventHandler.class, FxEventHandlers.class))
         {
-            FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
+            FxEventHandler[] annotations = field.getAnnotationsByType(FxEventHandler.class);
             field.setAccessible(true);
 
-            for (FxHandler annot : annotations)
+            for (FxEventHandler annot : annotations)
             {
                 try
                 {

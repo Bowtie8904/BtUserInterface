@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.Node;
 import javafx.scene.input.TouchEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.TouchEvent;
  * @see {@link Node#onTouchPressedProperty()}
  * @author &#8904
  */
-public class FxOnTouchPressed extends FxHandlerType
+public class FxOnTouchPressed extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

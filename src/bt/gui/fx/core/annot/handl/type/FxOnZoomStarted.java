@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.Node;
 import javafx.scene.input.ZoomEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.ZoomEvent;
  * @see {@link Node#onZoomStartedProperty()}
  * @author &#8904
  */
-public class FxOnZoomStarted extends FxHandlerType
+public class FxOnZoomStarted extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

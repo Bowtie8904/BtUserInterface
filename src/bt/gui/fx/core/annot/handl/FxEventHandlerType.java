@@ -11,7 +11,7 @@ import javafx.event.EventHandler;
  * @author &#8904
  *
  */
-public abstract class FxHandlerType
+public abstract class FxEventHandlerType
 {
     /**
      * Attempts to add a handler based on the given parameters.

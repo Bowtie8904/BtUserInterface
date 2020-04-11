@@ -1,6 +1,6 @@
 package bt.gui.fx.core.annot.handl.type;
 
-import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.gui.fx.core.annot.handl.FxEventHandlerType;
 import javafx.scene.Node;
 import javafx.scene.input.ScrollEvent;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.ScrollEvent;
  * @see {@link Node#onScrollFinishedProperty()}
  * @author &#8904
  */
-public class FxOnScrollFinished extends FxHandlerType
+public class FxOnScrollFinished extends FxEventHandlerType
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()

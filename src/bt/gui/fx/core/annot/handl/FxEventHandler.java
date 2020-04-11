@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Repeatable(value = FxHandlers.class)
-public @interface FxHandler
+@Repeatable(value = FxEventHandlers.class)
+public @interface FxEventHandler
 {
     /**
      * The class that contains the method to call.
@@ -28,7 +28,7 @@ public @interface FxHandler
      *
      * @return
      */
-    Class<? extends FxHandlerType> type();
+    Class<? extends FxEventHandlerType> type();
 
     /**
      * The method that should be called on action.

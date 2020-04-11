@@ -74,7 +74,7 @@ public abstract class FxScreen
 
     protected void populateFxHandlers()
     {
-        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandlers.class, FxHandlers.class))
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandler.class, FxHandlers.class))
         {
             FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
             field.setAccessible(true);

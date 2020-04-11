@@ -12,7 +12,7 @@ import javafx.beans.value.ChangeListener;
  * @author &#8904
  *
  */
-public abstract class FxChangeHandlerType extends FxHandlerType
+public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
 {
     @Override
     protected Class<?>[] getSetMethodParameterTypes()
@@ -24,9 +24,9 @@ public abstract class FxChangeHandlerType extends FxHandlerType
     }
 
     @Override
-    protected Object[] createSetMethodParameters(Object fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
-        ChangeListener changeListener = getDefaultListener(fieldObj);
+        ChangeListener<K> changeListener = getDefaultListener(fieldObj);
         Method handlerMethod;
 
         if (changeListener == null)
@@ -125,7 +125,7 @@ public abstract class FxChangeHandlerType extends FxHandlerType
         };
     }
 
-    protected ChangeListener getDefaultListener(Object fieldObj)
+    protected ChangeListener<K> getDefaultListener(T fieldObj)
     {
         return null;
     }

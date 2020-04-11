@@ -6,13 +6,15 @@ import java.lang.reflect.Method;
 import bt.gui.fx.core.annot.handl.FxHandlerType;
 import bt.utils.collections.array.Array;
 import bt.utils.log.Logger;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 
 /**
  * @author &#8904
+ * @param <T>
  *
  */
-public abstract class FxEventHandlerType extends FxHandlerType
+public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerType<T>
 {
     @Override
     protected Class<?>[] getSetMethodParameterTypes()
@@ -24,9 +26,9 @@ public abstract class FxEventHandlerType extends FxHandlerType
     }
 
     @Override
-    protected Object[] createSetMethodParameters(Object fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
-        EventHandler eventHandler = getDefaultHandler(fieldObj);
+        EventHandler<K> eventHandler = getDefaultHandler(fieldObj);
         Method handlerMethod;
 
         if (eventHandler == null)
@@ -125,7 +127,7 @@ public abstract class FxEventHandlerType extends FxHandlerType
         };
     }
 
-    protected EventHandler getDefaultHandler(Object fieldObj)
+    protected EventHandler<K> getDefaultHandler(T fieldObj)
     {
         return null;
     }

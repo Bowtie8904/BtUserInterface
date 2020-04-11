@@ -11,7 +11,7 @@ import javafx.event.EventHandler;
  * @author &#8904
  *
  */
-public abstract class FxHandlerType
+public abstract class FxHandlerType<T>
 {
     /**
      * Attempts to add a handler based on the given parameters.
@@ -26,7 +26,7 @@ public abstract class FxHandlerType
      *            Indicates whether the handling method will use the defined parameters of the specific handler type.
      *            The parameters are defined by {@link #getHandlerParameterTypes()} in the subclasses.
      */
-    public void setHandlerMethod(Object fieldObj, Object actionObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    public void setHandlerMethod(T fieldObj, Object actionObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
         try
         {
@@ -64,7 +64,7 @@ public abstract class FxHandlerType
      *            The parameters are defined by {@link #getHandlerParameterTypes()} in the subclasses.
      * @return
      */
-    protected abstract Object[] createSetMethodParameters(Object fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField);
+    protected abstract Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField);
 
     /**
      * Gets the name of the handler set method (i.e. setOnAction).

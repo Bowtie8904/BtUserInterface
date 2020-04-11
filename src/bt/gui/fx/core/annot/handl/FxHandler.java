@@ -1,4 +1,4 @@
-package bt.gui.fx.core.annot.handl.evnt;
+package bt.gui.fx.core.annot.handl;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -13,9 +13,17 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Repeatable(value = FxEventHandlers.class)
-public @interface FxEventHandler
+@Repeatable(value = FxHandlers.class)
+public @interface FxHandler
 {
+    /**
+     * The name of a property getter method that should be used to optain the property which will then have the handler
+     * added to it.
+     *
+     * @return
+     */
+    String property() default "";
+
     /**
      * The class that contains the method to call.
      *
@@ -28,7 +36,7 @@ public @interface FxEventHandler
      *
      * @return
      */
-    Class<? extends FxEventHandlerType> type();
+    Class<? extends FxHandlerType> type();
 
     /**
      * The method that should be called on action.

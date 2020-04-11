@@ -1,31 +1,31 @@
-package bt.gui.fx.core.annot.handl.evnt;
+package bt.gui.fx.core.annot.handl.chang;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
 import bt.utils.log.Logger;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
 
 /**
  * @author &#8904
  *
  */
-public abstract class FxEventHandlerType extends FxHandlerType
+public abstract class FxChangeHandlerType extends FxHandlerType
 {
     @Override
     protected Class<?>[] getSetMethodParameterTypes()
     {
         return new Class[]
         {
-          EventHandler.class
+          ChangeListener.class
         };
     }
 
     @Override
     protected Object[] createSetMethodParameters(Object handlingObj, String handlerMethodName, boolean withParameters)
     {
-        EventHandler eventhandler = null;
+        ChangeListener eventhandler = null;
         Method handlerMethod;
 
         try
@@ -36,11 +36,11 @@ public abstract class FxEventHandlerType extends FxHandlerType
 
                 handlerMethod.setAccessible(true);
 
-                eventhandler = e ->
+                eventhandler = (obs, oldVal, newVal) ->
                 {
                     try
                     {
-                        handlerMethod.invoke(handlingObj, e);
+                        handlerMethod.invoke(handlingObj, obs, oldVal, newVal);
                     }
                     catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                     {
@@ -54,7 +54,7 @@ public abstract class FxEventHandlerType extends FxHandlerType
 
                 handlerMethod.setAccessible(true);
 
-                eventhandler = e ->
+                eventhandler = (obs, oldVal, newVal) ->
                 {
                     try
                     {
@@ -81,14 +81,7 @@ public abstract class FxEventHandlerType extends FxHandlerType
     @Override
     protected String getHandlerSetMethodName()
     {
-        String className = getClass().getSimpleName();
-
-        if (className.startsWith("Fx"))
-        {
-            className = className.replaceFirst("Fx", "set");
-        }
-
-        return className;
+        return "addListener";
     }
 
     @Override

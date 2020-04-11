@@ -2,10 +2,11 @@ package bt.gui.fx.core;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.FxmlElement;
-import bt.gui.fx.core.annot.handl.evnt.FxEventHandler;
-import bt.gui.fx.core.annot.handl.evnt.FxEventHandlers;
+import bt.gui.fx.core.annot.handl.FxHandler;
+import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;
@@ -74,12 +75,12 @@ public abstract class FxScreen
 
     protected void populateFxHandlers()
     {
-        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxEventHandler.class, FxEventHandlers.class))
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandler.class, FxHandlers.class))
         {
-            FxEventHandler[] annotations = field.getAnnotationsByType(FxEventHandler.class);
+            FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
             field.setAccessible(true);
 
-            for (FxEventHandler annot : annotations)
+            for (FxHandler annot : annotations)
             {
                 try
                 {
@@ -104,10 +105,25 @@ public abstract class FxScreen
                         }
                     }
 
+                    Object actionObj = null;
+
+                    if (annot.property().isEmpty())
+                    {
+                        actionObj = field.get(this);
+                    }
+                    else
+                    {
+                        // maybe the handler should not be added to the field directly but rather to a property of it
+                        Object fieldObj = field.get(this);
+                        Method propertyGetter = fieldObj.getClass().getMethod(annot.property());
+                        propertyGetter.setAccessible(true);
+                        actionObj = propertyGetter.invoke(fieldObj);
+                    }
+
                     annot.type()
                          .getConstructor()
                          .newInstance()
-                         .setHandlerMethod(field.get(this), methodClassObj, annot.method(), annot.withParameters());
+                         .setHandlerMethod(actionObj, methodClassObj, annot.method(), annot.withParameters());
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
                 {

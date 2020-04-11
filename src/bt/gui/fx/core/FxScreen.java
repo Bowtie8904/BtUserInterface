@@ -75,19 +75,22 @@ public abstract class FxScreen
     {
         for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandler.class))
         {
-            FxHandler annot = field.getAnnotation(FxHandler.class);
+            FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
             field.setAccessible(true);
 
-            try
+            for (FxHandler annot : annotations)
             {
-                annot.type()
-                     .getConstructor()
-                     .newInstance()
-                     .setHandlerMethod(field.get(this), this, annot.method(), annot.withParameters());
-            }
-            catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
-            {
-                Logger.global().print(e1);
+                try
+                {
+                    annot.type()
+                         .getConstructor()
+                         .newInstance()
+                         .setHandlerMethod(field.get(this), this, annot.method(), annot.withParameters());
+                }
+                catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
+                {
+                    Logger.global().print(e1);
+                }
             }
         }
     }

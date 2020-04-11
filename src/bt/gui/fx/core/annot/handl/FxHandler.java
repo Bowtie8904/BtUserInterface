@@ -1,17 +1,19 @@
 package bt.gui.fx.core.annot.handl;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a field as an JavaFX element that is configured in the views fxml file.
+ * Marks a field with information to automatically assign a method for specific event handling.
  *
  * @author &#8904
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Repeatable(value = FxHandlers.class)
 public @interface FxHandler
 {
     /**

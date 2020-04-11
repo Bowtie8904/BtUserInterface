@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import bt.gui.fx.core.annot.FxmlElement;
-import bt.gui.fx.core.annot.handl.FxEventHandler;
-import bt.gui.fx.core.annot.handl.FxEventHandlers;
+import bt.gui.fx.core.annot.handl.evnt.FxEventHandler;
+import bt.gui.fx.core.annot.handl.evnt.FxEventHandlers;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;

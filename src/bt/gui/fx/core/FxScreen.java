@@ -83,10 +83,23 @@ public abstract class FxScreen
             {
                 try
                 {
+                    Object methodClassObj = null;
+
+                    if (annot.methodClass().equals(void.class))
+                    {
+                        methodClassObj = this;
+                    }
+                    else
+                    {
+                        methodClassObj = annot.methodClass()
+                                              .getConstructor()
+                                              .newInstance();
+                    }
+
                     annot.type()
                          .getConstructor()
                          .newInstance()
-                         .setHandlerMethod(field.get(this), this, annot.method(), annot.withParameters());
+                         .setHandlerMethod(field.get(this), methodClassObj, annot.method(), annot.withParameters());
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
                 {

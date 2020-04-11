@@ -17,6 +17,13 @@ import java.lang.annotation.Target;
 public @interface FxHandler
 {
     /**
+     * The class that contains the method to call.
+     *
+     * @return
+     */
+    Class<?> methodClass() default void.class;
+
+    /**
      * The type of the handler.
      *
      * @return

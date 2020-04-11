@@ -17,6 +17,15 @@ import java.lang.annotation.Target;
 public @interface FxHandler
 {
     /**
+     * Whether the field should be passed to the handler method.
+     *
+     * The field will be the last parameter, if multiple parameters will be passed.
+     *
+     * @return
+     */
+    boolean passField() default false;
+
+    /**
      * The name of a property getter method that should be used to optain the property which will then have the handler
      * added to it.
      *

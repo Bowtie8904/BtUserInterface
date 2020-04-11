@@ -123,7 +123,7 @@ public abstract class FxScreen
                     annot.type()
                          .getConstructor()
                          .newInstance()
-                         .setHandlerMethod(actionObj, methodClassObj, annot.method(), annot.withParameters());
+                         .setHandlerMethod(field.get(this), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField());
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
                 {

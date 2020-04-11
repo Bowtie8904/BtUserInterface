@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.utils.collections.array.Array;
 import bt.utils.log.Logger;
 import javafx.beans.value.ChangeListener;
 
@@ -23,48 +24,91 @@ public abstract class FxChangeHandlerType extends FxHandlerType
     }
 
     @Override
-    protected Object[] createSetMethodParameters(Object handlingObj, String handlerMethodName, boolean withParameters)
+    protected Object[] createSetMethodParameters(Object fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
-        ChangeListener eventhandler = null;
+        ChangeListener changeListener = null;
         Method handlerMethod;
 
         try
         {
             if (withParameters)
             {
-                handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, getHandlerParameterTypes());
-
-                handlerMethod.setAccessible(true);
-
-                eventhandler = (obs, oldVal, newVal) ->
+                if (passField)
                 {
-                    try
+                    Class<?>[] params = Array.push(getHandlerParameterTypes(), fieldObj.getClass());
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, params);
+
+                    handlerMethod.setAccessible(true);
+
+                    changeListener = (obs, o, n) ->
                     {
-                        handlerMethod.invoke(handlingObj, obs, oldVal, newVal);
-                    }
-                    catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj, obs, o, n, fieldObj);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
+                else
+                {
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, getHandlerParameterTypes());
+
+                    handlerMethod.setAccessible(true);
+
+                    changeListener = (obs, o, n) ->
                     {
-                        Logger.global().print(e1);
-                    }
-                };
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj, obs, o, n);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
             }
             else
             {
-                handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName);
-
-                handlerMethod.setAccessible(true);
-
-                eventhandler = (obs, oldVal, newVal) ->
+                if (passField)
                 {
-                    try
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, fieldObj.getClass());
+
+                    handlerMethod.setAccessible(true);
+
+                    changeListener = (obs, o, n) ->
                     {
-                        handlerMethod.invoke(handlingObj);
-                    }
-                    catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj, fieldObj);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
+                else
+                {
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName);
+
+                    handlerMethod.setAccessible(true);
+
+                    changeListener = (obs, o, n) ->
                     {
-                        Logger.global().print(e1);
-                    }
-                };
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
             }
         }
         catch (NoSuchMethodException | SecurityException | IllegalArgumentException e)
@@ -74,7 +118,7 @@ public abstract class FxChangeHandlerType extends FxHandlerType
 
         return new Object[]
         {
-          eventhandler
+          changeListener
         };
     }
 

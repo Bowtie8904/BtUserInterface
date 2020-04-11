@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.utils.collections.array.Array;
 import bt.utils.log.Logger;
 import javafx.event.EventHandler;
 
@@ -23,7 +24,7 @@ public abstract class FxEventHandlerType extends FxHandlerType
     }
 
     @Override
-    protected Object[] createSetMethodParameters(Object handlingObj, String handlerMethodName, boolean withParameters)
+    protected Object[] createSetMethodParameters(Object fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
         EventHandler eventhandler = null;
         Method handlerMethod;
@@ -32,39 +33,82 @@ public abstract class FxEventHandlerType extends FxHandlerType
         {
             if (withParameters)
             {
-                handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, getHandlerParameterTypes());
-
-                handlerMethod.setAccessible(true);
-
-                eventhandler = e ->
+                if (passField)
                 {
-                    try
+                    Class<?>[] params = Array.push(getHandlerParameterTypes(), fieldObj.getClass());
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, params);
+
+                    handlerMethod.setAccessible(true);
+
+                    eventhandler = e ->
                     {
-                        handlerMethod.invoke(handlingObj, e);
-                    }
-                    catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj, e, fieldObj);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
+                else
+                {
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, getHandlerParameterTypes());
+
+                    handlerMethod.setAccessible(true);
+
+                    eventhandler = e ->
                     {
-                        Logger.global().print(e1);
-                    }
-                };
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj, e);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
             }
             else
             {
-                handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName);
-
-                handlerMethod.setAccessible(true);
-
-                eventhandler = e ->
+                if (passField)
                 {
-                    try
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, fieldObj.getClass());
+
+                    handlerMethod.setAccessible(true);
+
+                    eventhandler = e ->
                     {
-                        handlerMethod.invoke(handlingObj);
-                    }
-                    catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj, fieldObj);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
+                else
+                {
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName);
+
+                    handlerMethod.setAccessible(true);
+
+                    eventhandler = e ->
                     {
-                        Logger.global().print(e1);
-                    }
-                };
+                        try
+                        {
+                            handlerMethod.invoke(handlingObj);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+                        {
+                            Logger.global().print(e1);
+                        }
+                    };
+                }
             }
         }
         catch (NoSuchMethodException | SecurityException | IllegalArgumentException e)

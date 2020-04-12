@@ -191,6 +191,11 @@ public abstract class FxScreen implements Killable
         return this.root;
     }
 
+    public Parent getRoot()
+    {
+        return this.root;
+    }
+
     public double getWidth()
     {
         return this.width;
@@ -296,16 +301,9 @@ public abstract class FxScreen implements Killable
 
     }
 
-    public void ignoreCloseRequest(boolean ignore)
+    public void ignoreCloseRequest()
     {
-        if (ignore)
-        {
-            Null.checkRun(this.stage, () -> this.stage.setOnCloseRequest(e -> e.consume()));
-        }
-        else
-        {
-            Null.checkRun(this.stage, () -> this.stage.setOnCloseRequest(e -> kill()));
-        }
+        Null.checkRun(this.stage, () -> this.stage.setOnCloseRequest(e -> e.consume()));
     }
 
     @Override
@@ -316,7 +314,7 @@ public abstract class FxScreen implements Killable
     }
 
     /**
-     * Ivoked during {@link #load()}.
+     * Invoked during {@link #load()}.
      *
      * <p>
      * First prepare method to be called.
@@ -325,7 +323,7 @@ public abstract class FxScreen implements Killable
     protected abstract void prepareScreen();
 
     /**
-     * Ivoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
+     * Invoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
      *
      * <p>
      * Second prepare method to be called.
@@ -334,7 +332,7 @@ public abstract class FxScreen implements Killable
     protected abstract void prepareStage(Stage stage);
 
     /**
-     * Ivoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
+     * Invoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
      *
      * <p>
      * Third prepare method to be called.

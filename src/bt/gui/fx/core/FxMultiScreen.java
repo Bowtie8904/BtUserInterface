@@ -2,6 +2,7 @@ package bt.gui.fx.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 
 import bt.gui.fx.core.exc.FxException;
@@ -21,6 +22,7 @@ public abstract class FxMultiScreen extends FxScreen
     public FxMultiScreen()
     {
         super();
+        this.screens = new HashMap<>();
         loadScreens();
     }
 

@@ -10,14 +10,14 @@ import javafx.scene.control.TextInputControl;
  * @author &#8904
  *
  */
-public class FxTextMatch extends FxStringChange<TextInputControl, String>
+public class FxTextMustMatch extends FxStringChange<TextInputControl, String>
 {
     /**
-     * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getDefaultListener(java.lang.Object, java.lang.Object,
+     * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getSpecialListener(java.lang.Object, java.lang.Object,
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getDefaultListener(TextInputControl fieldObj, Object handlingObj, String regex)
+    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String regex, boolean withParameters, boolean passField)
     {
         if (regex.isEmpty())
         {

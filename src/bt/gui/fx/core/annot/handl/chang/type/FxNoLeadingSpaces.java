@@ -10,11 +10,11 @@ import javafx.scene.control.TextInputControl;
 public class FxNoLeadingSpaces extends FxStringChange<TextInputControl, String>
 {
     /**
-     * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getDefaultListener(java.lang.Object, java.lang.Object,
+     * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getSpecialListener(java.lang.Object, java.lang.Object,
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getDefaultListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName)
+    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
         return (obs, ol, ne) ->
         {

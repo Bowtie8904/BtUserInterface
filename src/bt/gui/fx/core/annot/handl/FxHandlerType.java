@@ -16,8 +16,11 @@ public abstract class FxHandlerType<T>
     /**
      * Attempts to add a handler based on the given parameters.
      *
+     * @param fieldObj
+     *            The object of the field for which a handler is created. (i. e. a TextField)
      * @param actionObj
-     *            The object that will receive a handler.
+     *            The object that will receive a handler. (i. e. The textProperty of a TextField or the TextField
+     *            itself)
      * @param handlingObj
      *            The object that contains the handling method.
      * @param handlerMethodName

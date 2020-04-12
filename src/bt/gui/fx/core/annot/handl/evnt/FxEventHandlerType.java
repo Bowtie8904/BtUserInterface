@@ -28,7 +28,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
     @Override
     protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
-        EventHandler<K> eventHandler = getDefaultHandler(fieldObj);
+        EventHandler<K> eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName);
         Method handlerMethod;
 
         if (eventHandler == null)
@@ -127,7 +127,23 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
         };
     }
 
-    protected EventHandler<K> getDefaultHandler(T fieldObj)
+    /**
+     * Provides the option to specify a handler that will be preferred over the normal way of constructing one.
+     *
+     * <p>
+     * An implementation can decide if and which parameters will be utilized.
+     * </p>
+     *
+     * @param fieldObj
+     *            The value of the field that the handler is registered for.
+     * @param handlingObj
+     *            The object of the class that contains the handling method.
+     * @param handlerMethodName
+     *            The name of the handling method. Will never be null, but may be empty.
+     * @return A fully usable EventHandler or null if no handler will be provided and one should be constructed
+     *         normally.
+     */
+    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodNam)
     {
         return null;
     }

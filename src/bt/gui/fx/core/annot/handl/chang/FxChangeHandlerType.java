@@ -26,7 +26,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
     @Override
     protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
     {
-        ChangeListener<K> changeListener = getDefaultListener(fieldObj);
+        ChangeListener<K> changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName);
         Method handlerMethod;
 
         if (changeListener == null)
@@ -125,7 +125,23 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
         };
     }
 
-    protected ChangeListener<K> getDefaultListener(T fieldObj)
+    /**
+     * Provides the option to specify a listener that will be preferred over the normal way of constructing one.
+     *
+     * <p>
+     * An implementation can decide if and which parameters will be utilized.
+     * </p>
+     *
+     * @param fieldObj
+     *            The value of the field that the listener is registered for.
+     * @param handlingObj
+     *            The object of the class that contains the handling method.
+     * @param handlerMethodName
+     *            The name of the handling method. Will never be null, but may be empty.
+     * @return A fully usable ChangeListener or null if no listener will be provided and one should be constructed
+     *         normally.
+     */
+    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName)
     {
         return null;
     }

@@ -9,18 +9,22 @@ import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
+import bt.runtime.Killable;
 import bt.utils.log.Logger;
+import bt.utils.nulls.Null;
 import bt.utils.refl.anot.Annotations;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
  * @author &#8904
  *
  */
-public abstract class FxScreen
+public abstract class FxScreen implements Killable
 {
     protected FXMLLoader loader;
     protected String screenName;
@@ -110,11 +114,22 @@ public abstract class FxScreen
                     if (annot.property().isEmpty())
                     {
                         actionObj = field.get(this);
+
+                        if (actionObj == null)
+                        {
+                            throw new FxException("Attempting to register a handler to a null value.");
+                        }
                     }
                     else
                     {
                         // maybe the handler should not be added to the field directly but rather to a property of it
                         Object fieldObj = field.get(this);
+
+                        if (fieldObj == null)
+                        {
+                            throw new FxException("Attempting to register a handler to a null value.");
+                        }
+
                         Method propertyGetter = fieldObj.getClass().getMethod(annot.property());
                         propertyGetter.setAccessible(true);
                         actionObj = propertyGetter.invoke(fieldObj);
@@ -125,7 +140,7 @@ public abstract class FxScreen
                          .newInstance()
                          .setHandlerMethod(field.get(this), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField());
                 }
-                catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1)
+                catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
                     Logger.global().print(e1);
                 }
@@ -258,9 +273,72 @@ public abstract class FxScreen
         this.stage.show();
     }
 
+    public void setIcon(String iconPath)
+    {
+        Null.checkRun(this.stage, () -> this.stage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath))));
+    }
+
+    public void setModal()
+    {
+        if (this.stage != null)
+        {
+            this.stage.initModality(Modality.APPLICATION_MODAL);
+
+            this.stage.focusedProperty().addListener(e ->
+            {
+                if (this.stage.isFocused())
+                {
+                    Null.checkRun(this.parentStage, () -> this.parentStage.toFront());
+                    this.stage.toFront();
+                }
+            });
+        }
+
+    }
+
+    public void ignoreCloseRequest(boolean ignore)
+    {
+        if (ignore)
+        {
+            Null.checkRun(this.stage, () -> this.stage.setOnCloseRequest(e -> e.consume()));
+        }
+        else
+        {
+            Null.checkRun(this.stage, () -> this.stage.setOnCloseRequest(e -> kill()));
+        }
+    }
+
+    @Override
+    public void kill()
+    {
+        Null.checkRun(this.stage, () -> this.stage.close());
+        Null.checkRun(this.parentStage, () -> this.parentStage.requestFocus());
+    }
+
+    /**
+     * Ivoked during {@link #load()}.
+     *
+     * <p>
+     * First prepare method to be called.
+     * </p>
+     */
     protected abstract void prepareScreen();
 
+    /**
+     * Ivoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
+     *
+     * <p>
+     * Second prepare method to be called.
+     * </p>
+     */
     protected abstract void prepareStage(Stage stage);
 
+    /**
+     * Ivoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
+     *
+     * <p>
+     * Third prepare method to be called.
+     * </p>
+     */
     protected abstract void prepareScene(Scene scene);
 }

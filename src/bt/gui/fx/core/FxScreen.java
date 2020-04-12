@@ -139,7 +139,7 @@ public abstract class FxScreen implements Killable
                     annot.type()
                          .getConstructor()
                          .newInstance()
-                         .setHandlerMethod(field.get(this), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField());
+                         .setHandlerMethod(field.get(this), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value());
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {

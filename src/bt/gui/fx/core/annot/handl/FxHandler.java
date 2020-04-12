@@ -62,4 +62,13 @@ public @interface FxHandler
      * @return
      */
     boolean withParameters() default true;
+
+    /**
+     * Space for additional values of specific handlers.
+     *
+     * Can be defined differently for each handler type.
+     *
+     * @return
+     */
+    String value() default "";
 }

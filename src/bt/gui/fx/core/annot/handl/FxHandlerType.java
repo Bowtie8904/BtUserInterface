@@ -29,13 +29,13 @@ public abstract class FxHandlerType<T>
      *            Indicates whether the handling method will use the defined parameters of the specific handler type.
      *            The parameters are defined by {@link #getHandlerParameterTypes()} in the subclasses.
      */
-    public void setHandlerMethod(T fieldObj, Object actionObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    public void setHandlerMethod(T fieldObj, Object actionObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
         try
         {
             Method handlerSetMethod = actionObj.getClass().getMethod(getHandlerSetMethodName(), getSetMethodParameterTypes());
             handlerSetMethod.setAccessible(true);
-            handlerSetMethod.invoke(actionObj, createSetMethodParameters(fieldObj, handlingObj, handlerMethodName, withParameters, passField));
+            handlerSetMethod.invoke(actionObj, createSetMethodParameters(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue));
         }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
@@ -67,7 +67,7 @@ public abstract class FxHandlerType<T>
      *            The parameters are defined by {@link #getHandlerParameterTypes()} in the subclasses.
      * @return
      */
-    protected abstract Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField);
+    protected abstract Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue);
 
     /**
      * Gets the name of the handler set method (i.e. setOnAction).

@@ -10,7 +10,7 @@ import javafx.scene.control.TextInputControl;
  * @author &#8904
  *
  */
-public class FxTextMustMatch extends FxStringChange<TextInputControl, String>
+public class FxOnTextMatch extends FxStringChange<TextInputControl, String>
 {
     /**
      * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getSpecialListener(java.lang.Object, java.lang.Object,
@@ -24,13 +24,14 @@ public class FxTextMustMatch extends FxStringChange<TextInputControl, String>
             throw new FxException("Missing regular expression in 'value' field of FxHandler annotation.");
         }
 
+        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, regex);
         Pattern regexPattern = Pattern.compile(regex);
 
         return (obs, ol, ne) ->
         {
-            if (!regexPattern.matcher(ne).matches())
+            if (regexPattern.matcher(ne).matches())
             {
-                fieldObj.setText(ol);
+                defaultListener.changed(obs, ol, ne);
             }
         };
     }

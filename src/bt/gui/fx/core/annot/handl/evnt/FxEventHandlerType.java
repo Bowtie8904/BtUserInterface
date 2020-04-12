@@ -26,13 +26,13 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
     }
 
     @Override
-    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
-        EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField);
+        EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
 
         if (eventHandler == null)
         {
-            eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField);
+            eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
         }
 
         return new Object[]
@@ -57,12 +57,12 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
      * @return A fully usable EventHandler or null if no handler will be provided and one should be constructed
      *         normally.
      */
-    protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
         return null;
     }
 
-    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
         EventHandler<K> eventHandler = null;
         Method handlerMethod;

@@ -24,13 +24,13 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
     }
 
     @Override
-    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
-        ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField);
+        ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
 
         if (changeListener == null)
         {
-            changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField);
+            changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
         }
 
         return new Object[]
@@ -55,12 +55,12 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
      * @return A fully usable ChangeListener or null if no listener will be provided and one should be constructed
      *         normally.
      */
-    protected ChangeListener<K> getSpecialListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected ChangeListener<K> getSpecialListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
         return null;
     }
 
-    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
         ChangeListener<K> changeListener = null;
 

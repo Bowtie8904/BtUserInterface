@@ -14,7 +14,7 @@ public class FxLimitLength extends FxStringChange<BtTextField, String>
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getSpecialListener(BtTextField fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected ChangeListener<String> getSpecialListener(BtTextField fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
         return (obs, ol, ne) ->
         {

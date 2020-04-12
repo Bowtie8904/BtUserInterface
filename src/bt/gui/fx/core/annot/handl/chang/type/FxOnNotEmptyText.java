@@ -7,16 +7,16 @@ import javafx.scene.control.TextInputControl;
  * @author &#8904
  *
  */
-public class FxOnNonEmptyText extends FxStringChange<TextInputControl, String>
+public class FxOnNotEmptyText extends FxStringChange<TextInputControl, String>
 {
     /**
      * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getSpecialListener(java.lang.Object, java.lang.Object,
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField)
+    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
     {
-        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField);
+        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
 
         return (obs, ol, ne) ->
         {

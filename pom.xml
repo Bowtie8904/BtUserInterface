@@ -67,5 +67,10 @@
 			<artifactId>system-hook</artifactId>
 			<version>3.5</version>
 		</dependency>
+		<dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>9.0.9</version>
+        </dependency>
 	</dependencies>
 </project>

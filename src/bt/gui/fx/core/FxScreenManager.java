@@ -96,10 +96,7 @@ public abstract class FxScreenManager extends Application
 
         final FxScreen finalScreen = screen;
 
-        if (stage.equals(this.primaryStage))
-        {
-            stage.setOnCloseRequest(e -> finalScreen.kill());
-        }
+        stage.setOnCloseRequest(e -> finalScreen.kill());
 
         Parent root = finalScreen.load();
         finalScreen.setStage(stage);

@@ -48,4 +48,21 @@ public class BtTextField extends JFXTextField
     {
         this.maxTextLength.setValue(value);
     }
+
+    @Override
+    public String getText(int start, int end)
+    {
+        String text = null;
+
+        try
+        {
+            text = super.getText(start, end);
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return text;
+    }
 }

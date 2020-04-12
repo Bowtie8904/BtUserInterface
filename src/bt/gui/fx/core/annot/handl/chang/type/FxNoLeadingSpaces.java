@@ -18,7 +18,7 @@ public class FxNoLeadingSpaces extends FxStringChange<TextField, String>
     {
         return (obs, ol, ne) ->
         {
-            fieldObj.setText(ne.stripTrailing());
+            fieldObj.setText(ne.stripLeading());
         };
     }
 }

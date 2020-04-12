@@ -1,6 +1,5 @@
 package bt.gui.fx.core.annot.handl.chang.type;
 
-import bt.gui.fx.core.annot.handl.chang.type.FxStringChange;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextField;
 
@@ -19,7 +18,7 @@ public class FxNoTrailingSpaces extends FxStringChange<TextField, String>
     {
         return (obs, ol, ne) ->
         {
-            fieldObj.setText(ne.stripLeading());
+            fieldObj.setText(ne.stripTrailing());
         };
     }
 }

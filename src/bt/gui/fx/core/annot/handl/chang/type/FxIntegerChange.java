@@ -7,7 +7,7 @@ import javafx.beans.value.ObservableValue;
  * @author &#8904
  *
  */
-public class FxIntegerChange extends FxChangeHandlerType
+public class FxIntegerChange<T, K> extends FxChangeHandlerType<T, K>
 {
     /**
      * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getHandlerParameterTypes()

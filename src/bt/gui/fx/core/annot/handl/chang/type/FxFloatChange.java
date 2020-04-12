@@ -7,7 +7,7 @@ import javafx.beans.value.ObservableValue;
  * @author &#8904
  *
  */
-public class FxFloatChange extends FxChangeHandlerType
+public class FxFloatChange<T, K> extends FxChangeHandlerType<T, K>
 {
     /**
      * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getHandlerParameterTypes()

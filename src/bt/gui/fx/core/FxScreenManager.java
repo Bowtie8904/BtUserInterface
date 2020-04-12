@@ -63,6 +63,8 @@ public abstract class FxScreenManager extends Application
         {
             screen.load();
         }
+
+        screen.setScreenManager(this);
     }
 
     public <T extends FxScreen> void setScreen(Class<T> screenType)
@@ -143,7 +145,7 @@ public abstract class FxScreenManager extends Application
             Constructor<T> construct = screenType.getConstructor();
             construct.setAccessible(true);
             screen = construct.newInstance();
-            this.screens.put(screenType, screen);
+            addScreen(screenType, screen);
         }
         catch (InstantiationException | IllegalAccessException
                | InvocationTargetException | SecurityException e1)

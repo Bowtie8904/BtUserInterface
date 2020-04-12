@@ -32,6 +32,7 @@ public abstract class FxScreen implements Killable
     protected Stage stage;
     protected Stage parentStage;
     protected Scene scene;
+    protected FxScreenManager screenManager;
     protected double width = -1;
     protected double height = -1;
     protected boolean shouldMaximize;
@@ -189,6 +190,23 @@ public abstract class FxScreen implements Killable
         }
 
         return this.root;
+    }
+
+    /**
+     * @return the screenManager
+     */
+    public FxScreenManager getScreenManager()
+    {
+        return this.screenManager;
+    }
+
+    /**
+     * @param fxScreenManager
+     *            the screenManager to set
+     */
+    public void setScreenManager(FxScreenManager fxScreenManager)
+    {
+        this.screenManager = fxScreenManager;
     }
 
     public Parent getRoot()

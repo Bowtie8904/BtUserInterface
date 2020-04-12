@@ -47,7 +47,19 @@ public abstract class FxScreenManager extends Application
 
     public <T extends FxScreen> T getScreen(Class<T> screenType)
     {
-        return (T)this.screens.get(screenType);
+        return getScreen(screenType, true);
+    }
+
+    public <T extends FxScreen> T getScreen(Class<T> screenType, boolean preload)
+    {
+        T screen = (T)this.screens.get(screenType);
+
+        if (preload)
+        {
+            screen.load();
+        }
+
+        return screen;
     }
 
     public <T extends FxScreen> void addScreens(Class<T>... screenTypes)

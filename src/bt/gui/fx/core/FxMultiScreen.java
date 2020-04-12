@@ -23,6 +23,12 @@ public abstract class FxMultiScreen extends FxScreen
     {
         super();
         this.screens = new HashMap<>();
+    }
+
+    @Override
+    public void setScreenManager(FxScreenManager screenManager)
+    {
+        super.setScreenManager(screenManager);
         loadScreens();
     }
 

@@ -7,7 +7,7 @@ import javafx.scene.control.TextInputControl;
  * @author &#8904
  *
  */
-public class FxOnEmptyText extends FxStringChange<TextInputControl, String>
+public class FxOnTextNotEmpty extends FxStringChange<TextInputControl, String>
 {
     /**
      * @see bt.gui.fx.core.annot.handl.chang.FxChangeHandlerType#getSpecialListener(java.lang.Object, java.lang.Object,
@@ -20,7 +20,7 @@ public class FxOnEmptyText extends FxStringChange<TextInputControl, String>
 
         return (obs, ol, ne) ->
         {
-            if (ne.isEmpty())
+            if (!ne.isEmpty())
             {
                 defaultListener.changed(obs, ol, ne);
             }

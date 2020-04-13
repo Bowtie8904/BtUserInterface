@@ -1,8 +1,10 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.annot.css.FxStyleClass;
@@ -152,27 +154,51 @@ public abstract class FxScreen implements Killable
 
     protected void loadCssClasses()
     {
-        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxStyleClass.class))
+        loadCssClasses(getClass());
+    }
+
+    private void loadCssClasses(Class<?> type)
+    {
+        for (var field : Annotations.getFieldsAnnotatedWith(type, FxStyleClass.class))
         {
-            try
+            if (field.getType().equals(String.class))
             {
-                field.setAccessible(true);
-                String value = field.get(this).toString();
-
-                if (value == null)
-                {
-                    throw new FxException("Field annotated with FxStyleClass must be initialized with the style class file name.");
-                }
-
-                String styleClassFile = "/" + value + ".css";
-
-                Logger.global().print("Loading style class '" + styleClassFile + "' for class " + getClass().getName() + ".");
-                this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
+                loadCssClass(field);
             }
-            catch (IllegalArgumentException | IllegalAccessException e)
+            else
             {
-                Logger.global().print(e);
+                loadCssClasses(field.getType());
             }
+        }
+    }
+
+    private void loadCssClass(Field field)
+    {
+        if (!Modifier.isStatic(field.getModifiers()))
+        {
+            throw new FxException("A field annotated with FxStyleClass must be static. "
+                                  + "{" + field.getDeclaringClass().getName() + "." + field.getName() + "}");
+        }
+
+        try
+        {
+            field.setAccessible(true);
+            String value = field.get(null).toString();
+
+            if (value == null)
+            {
+                throw new FxException("A field annotated with FxStyleClass must be initialized with the name of the css file without the file extension. "
+                                      + "{" + field.getDeclaringClass().getName() + "." + field.getName() + "}");
+            }
+
+            String styleClassFile = "/" + value + ".css";
+
+            Logger.global().print("Loading style class '" + styleClassFile + "' for class " + getClass().getName() + ".");
+            this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            Logger.global().print(e);
         }
     }
 

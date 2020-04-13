@@ -1,13 +1,11 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 import bt.gui.fx.core.annot.FxmlElement;
-import bt.gui.fx.core.annot.css.FxStyleClass;
+import bt.gui.fx.core.annot.css.FxCssLoader;
 import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.exc.FxException;
@@ -154,51 +152,13 @@ public abstract class FxScreen implements Killable
 
     protected void loadCssClasses()
     {
-        loadCssClasses(getClass());
-    }
+        String styleClassFile = null;
 
-    private void loadCssClasses(Class<?> type)
-    {
-        for (var field : Annotations.getFieldsAnnotatedWith(type, FxStyleClass.class))
+        for (var styleClass : FxCssLoader.loadCssClasses(getClass()))
         {
-            if (field.getType().equals(String.class))
-            {
-                loadCssClass(field);
-            }
-            else
-            {
-                loadCssClasses(field.getType());
-            }
-        }
-    }
-
-    private void loadCssClass(Field field)
-    {
-        if (!Modifier.isStatic(field.getModifiers()))
-        {
-            throw new FxException("A field annotated with FxStyleClass must be static. "
-                                  + "{" + field.getDeclaringClass().getName() + "." + field.getName() + "}");
-        }
-
-        try
-        {
-            field.setAccessible(true);
-            String value = field.get(null).toString();
-
-            if (value == null)
-            {
-                throw new FxException("A field annotated with FxStyleClass must be initialized with the name of the css file without the file extension. "
-                                      + "{" + field.getDeclaringClass().getName() + "." + field.getName() + "}");
-            }
-
-            String styleClassFile = "/" + value + ".css";
-
+            styleClassFile = "/" + styleClass + ".css";
             Logger.global().print("Loading style class '" + styleClassFile + "' for class " + getClass().getName() + ".");
             this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
-        }
-        catch (IllegalArgumentException | IllegalAccessException e)
-        {
-            Logger.global().print(e);
         }
     }
 

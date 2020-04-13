@@ -1,13 +1,17 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.annot.css.FxCssLoader;
 import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
+import bt.gui.fx.core.annot.setup.FxSetup;
+import bt.gui.fx.core.annot.setup.FxSetups;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.runtime.Killable;
@@ -15,6 +19,7 @@ import bt.utils.log.Logger;
 import bt.utils.nulls.Null;
 import bt.utils.refl.anot.Annotations;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -203,6 +208,104 @@ public abstract class FxScreen implements Killable
         }
 
         return this.root;
+    }
+
+    protected void setupFields()
+    {
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxSetup.class, FxSetups.class))
+        {
+            FxSetup[] annotations = field.getAnnotationsByType(FxSetup.class);
+
+            field.setAccessible(true);
+
+            for (FxSetup annot : annotations)
+            {
+                if (!annot.method().isEmpty())
+                {
+                    callSetupMethod(field, annot);
+                }
+
+                if (!annot.css().isEmpty())
+                {
+                    try
+                    {
+                        Node node = (Node)field.get(this);
+
+                        if (!node.getStyleClass().contains(annot.css()))
+                        {
+                            node.getStyleClass().add(annot.css());
+                        }
+                    }
+                    catch (ClassCastException e)
+                    {
+                        throw new FxException("Only subclasses of Node can have CSS added to them automatically. {" + getClass().getName() + "." + field.getName() + "}", e);
+                    }
+                    catch (IllegalArgumentException | IllegalAccessException e)
+                    {
+                        Logger.global().print(e);
+                    }
+                }
+            }
+        }
+    }
+
+    private void callSetupMethod(Field field, FxSetup annot)
+    {
+        Class<?> methodClass = annot.methodClass().equals(void.class) ? getClass() : annot.methodClass();
+
+        try
+        {
+            Method setupMethod = null;
+
+            if (annot.passField())
+            {
+                setupMethod = methodClass.getDeclaredMethod(annot.method(), field.getType());
+            }
+            else
+            {
+                setupMethod = methodClass.getDeclaredMethod(annot.method());
+            }
+
+            if (Modifier.isStatic(setupMethod.getModifiers()))
+            {
+                if (annot.passField())
+                {
+                    setupMethod.invoke(null, field.get(this));
+                }
+                else
+                {
+                    setupMethod.invoke(null);
+                }
+            }
+            else if (annot.methodClass().equals(void.class))
+            {
+                if (annot.passField())
+                {
+                    setupMethod.invoke(this, field.get(this));
+                }
+                else
+                {
+                    setupMethod.invoke(this);
+                }
+            }
+            else
+            {
+                Object callObj = methodClass.getConstructor().newInstance();
+
+                if (annot.passField())
+                {
+                    setupMethod.invoke(callObj, field.get(this));
+                }
+                else
+                {
+                    setupMethod.invoke(callObj);
+                }
+            }
+        }
+        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e)
+        {
+            Logger.global().print(e);
+        }
     }
 
     /**

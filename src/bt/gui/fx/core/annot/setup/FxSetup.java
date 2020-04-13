@@ -7,8 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author &#8904
+ * Allows for the calling of setup methods (method, methodClass and passField values) and the applying of css (css
+ * value) classes to a Node field during the loading of an FxScreen.
  *
+ * @author &#8904
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

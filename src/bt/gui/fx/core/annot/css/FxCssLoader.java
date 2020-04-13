@@ -18,6 +18,18 @@ public final class FxCssLoader
     {
         List<String> styleClasses = new ArrayList<>();
 
+        for (var clsAnnot : type.getAnnotationsByType(FxStyleClass.class))
+        {
+            if (!clsAnnot.value().equals(void.class))
+            {
+                styleClasses.addAll(loadCssClasses(clsAnnot.value()));
+            }
+            else
+            {
+                throw new FxException("FxStyleClass annotations that are attached to a class need to specify the class that contains css information in the value field. {" + type.getName() + "}");
+            }
+        }
+
         for (var field : Annotations.getFieldsAnnotatedWith(type, FxStyleClass.class))
         {
             if (field.getType().equals(String.class))

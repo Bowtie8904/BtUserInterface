@@ -168,7 +168,7 @@ public abstract class FxScreen implements Killable
 
                     String styleClassFile = "/" + value + ".css";
 
-                    Logger.global().print("Loading style class " + styleClassFile);
+                    Logger.global().print("Loading style class '" + styleClassFile + "'");
                     this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
                 }
                 catch (IllegalArgumentException | IllegalAccessException e)

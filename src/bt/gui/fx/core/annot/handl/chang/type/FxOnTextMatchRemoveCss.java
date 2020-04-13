@@ -35,7 +35,12 @@ public class FxOnTextMatchRemoveCss extends FxStringChange<TextInputControl, Str
         {
             if (regexPattern.matcher(ne).matches())
             {
-                fieldObj.getStyleClass().remove(cssClass);
+                int indexOf = fieldObj.getStyleClass().indexOf(cssClass);
+
+                if (indexOf != -1)
+                {
+                    fieldObj.getStyleClass().remove(indexOf);
+                }
             }
         };
     }

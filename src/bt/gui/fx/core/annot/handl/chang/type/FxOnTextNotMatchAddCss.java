@@ -33,7 +33,7 @@ public class FxOnTextNotMatchAddCss extends FxStringChange<TextInputControl, Str
 
         return (obs, ol, ne) ->
         {
-            if (!regexPattern.matcher(ne).matches())
+            if (!regexPattern.matcher(ne).matches() && !fieldObj.getStyleClass().contains(cssClass))
             {
                 fieldObj.getStyleClass().add(cssClass);
             }

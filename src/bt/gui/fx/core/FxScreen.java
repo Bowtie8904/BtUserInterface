@@ -154,31 +154,24 @@ public abstract class FxScreen implements Killable
     {
         for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxStyleClass.class))
         {
-            if (field.getType().equals(String.class))
+            try
             {
-                try
+                field.setAccessible(true);
+                String value = field.get(this).toString();
+
+                if (value == null)
                 {
-                    field.setAccessible(true);
-                    String value = (String)field.get(this);
-
-                    if (value == null)
-                    {
-                        throw new FxException("Field annotated with FxStyleClass must be initialized with the style class file name.");
-                    }
-
-                    String styleClassFile = "/" + value + ".css";
-
-                    Logger.global().print("Loading style class '" + styleClassFile + "'");
-                    this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
+                    throw new FxException("Field annotated with FxStyleClass must be initialized with the style class file name.");
                 }
-                catch (IllegalArgumentException | IllegalAccessException e)
-                {
-                    Logger.global().print(e);
-                }
+
+                String styleClassFile = "/" + value + ".css";
+
+                Logger.global().print("Loading style class '" + styleClassFile + "' for class " + getClass().getName() + ".");
+                this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
             }
-            else
+            catch (IllegalArgumentException | IllegalAccessException e)
             {
-                throw new FxException("FxStyleClass annotation may only be attached to String fields.");
+                Logger.global().print(e);
             }
         }
     }

@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType;
+import javafx.event.EventType;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.input.ContextMenuEvent;
 
@@ -19,5 +20,14 @@ public class FxOnContextMenuRequested extends FxEventHandlerType
         {
           ContextMenuEvent.class
         };
+    }
+
+    /**
+     * @see bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType#getEventType()
+     */
+    @Override
+    protected EventType getEventType()
+    {
+        return ContextMenuEvent.CONTEXT_MENU_REQUESTED;
     }
 }

@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.SwipeEvent;
 
@@ -19,5 +20,14 @@ public class FxOnSwipeLeft extends FxEventHandlerType
         {
           SwipeEvent.class
         };
+    }
+
+    /**
+     * @see bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType#getEventType()
+     */
+    @Override
+    protected EventType getEventType()
+    {
+        return SwipeEvent.SWIPE_LEFT;
     }
 }

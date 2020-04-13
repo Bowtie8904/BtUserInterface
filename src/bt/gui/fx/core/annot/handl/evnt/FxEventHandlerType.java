@@ -8,6 +8,7 @@ import bt.utils.collections.array.Array;
 import bt.utils.log.Logger;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 
 /**
  * @author &#8904
@@ -21,6 +22,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
     {
         return new Class[]
         {
+          EventType.class,
           EventHandler.class
         };
     }
@@ -37,6 +39,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
 
         return new Object[]
         {
+          getEventType(),
           eventHandler
         };
     }
@@ -160,16 +163,11 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
     @Override
     protected String getHandlerSetMethodName()
     {
-        String className = getClass().getSimpleName();
-
-        if (className.startsWith("Fx"))
-        {
-            className = className.replaceFirst("Fx", "set");
-        }
-
-        return className;
+        return "addEventFilter";
     }
 
     @Override
     protected abstract Class<?>[] getHandlerParameterTypes();
+
+    protected abstract EventType<K> getEventType();
 }

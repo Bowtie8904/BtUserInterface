@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
@@ -10,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  * @see {@link Node#onMouseExitedProperty()}
  * @author &#8904
  */
-public class FxOnMouseExited extends FxEventHandlerType
+public class FxOnMouseExited extends FxEventHandlerType<Node, MouseEvent>
 {
     @Override
     protected Class<?>[] getHandlerParameterTypes()
@@ -19,5 +20,14 @@ public class FxOnMouseExited extends FxEventHandlerType
         {
           MouseEvent.class
         };
+    }
+
+    /**
+     * @see bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType#getEventType()
+     */
+    @Override
+    protected EventType getEventType()
+    {
+        return MouseEvent.MOUSE_EXITED;
     }
 }

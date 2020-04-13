@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType;
+import javafx.event.EventType;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.input.KeyEvent;
 
@@ -19,5 +20,14 @@ public class FxOnKeyTyped extends FxEventHandlerType
         {
           KeyEvent.class
         };
+    }
+
+    /**
+     * @see bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType#getEventType()
+     */
+    @Override
+    protected EventType getEventType()
+    {
+        return KeyEvent.KEY_TYPED;
     }
 }

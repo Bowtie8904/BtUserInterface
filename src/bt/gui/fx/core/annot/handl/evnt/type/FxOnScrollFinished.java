@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.ScrollEvent;
 
@@ -19,5 +20,14 @@ public class FxOnScrollFinished extends FxEventHandlerType
         {
           ScrollEvent.class
         };
+    }
+
+    /**
+     * @see bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType#getEventType()
+     */
+    @Override
+    protected EventType getEventType()
+    {
+        return ScrollEvent.SCROLL_FINISHED;
     }
 }

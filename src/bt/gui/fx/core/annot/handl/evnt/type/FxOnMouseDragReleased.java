@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.MouseDragEvent;
 
@@ -19,5 +20,14 @@ public class FxOnMouseDragReleased extends FxEventHandlerType
         {
           MouseDragEvent.class
         };
+    }
+
+    /**
+     * @see bt.gui.fx.core.annot.handl.evnt.FxEventHandlerType#getEventType()
+     */
+    @Override
+    protected EventType getEventType()
+    {
+        return MouseDragEvent.MOUSE_DRAG_RELEASED;
     }
 }

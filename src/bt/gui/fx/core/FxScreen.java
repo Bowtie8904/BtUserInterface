@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.FxmlElement;
+import bt.gui.fx.core.annot.css.FxStyleClass;
 import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.exc.FxException;
@@ -145,6 +146,39 @@ public abstract class FxScreen implements Killable
                 {
                     Logger.global().print(e1);
                 }
+            }
+        }
+    }
+
+    protected void loadCssClasses()
+    {
+        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxStyleClass.class))
+        {
+            if (field.getType().equals(String.class))
+            {
+                try
+                {
+                    field.setAccessible(true);
+                    String value = (String)field.get(this);
+
+                    if (value == null)
+                    {
+                        throw new FxException("Field annotated with FxStyleClass must be initialized with the style class file name.");
+                    }
+
+                    String styleClassFile = "/" + value + ".css";
+
+                    Logger.global().print("Loading style class " + styleClassFile);
+                    this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
+                }
+                catch (IllegalArgumentException | IllegalAccessException e)
+                {
+                    Logger.global().print(e);
+                }
+            }
+            else
+            {
+                throw new FxException("FxStyleClass annotation may only be attached to String fields.");
             }
         }
     }

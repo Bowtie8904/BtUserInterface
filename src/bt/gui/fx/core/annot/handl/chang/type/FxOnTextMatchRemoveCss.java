@@ -3,6 +3,7 @@ package bt.gui.fx.core.annot.handl.chang.type;
 import java.util.regex.Pattern;
 
 import bt.gui.fx.core.exc.FxException;
+import bt.gui.fx.util.CssUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextInputControl;
 
@@ -35,7 +36,7 @@ public class FxOnTextMatchRemoveCss extends FxStringChange<TextInputControl, Str
         {
             if (regexPattern.matcher(ne).matches())
             {
-                fieldObj.getStyleClass().removeIf(s -> s.equalsIgnoreCase(cssClass));
+                CssUtils.removeStyleClass(fieldObj, cssClass);
             }
         };
     }

@@ -1,6 +1,7 @@
 package bt.gui.fx.core.annot.handl.evnt.type;
 
 import bt.gui.fx.core.exc.FxException;
+import bt.gui.fx.util.CssUtils;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -27,7 +28,7 @@ public class FxOnMouseEnteredRemoveCss extends FxOnMouseEntered
 
         return e ->
         {
-            fieldObj.getStyleClass().removeIf(s -> s.equalsIgnoreCase(cssClass));
+            CssUtils.removeStyleClass(fieldObj, cssClass);
         };
     }
 }

@@ -4,35 +4,39 @@ import java.awt.Image;
 
 import javax.swing.JFrame;
 
+import bt.gui.tray.SystemTrayItem;
+import bt.gui.tray.SystemTraySettings;
+import bt.gui.tray.SystemTrayUtils;
+
 /**
  * A basic implementation of the {@link SystemTrayItem} interface.
- * 
+ *
  * @author &#8904
  */
-public class DefaultSystemTrayFrame extends JFrame implements SystemTrayItem
+public class DefaultSwingSystemTrayFrame extends JFrame implements SwingSystemTrayItem
 {
     protected SystemTraySettings traySettings;
 
     /**
      * Creates a new instance.
-     * 
+     *
      * <p>
      * This will pass the given image to a new {@link SystemTraySettings} instance. To adjust the configuration either
      * modify the settings object returned by {@link #getSystemTraySettings()} or pass a new one to
      * {@link #setSystemTraySettings(SystemTraySettings)}.
      * </p>
-     * 
+     *
      * @param trayImage
      *            The image that should be displayed in the system tray.
      */
-    public DefaultSystemTrayFrame(Image trayImage)
+    public DefaultSwingSystemTrayFrame(Image trayImage)
     {
         this.traySettings = new SystemTraySettings(trayImage);
     }
 
     /**
      * Returns this instance.
-     * 
+     *
      * @see bowt.gui.tray.SystemTrayItem#getFrame()
      */
     @Override
@@ -51,8 +55,8 @@ public class DefaultSystemTrayFrame extends JFrame implements SystemTrayItem
     }
 
     /**
-     * A simple call to {@link SystemTrayUtils#openFromSystemTray(SystemTrayItem)}.
-     * 
+     * A simple call to {@link SystemTrayUtils#openFromSystemTray(SwingSystemTrayItem)}.
+     *
      * @see bowt.gui.tray.SystemTrayItem#openFromSystemTray()
      */
     @Override
@@ -62,8 +66,8 @@ public class DefaultSystemTrayFrame extends JFrame implements SystemTrayItem
     }
 
     /**
-     * A simple call to {@link SystemTrayUtils#sendToSystemTray(SystemTrayItem)}.
-     * 
+     * A simple call to {@link SystemTrayUtils#sendToSystemTray(SwingSystemTrayItem)}.
+     *
      * @see bowt.gui.tray.SystemTrayItem#sendToSystemTray()
      */
     @Override

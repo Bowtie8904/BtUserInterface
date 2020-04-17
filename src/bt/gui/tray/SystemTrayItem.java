@@ -1,8 +1,6 @@
-package bt.gui.swing.tray;
+package bt.gui.tray;
 
 import java.awt.TrayIcon;
-
-import javax.swing.JFrame;
 
 /**
  * 
@@ -42,16 +40,4 @@ public interface SystemTrayItem
      * Executes all operations to recover this item from the system tray.
      */
     public void openFromSystemTray();
-
-    /**
-     * Gets the JFrame that is represented by this tray item.
-     * 
-     * <p>
-     * This frame will be made invisible when the item is sent to and made visible again when it is recovered from the
-     * system tray by {@link SystemTrayUtils}.
-     * </p>
-     * 
-     * @return The frame.
-     */
-    public JFrame getFrame();
 }

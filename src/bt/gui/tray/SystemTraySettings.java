@@ -1,4 +1,4 @@
-package bt.gui.swing.tray;
+package bt.gui.tray;
 
 import java.awt.Image;
 import java.awt.MenuItem;

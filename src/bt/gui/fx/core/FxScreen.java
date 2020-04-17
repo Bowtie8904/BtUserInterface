@@ -18,6 +18,8 @@ import bt.runtime.Killable;
 import bt.utils.log.Logger;
 import bt.utils.nulls.Null;
 import bt.utils.refl.anot.Annotations;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -378,6 +380,46 @@ public abstract class FxScreen implements Killable
     public void setStage(Stage stage)
     {
         this.stage = stage;
+    }
+
+    protected void setupStageListeners()
+    {
+        setupIconifiedListener();
+        setupMaximizedListener();
+    }
+
+    protected void setupMaximizedListener()
+    {
+        this.stage.maximizedProperty().addListener(new ChangeListener<Boolean>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov, Boolean ol, Boolean ne)
+            {
+                onMaximizedChange(ne);
+            }
+        });
+    }
+
+    public void onMaximizedChange(boolean isMaximized)
+    {
+
+    }
+
+    protected void setupIconifiedListener()
+    {
+        this.stage.iconifiedProperty().addListener(new ChangeListener<Boolean>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov, Boolean ol, Boolean ne)
+            {
+                onIconifiedChange(ne);
+            }
+        });
+    }
+
+    public void onIconifiedChange(boolean isIconified)
+    {
+
     }
 
     /**

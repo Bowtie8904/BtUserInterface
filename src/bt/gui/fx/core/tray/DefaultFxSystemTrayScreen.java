@@ -12,7 +12,7 @@ import bt.gui.tray.SystemTrayUtils;
  *
  * @author &#8904
  */
-public abstract class DefaultFxSystemTrayFrame extends FxScreen implements FxSystemTrayItem
+public abstract class DefaultFxSystemTrayScreen extends FxScreen implements FxSystemTrayItem
 {
     protected SystemTraySettings traySettings;
 
@@ -28,7 +28,7 @@ public abstract class DefaultFxSystemTrayFrame extends FxScreen implements FxSys
      * @param trayImage
      *            The image that should be displayed in the system tray.
      */
-    public DefaultFxSystemTrayFrame(Image trayImage)
+    public DefaultFxSystemTrayScreen(Image trayImage)
     {
         this.traySettings = new SystemTraySettings(trayImage);
     }

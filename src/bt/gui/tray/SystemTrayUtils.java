@@ -72,7 +72,7 @@ public final class SystemTrayUtils
     {
         if (!isInTray(trayItem))
         {
-            trayItem.getStage().show();
+            trayItem.getStage().hide();
 
             try
             {
@@ -93,7 +93,7 @@ public final class SystemTrayUtils
      */
     public static void openFromSystemTray(FxSystemTrayItem trayItem)
     {
-        trayItem.getStage().hide();
+        trayItem.getStage().show();
         tray.remove(trayItem.getSystemTraySettings().getTrayIcon());
     }
 

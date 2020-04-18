@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Allows for the calling of setup methods (method, methodClass and passField values) and the applying of css (css
- * value) classes to a Node field during the loading of an FxScreen.
+ * Allows for the calling of setup methods (method, methodClass, value and passField values) and the applying of css
+ * (css value) classes to a Node field during the loading of an FxScreen.
  *
  * @author &#8904
  */
@@ -44,4 +44,18 @@ public @interface FxSetup
      * @return
      */
     boolean passField() default true;
+
+    /**
+     * An additional value that will be passed to the setup method.
+     *
+     * @return
+     */
+    String value() default "";
+
+    /**
+     * The type of the field object. Used to find a fitting setup method.
+     *
+     * @return
+     */
+    Class<?> fieldType() default void.class;
 }

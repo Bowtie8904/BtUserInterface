@@ -28,13 +28,13 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
     }
 
     @Override
-    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
-        EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
+        EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
         if (eventHandler == null)
         {
-            eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
+            eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
         }
 
         return new Object[]
@@ -60,12 +60,12 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
      * @return A fully usable EventHandler or null if no handler will be provided and one should be constructed
      *         normally.
      */
-    protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
         return null;
     }
 
-    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
         EventHandler<K> eventHandler = null;
         Method handlerMethod;

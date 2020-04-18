@@ -14,7 +14,8 @@ public class FxNoLeadingSpaces extends FxStringChange<TextInputControl, String>
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue,
+                                                        Class<?> fieldObjType)
     {
         return (obs, ol, ne) ->
         {

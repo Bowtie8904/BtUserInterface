@@ -19,7 +19,7 @@ public class FxOnMouseEnteredRemoveCss extends FxOnMouseEntered
      *      java.lang.String, boolean, boolean, java.lang.String)
      */
     @Override
-    protected EventHandler getSpecialHandler(Node fieldObj, Object handlingObj, String cssClass, boolean withParameters, boolean passField, String additionalValue)
+    protected EventHandler getSpecialHandler(Node fieldObj, Object handlingObj, String cssClass, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
         if (cssClass.isEmpty())
         {

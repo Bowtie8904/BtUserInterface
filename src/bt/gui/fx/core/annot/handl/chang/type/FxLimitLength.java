@@ -15,7 +15,8 @@ public class FxLimitLength extends FxStringChange<TextInputControl, String>
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String maxLengthValue)
+    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String maxLengthValue,
+                                                        Class<?> fieldObjType)
     {
         ChangeListener<String> listener = null;
 

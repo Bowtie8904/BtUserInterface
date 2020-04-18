@@ -71,4 +71,11 @@ public @interface FxHandler
      * @return
      */
     String value() default "";
+
+    /**
+     * The type of the field object. Used to find a fitting handler method.
+     *
+     * @return
+     */
+    Class<?> fieldType() default void.class;
 }

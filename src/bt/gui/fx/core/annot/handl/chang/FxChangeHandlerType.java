@@ -24,13 +24,13 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
     }
 
     @Override
-    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
-        ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
+        ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
         if (changeListener == null)
         {
-            changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue);
+            changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
         }
 
         return new Object[]
@@ -55,12 +55,12 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
      * @return A fully usable ChangeListener or null if no listener will be provided and one should be constructed
      *         normally.
      */
-    protected ChangeListener<K> getSpecialListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected ChangeListener<K> getSpecialListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
         return null;
     }
 
-    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue)
+    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
         ChangeListener<K> changeListener = null;
 
@@ -72,7 +72,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
             {
                 if (passField)
                 {
-                    Class<?>[] params = Array.push(getHandlerParameterTypes(), fieldObj.getClass());
+                    Class<?>[] params = Array.push(getHandlerParameterTypes(), fieldObjType);
                     handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, params);
 
                     handlerMethod.setAccessible(true);
@@ -112,7 +112,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
             {
                 if (passField)
                 {
-                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, fieldObj.getClass());
+                    handlerMethod = handlingObj.getClass().getDeclaredMethod(handlerMethodName, fieldObjType);
 
                     handlerMethod.setAccessible(true);
 

@@ -17,7 +17,7 @@ public class FxFloatChange<T, K> extends FxChangeHandlerType<T, K>
     {
         return new Class<?>[]
         {
-          ObservableValue.class, Boolean.class, Boolean.class
+          ObservableValue.class, Float.class, Float.class
         };
     }
 }

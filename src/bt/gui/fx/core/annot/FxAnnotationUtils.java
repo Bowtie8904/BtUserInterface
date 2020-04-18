@@ -41,17 +41,12 @@ public final class FxAnnotationUtils
                     }
                     else
                     {
-                        try
-                        {
-                            methodClassObj = annot.methodClass()
-                                                  .getConstructor()
-                                                  .newInstance();
-                        }
-                        catch (InstantiationException | NoSuchMethodException e1)
-                        {
-                            // class might be final
-                            // this is fine, the method will be static, passing null is fine
-                        }
+                        var constr = annot.methodClass()
+                                          .getDeclaredConstructor();
+
+                        constr.setAccessible(true);
+
+                        methodClassObj = constr.newInstance();
                     }
 
                     Object actionObj = null;
@@ -80,35 +75,17 @@ public final class FxAnnotationUtils
                         actionObj = propertyGetter.invoke(fieldObj);
                     }
 
+                    Class<?> fieldType = annot.fieldType().equals(void.class) ? field.getType() : annot.fieldType();
+
                     annot.type()
                          .getConstructor()
                          .newInstance()
-                         .setHandlerMethod(field.get(setupObj), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value());
+                         .setHandlerMethod(field.get(setupObj), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value(), fieldType);
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
                     Logger.global().print(e1);
                 }
-            }
-        }
-
-        Object obj;
-
-        for (var field : setupObj.getClass().getDeclaredFields())
-        {
-            try
-            {
-                field.setAccessible(true);
-                obj = field.get(setupObj);
-
-                if (obj != null)
-                {
-                    populateFxHandlers(obj);
-                }
-            }
-            catch (IllegalArgumentException | IllegalAccessException e)
-            {
-                Logger.global().print(e);
             }
         }
     }
@@ -162,31 +139,13 @@ public final class FxAnnotationUtils
                 }
             }
         }
-
-        Object obj;
-
-        for (var field : setupObj.getClass().getDeclaredFields())
-        {
-            try
-            {
-                field.setAccessible(true);
-                obj = field.get(setupObj);
-
-                if (obj != null)
-                {
-                    setupFields(obj);
-                }
-            }
-            catch (IllegalArgumentException | IllegalAccessException e)
-            {
-                Logger.global().print(e);
-            }
-        }
     }
 
     private static void callSetupMethod(Object setupObj, Field field, FxSetup annot)
     {
         Class<?> methodClass = annot.methodClass().equals(void.class) ? setupObj.getClass() : annot.methodClass();
+
+        Class<?> fieldType = annot.fieldType().equals(void.class) ? field.getType() : annot.fieldType();
 
         try
         {
@@ -194,33 +153,75 @@ public final class FxAnnotationUtils
 
             if (annot.passField())
             {
-                setupMethod = methodClass.getDeclaredMethod(annot.method(), field.getType());
+                if (annot.value().isEmpty())
+                {
+                    setupMethod = methodClass.getDeclaredMethod(annot.method(), fieldType);
+                }
+                else
+                {
+                    setupMethod = methodClass.getDeclaredMethod(annot.method(), fieldType, String.class);
+                }
             }
             else
             {
-                setupMethod = methodClass.getDeclaredMethod(annot.method());
+                if (annot.value().isEmpty())
+                {
+                    setupMethod = methodClass.getDeclaredMethod(annot.method());
+                }
+                else
+                {
+                    setupMethod = methodClass.getDeclaredMethod(annot.method(), String.class);
+                }
             }
 
             if (Modifier.isStatic(setupMethod.getModifiers()))
             {
                 if (annot.passField())
                 {
-                    setupMethod.invoke(null, field.get(setupObj));
+                    if (annot.value().isEmpty())
+                    {
+                        setupMethod.invoke(null, field.get(setupObj));
+                    }
+                    else
+                    {
+                        setupMethod.invoke(null, field.get(setupObj), annot.value());
+                    }
                 }
                 else
                 {
-                    setupMethod.invoke(null);
+                    if (annot.value().isEmpty())
+                    {
+                        setupMethod.invoke(null);
+                    }
+                    else
+                    {
+                        setupMethod.invoke(null, annot.value());
+                    }
                 }
             }
             else if (annot.methodClass().equals(void.class))
             {
                 if (annot.passField())
                 {
-                    setupMethod.invoke(setupObj, field.get(setupObj));
+                    if (annot.value().isEmpty())
+                    {
+                        setupMethod.invoke(setupObj, field.get(setupObj));
+                    }
+                    else
+                    {
+                        setupMethod.invoke(setupObj, field.get(setupObj), annot.value());
+                    }
                 }
                 else
                 {
-                    setupMethod.invoke(setupObj);
+                    if (annot.value().isEmpty())
+                    {
+                        setupMethod.invoke(setupObj);
+                    }
+                    else
+                    {
+                        setupMethod.invoke(setupObj, annot.value());
+                    }
                 }
             }
             else
@@ -229,11 +230,25 @@ public final class FxAnnotationUtils
 
                 if (annot.passField())
                 {
-                    setupMethod.invoke(callObj, field.get(setupObj));
+                    if (annot.value().isEmpty())
+                    {
+                        setupMethod.invoke(callObj, field.get(setupObj));
+                    }
+                    else
+                    {
+                        setupMethod.invoke(callObj, field.get(setupObj), annot.value());
+                    }
                 }
                 else
                 {
-                    setupMethod.invoke(callObj);
+                    if (annot.value().isEmpty())
+                    {
+                        setupMethod.invoke(callObj);
+                    }
+                    else
+                    {
+                        setupMethod.invoke(callObj, annot.value());
+                    }
                 }
             }
         }

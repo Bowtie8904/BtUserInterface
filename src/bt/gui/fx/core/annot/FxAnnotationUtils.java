@@ -91,6 +91,26 @@ public final class FxAnnotationUtils
                 }
             }
         }
+
+        Object obj;
+
+        for (var field : setupObj.getClass().getDeclaredFields())
+        {
+            try
+            {
+                field.setAccessible(true);
+                obj = field.get(setupObj);
+
+                if (obj != null)
+                {
+                    populateFxHandlers(obj);
+                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
+            }
+        }
     }
 
     public static void loadCssClasses(Scene scene, Object setupObj)
@@ -140,6 +160,26 @@ public final class FxAnnotationUtils
                         Logger.global().print(e);
                     }
                 }
+            }
+        }
+
+        Object obj;
+
+        for (var field : setupObj.getClass().getDeclaredFields())
+        {
+            try
+            {
+                field.setAccessible(true);
+                obj = field.get(setupObj);
+
+                if (obj != null)
+                {
+                    setupFields(obj);
+                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
             }
         }
     }

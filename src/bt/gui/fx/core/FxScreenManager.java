@@ -129,6 +129,7 @@ public abstract class FxScreenManager extends Application
         finalScreen.loadCssClasses();
         finalScreen.setupFields();
         finalScreen.populateFxHandlers();
+        finalScreen.setupStageListeners();
         stage.hide();
         stage.setScene(scene);
 

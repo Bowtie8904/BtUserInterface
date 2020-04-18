@@ -1,17 +1,9 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
+import bt.gui.fx.core.annot.FxAnnotationUtils;
 import bt.gui.fx.core.annot.FxmlElement;
-import bt.gui.fx.core.annot.css.FxCssLoader;
-import bt.gui.fx.core.annot.handl.FxHandler;
-import bt.gui.fx.core.annot.handl.FxHandlers;
-import bt.gui.fx.core.annot.setup.FxSetup;
-import bt.gui.fx.core.annot.setup.FxSetups;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.runtime.Killable;
@@ -21,7 +13,6 @@ import bt.utils.refl.anot.Annotations;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -88,84 +79,73 @@ public abstract class FxScreen implements Killable
 
     protected void populateFxHandlers()
     {
-        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxHandler.class, FxHandlers.class))
+        FxAnnotationUtils.populateFxHandlers(this);
+
+        Object obj;
+
+        for (var field : getClass().getDeclaredFields())
         {
-            FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
-            field.setAccessible(true);
-
-            for (FxHandler annot : annotations)
+            try
             {
-                try
+                obj = field.get(this);
+
+                if (obj != null)
                 {
-                    Object methodClassObj = null;
-
-                    if (annot.methodClass().equals(void.class))
-                    {
-                        methodClassObj = this;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            methodClassObj = annot.methodClass()
-                                                  .getConstructor()
-                                                  .newInstance();
-                        }
-                        catch (InstantiationException | NoSuchMethodException e1)
-                        {
-                            // class might be final
-                            // this is fine, the method will be static, passing null is fine
-                        }
-                    }
-
-                    Object actionObj = null;
-
-                    if (annot.property().isEmpty())
-                    {
-                        actionObj = field.get(this);
-
-                        if (actionObj == null)
-                        {
-                            throw new FxException("Attempting to register a handler to a null value.");
-                        }
-                    }
-                    else
-                    {
-                        // maybe the handler should not be added to the field directly but rather to a property of it
-                        Object fieldObj = field.get(this);
-
-                        if (fieldObj == null)
-                        {
-                            throw new FxException("Attempting to register a handler to a null value.");
-                        }
-
-                        Method propertyGetter = fieldObj.getClass().getMethod(annot.property());
-                        propertyGetter.setAccessible(true);
-                        actionObj = propertyGetter.invoke(fieldObj);
-                    }
-
-                    annot.type()
-                         .getConstructor()
-                         .newInstance()
-                         .setHandlerMethod(field.get(this), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value());
+                    FxAnnotationUtils.populateFxHandlers(obj);
                 }
-                catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
-                {
-                    Logger.global().print(e1);
-                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
             }
         }
     }
 
     protected void loadCssClasses()
     {
-        String styleClassFile = null;
+        FxAnnotationUtils.loadCssClasses(this.scene, this);
 
-        for (var styleClass : FxCssLoader.loadCssClasses(getClass()))
+        Object obj;
+
+        for (var field : getClass().getDeclaredFields())
         {
-            styleClassFile = "/" + styleClass + ".css";
-            Logger.global().print("Loading style class '" + styleClassFile + "' for class " + getClass().getName() + ".");
-            this.scene.getStylesheets().add(getClass().getResource(styleClassFile).toString());
+            try
+            {
+                obj = field.get(this);
+
+                if (obj != null)
+                {
+                    FxAnnotationUtils.loadCssClasses(this.scene, obj);
+                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
+            }
+        }
+    }
+
+    protected void setupFields()
+    {
+        FxAnnotationUtils.setupFields(this);
+
+        Object obj;
+
+        for (var field : getClass().getDeclaredFields())
+        {
+            try
+            {
+                obj = field.get(this);
+
+                if (obj != null)
+                {
+                    FxAnnotationUtils.setupFields(obj);
+                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
+            }
         }
     }
 
@@ -205,109 +185,10 @@ public abstract class FxScreen implements Killable
                 Logger.global().print(e);
             }
 
-            populateFxHandlers();
             prepareScreen();
         }
 
         return this.root;
-    }
-
-    protected void setupFields()
-    {
-        for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxSetup.class, FxSetups.class))
-        {
-            FxSetup[] annotations = field.getAnnotationsByType(FxSetup.class);
-
-            field.setAccessible(true);
-
-            for (FxSetup annot : annotations)
-            {
-                if (!annot.method().isEmpty())
-                {
-                    callSetupMethod(field, annot);
-                }
-
-                if (!annot.css().isEmpty())
-                {
-                    try
-                    {
-                        Node node = (Node)field.get(this);
-
-                        if (!node.getStyleClass().contains(annot.css()))
-                        {
-                            node.getStyleClass().add(annot.css());
-                        }
-                    }
-                    catch (ClassCastException e)
-                    {
-                        throw new FxException("Only subclasses of Node can have CSS added to them automatically. {" + getClass().getName() + "." + field.getName() + "}", e);
-                    }
-                    catch (IllegalArgumentException | IllegalAccessException e)
-                    {
-                        Logger.global().print(e);
-                    }
-                }
-            }
-        }
-    }
-
-    private void callSetupMethod(Field field, FxSetup annot)
-    {
-        Class<?> methodClass = annot.methodClass().equals(void.class) ? getClass() : annot.methodClass();
-
-        try
-        {
-            Method setupMethod = null;
-
-            if (annot.passField())
-            {
-                setupMethod = methodClass.getDeclaredMethod(annot.method(), field.getType());
-            }
-            else
-            {
-                setupMethod = methodClass.getDeclaredMethod(annot.method());
-            }
-
-            if (Modifier.isStatic(setupMethod.getModifiers()))
-            {
-                if (annot.passField())
-                {
-                    setupMethod.invoke(null, field.get(this));
-                }
-                else
-                {
-                    setupMethod.invoke(null);
-                }
-            }
-            else if (annot.methodClass().equals(void.class))
-            {
-                if (annot.passField())
-                {
-                    setupMethod.invoke(this, field.get(this));
-                }
-                else
-                {
-                    setupMethod.invoke(this);
-                }
-            }
-            else
-            {
-                Object callObj = methodClass.getConstructor().newInstance();
-
-                if (annot.passField())
-                {
-                    setupMethod.invoke(callObj, field.get(this));
-                }
-                else
-                {
-                    setupMethod.invoke(callObj);
-                }
-            }
-        }
-        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e)
-        {
-            Logger.global().print(e);
-        }
     }
 
     /**

@@ -87,6 +87,7 @@ public abstract class FxScreen implements Killable
         {
             try
             {
+                field.setAccessible(true);
                 obj = field.get(this);
 
                 if (obj != null)
@@ -111,6 +112,7 @@ public abstract class FxScreen implements Killable
         {
             try
             {
+                field.setAccessible(true);
                 obj = field.get(this);
 
                 if (obj != null)
@@ -135,6 +137,7 @@ public abstract class FxScreen implements Killable
         {
             try
             {
+                field.setAccessible(true);
                 obj = field.get(this);
 
                 if (obj != null)

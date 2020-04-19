@@ -34,6 +34,8 @@ public abstract class FxScreen implements Killable
     protected FxScreenManager screenManager;
     protected double width = -1;
     protected double height = -1;
+    protected int x = -1;
+    protected int y = -1;
     protected boolean shouldMaximize;
 
     public FxScreen()
@@ -371,6 +373,40 @@ public abstract class FxScreen implements Killable
     {
         Null.checkRun(this.stage, () -> this.stage.close());
         Null.checkRun(this.parentStage, () -> this.parentStage.requestFocus());
+    }
+
+    /**
+     * @return the x
+     */
+    public int getX()
+    {
+        return this.x;
+    }
+
+    /**
+     * @param x
+     *            the x to set
+     */
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    /**
+     * @return the y
+     */
+    public int getY()
+    {
+        return this.y;
+    }
+
+    /**
+     * @param y
+     *            the y to set
+     */
+    public void setY(int y)
+    {
+        this.y = y;
     }
 
     /**

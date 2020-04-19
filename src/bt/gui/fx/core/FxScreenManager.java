@@ -154,7 +154,22 @@ public abstract class FxScreenManager extends Application
         else
         {
             stage.setMaximized(false);
-            stage.centerOnScreen();
+
+            if (finalScreen.getX() < 0 || finalScreen.getY() < 0)
+            {
+                stage.centerOnScreen();
+            }
+            else
+            {
+                stage.setOnShowing(ev -> stage.hide());
+
+                stage.setOnShown(ev ->
+                {
+                    stage.setX(finalScreen.getX());
+                    stage.setY(finalScreen.getY());
+                    stage.show();
+                });
+            }
         }
 
         finalScreen.show();

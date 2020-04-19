@@ -31,7 +31,16 @@ public class ButtonListCell<T> extends HBox
         for (var b : buttons)
         {
             HBox.setMargin(b, new Insets(0, 2, 0, 0));
-            getChildren().add(b);
+
+            switch (b.getAlignment().getHpos())
+            {
+                case LEFT:
+                    getChildren().add(0, b);
+                    break;
+                default:
+                    getChildren().add(b);
+                    break;
+            }
         }
     }
 

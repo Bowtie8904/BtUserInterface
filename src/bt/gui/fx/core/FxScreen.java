@@ -34,8 +34,8 @@ public abstract class FxScreen implements Killable
     protected FxScreenManager screenManager;
     protected double width = -1;
     protected double height = -1;
-    protected int x = -1;
-    protected int y = -1;
+    protected int x = Integer.MIN_VALUE;
+    protected int y = Integer.MIN_VALUE;
     protected boolean shouldMaximize;
 
     public FxScreen()

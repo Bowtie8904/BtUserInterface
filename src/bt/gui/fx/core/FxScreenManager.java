@@ -155,7 +155,7 @@ public abstract class FxScreenManager extends Application
         {
             stage.setMaximized(false);
 
-            if (finalScreen.getX() < 0 || finalScreen.getY() < 0)
+            if (finalScreen.getX() == Integer.MIN_VALUE || finalScreen.getY() == Integer.MIN_VALUE)
             {
                 stage.centerOnScreen();
             }

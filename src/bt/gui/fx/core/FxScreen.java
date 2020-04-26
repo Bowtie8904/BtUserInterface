@@ -1,7 +1,6 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import bt.gui.fx.core.annot.FxAnnotationUtils;
@@ -344,9 +343,14 @@ public abstract class FxScreen implements Killable
 
     public void setIcons(String... iconPaths)
     {
-        Null.checkRun(this.stage, () -> this.stage.getIcons().setAll(Stream.of(iconPaths)
-                                                                           .map(path -> new Image(getClass().getResourceAsStream(path)))
-                                                                           .collect(Collectors.toList())));
+        setIcons(Stream.of(iconPaths)
+                       .map(path -> new Image(getClass().getResourceAsStream(path)))
+                       .toArray(Image[]::new));
+    }
+
+    public void setIcons(Image... icons)
+    {
+        Null.checkRun(this.stage, () -> this.stage.getIcons().setAll(icons));
     }
 
     public void setModal()
@@ -364,7 +368,6 @@ public abstract class FxScreen implements Killable
                 }
             });
         }
-
     }
 
     public void ignoreCloseRequest()

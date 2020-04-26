@@ -1,6 +1,8 @@
 package bt.gui.fx.core;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import bt.gui.fx.core.annot.FxAnnotationUtils;
 import bt.gui.fx.core.annot.FxmlElement;
@@ -340,9 +342,11 @@ public abstract class FxScreen implements Killable
         this.stage.show();
     }
 
-    public void setIcon(String iconPath)
+    public void setIcons(String... iconPaths)
     {
-        Null.checkRun(this.stage, () -> this.stage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath))));
+        Null.checkRun(this.stage, () -> this.stage.getIcons().setAll(Stream.of(iconPaths)
+                                                                           .map(path -> new Image(getClass().getResourceAsStream(path)))
+                                                                           .collect(Collectors.toList())));
     }
 
     public void setModal()

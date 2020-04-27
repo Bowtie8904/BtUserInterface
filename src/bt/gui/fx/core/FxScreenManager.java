@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bt.gui.fx.core.exc.FxException;
+import bt.gui.fx.core.instance.ApplicationStarted;
+import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.utils.log.Logger;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -32,6 +34,7 @@ public abstract class FxScreenManager extends Application
     {
         instance = this;
         this.screens = new HashMap<>();
+        ScreenInstanceDispatcher.get().dispatch(this);
     }
 
     /**
@@ -43,6 +46,7 @@ public abstract class FxScreenManager extends Application
         this.primaryStage = primaryStage;
         loadScreens();
         startApplication();
+        ScreenInstanceDispatcher.get().dispatch(new ApplicationStarted(this));
     }
 
     public <T extends FxScreen> T getScreen(Class<T> screenType)

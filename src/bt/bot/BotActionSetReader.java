@@ -2,6 +2,8 @@ package bt.bot;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,8 +133,10 @@ public class BotActionSetReader
      *            lines with content that is not an action are allowed.
      * @return A list containing all actions that were loaded from the given file.
      * @throws BotActionFormatException
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    public List<BotAction> load(File sequenceFile) throws BotActionFormatException
+    public List<BotAction> load(File sequenceFile) throws BotActionFormatException, FileNotFoundException, IOException
     {
         String[] lines = FileUtils.readLines(sequenceFile);
 

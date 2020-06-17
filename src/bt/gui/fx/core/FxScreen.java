@@ -179,7 +179,15 @@ public abstract class FxScreen implements Killable
             if (this.screenName == null)
             {
                 String className = getClass().getSimpleName();
-                this.screenName = className.substring(0, className.contains("Screen") ? className.lastIndexOf("Screen") : className.length());
+
+                if (className.contains("Screen"))
+                {
+                    this.screenName = className.substring(0, className.contains("Screen") ? className.lastIndexOf("Screen") : className.length());
+                }
+                else if (className.contains("View"))
+                {
+                    this.screenName = className.substring(0, className.contains("View") ? className.lastIndexOf("View") : className.length());
+                }
             }
 
             try

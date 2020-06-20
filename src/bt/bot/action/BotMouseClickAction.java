@@ -3,7 +3,7 @@ package bt.bot.action;
 import java.awt.event.InputEvent;
 
 import bt.bot.BotActionExecutor;
-import bt.utils.log.Logger;
+import bt.log.Logger;
 
 /**
  * @author &#8904

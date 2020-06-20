@@ -6,9 +6,9 @@ import java.awt.event.KeyListener;
 import java.util.function.Consumer;
 
 import bt.key.KeyAction.Action;
+import bt.log.Logger;
 import bt.runtime.InstanceKiller;
-import bt.runtime.Killable;
-import bt.utils.log.Logger;
+import bt.types.Killable;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lc.kra.system.keyboard.event.GlobalKeyAdapter;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
@@ -32,8 +32,7 @@ public class KeyBoardHook implements Killable
                   .registerSource(instance,
                                   "GLOBAL_KEYBOARD_HOOK");
             instance.setup();
-            InstanceKiller.killOnShutdown(instance,
-                                          1);
+            InstanceKiller.killOnShutdown(instance, 1);
         }
         return instance;
     }

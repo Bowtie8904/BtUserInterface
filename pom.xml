@@ -63,6 +63,11 @@
 			<version>master-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+            <groupId>com.github.Bowtie8904</groupId>
+            <artifactId>BtReflection</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
+		<dependency>
 			<groupId>lc.kra.system</groupId>
 			<artifactId>system-hook</artifactId>
 			<version>3.5</version>

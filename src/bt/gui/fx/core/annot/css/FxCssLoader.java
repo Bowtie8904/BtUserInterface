@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bt.gui.fx.core.exc.FxException;
-import bt.utils.refl.anot.Annotations;
+import bt.reflect.annotation.Annotations;
 
 /**
  * @author &#8904

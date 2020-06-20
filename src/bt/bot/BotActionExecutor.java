@@ -6,7 +6,7 @@ import java.util.List;
 
 import bt.bot.action.BotAction;
 import bt.bot.action.BotRepeatAction;
-import bt.utils.log.Logger;
+import bt.log.Logger;
 
 /**
  * @author &#8904

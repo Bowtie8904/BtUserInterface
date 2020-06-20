@@ -4,7 +4,7 @@ import java.awt.MouseInfo;
 
 import bt.bot.BotActionExecutor;
 import bt.utils.exc.Exceptions;
-import bt.utils.log.Logger;
+import bt.log.Logger;
 
 /**
  * @author &#8904

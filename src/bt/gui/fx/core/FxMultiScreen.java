@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bt.gui.fx.core.exc.FxException;
-import bt.utils.log.Logger;
+import bt.log.Logger;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

@@ -11,8 +11,8 @@ import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.annot.setup.FxSetup;
 import bt.gui.fx.core.annot.setup.FxSetups;
 import bt.gui.fx.core.exc.FxException;
-import bt.utils.log.Logger;
-import bt.utils.refl.anot.Annotations;
+import bt.log.Logger;
+import bt.reflect.annotation.Annotations;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 

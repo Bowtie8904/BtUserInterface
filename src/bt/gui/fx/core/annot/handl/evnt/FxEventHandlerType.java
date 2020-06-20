@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
 import bt.utils.collections.array.Array;
-import bt.utils.log.Logger;
+import bt.log.Logger;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;

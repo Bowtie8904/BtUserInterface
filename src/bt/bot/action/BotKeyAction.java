@@ -2,7 +2,7 @@ package bt.bot.action;
 
 import bt.bot.BotActionExecutor;
 import bt.bot.BotKey;
-import bt.utils.log.Logger;
+import bt.log.Logger;
 
 /**
  * @author &#8904

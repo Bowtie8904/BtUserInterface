@@ -15,7 +15,7 @@ import bt.bot.action.BotMouseMoveAction;
 import bt.bot.action.BotRepeatAction;
 import bt.bot.action.BotWaitAction;
 import bt.bot.exc.BotActionFormatException;
-import bt.utils.files.FileUtils;
+import bt.utils.file.FileUtils;
 
 /**
  * @author &#8904

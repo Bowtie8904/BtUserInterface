@@ -83,12 +83,12 @@ public abstract class FxScreenManager extends Application
     {
         this.screens.put(screenType, screen);
 
+        screen.setScreenManager(this);
+
         if (preload)
         {
             screen.load();
         }
-
-        screen.setScreenManager(this);
     }
 
     public <T extends FxScreen> void setScreen(Class<T> screenType)

@@ -25,13 +25,6 @@ public abstract class FxMultiScreen extends FxScreen
         this.screens = new HashMap<>();
     }
 
-    @Override
-    public void setScreenManager(FxScreenManager screenManager)
-    {
-        super.setScreenManager(screenManager);
-        loadScreens();
-    }
-
     public <T extends FxScreen> void addScreens(Class<T>... screenTypes)
     {
         for (Class<T> type : screenTypes)
@@ -50,6 +43,7 @@ public abstract class FxMultiScreen extends FxScreen
     public Parent load()
     {
         super.load();
+        loadScreens();
 
         for (FxScreen screen : this.screens.values())
         {

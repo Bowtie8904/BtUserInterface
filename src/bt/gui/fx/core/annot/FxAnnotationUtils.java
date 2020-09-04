@@ -174,6 +174,8 @@ public final class FxAnnotationUtils
                 }
             }
 
+            setupMethod.setAccessible(true);
+
             if (Modifier.isStatic(setupMethod.getModifiers()))
             {
                 if (annot.passField())

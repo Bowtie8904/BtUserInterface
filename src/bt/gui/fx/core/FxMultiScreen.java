@@ -94,6 +94,7 @@ public abstract class FxMultiScreen extends FxScreen
             screen.setupFields();
             screen.populateFxHandlers();
             screen.setupStageListeners();
+            screen.applyTexts();
         }
 
         setupScene(scene);

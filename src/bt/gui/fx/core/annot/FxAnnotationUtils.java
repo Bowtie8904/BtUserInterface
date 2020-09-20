@@ -15,6 +15,7 @@ import bt.gui.fx.core.exc.FxException;
 import bt.io.text.intf.TextLoader;
 import bt.log.Logger;
 import bt.reflect.annotation.Annotations;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 
@@ -139,7 +140,21 @@ public final class FxAnnotationUtils
                         text = textLoader.get(annot.textId()).toString();
                     }
 
-                    setter.invoke(actionObj, text);
+                    Object obj = actionObj;
+                    String finalText = text;
+
+                    Platform.runLater(() ->
+                    {
+                        try
+                        {
+                            setter.invoke(obj, finalText);
+                        }
+                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+                        {
+                            Logger.global().print(e);
+                        }
+                    });
+
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {

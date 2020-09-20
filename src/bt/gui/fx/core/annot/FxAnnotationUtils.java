@@ -130,7 +130,7 @@ public final class FxAnnotationUtils
                         actionObj = propertyGetter.invoke(fieldObj);
                     }
 
-                    Method setter = actionObj.getClass().getMethod(annot.method());
+                    Method setter = actionObj.getClass().getMethod(annot.method(), String.class);
                     setter.setAccessible(true);
 
                     String text = annot.text();

@@ -288,6 +288,23 @@ public abstract class FxScreen implements Killable
     }
 
     /**
+     * @return the textLoader
+     */
+    public TextLoader getTextLoader()
+    {
+        return this.textLoader;
+    }
+
+    /**
+     * @param textLoader
+     *            the textLoader to set
+     */
+    public void setTextLoader(TextLoader textLoader)
+    {
+        this.textLoader = textLoader;
+    }
+
+    /**
      * @return the stage
      */
     public Stage getStage()

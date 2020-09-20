@@ -7,6 +7,7 @@ import bt.gui.fx.core.annot.FxAnnotationUtils;
 import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
+import bt.io.text.intf.TextLoader;
 import bt.log.Logger;
 import bt.reflect.annotation.Annotations;
 import bt.types.Killable;
@@ -38,6 +39,7 @@ public abstract class FxScreen implements Killable
     protected int x = Integer.MIN_VALUE;
     protected int y = Integer.MIN_VALUE;
     protected boolean shouldMaximize;
+    protected TextLoader textLoader;
 
     public FxScreen()
     {
@@ -121,6 +123,31 @@ public abstract class FxScreen implements Killable
                 if (obj != null)
                 {
                     FxAnnotationUtils.loadCssClasses(this.scene, obj);
+                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Logger.global().print(e);
+            }
+        }
+    }
+
+    protected void applyTexts()
+    {
+        FxAnnotationUtils.applyText(this, this.textLoader);
+
+        Object obj;
+
+        for (var field : getClass().getDeclaredFields())
+        {
+            try
+            {
+                field.setAccessible(true);
+                obj = field.get(this);
+
+                if (obj != null)
+                {
+                    FxAnnotationUtils.applyText(obj, this.textLoader);
                 }
             }
             catch (IllegalArgumentException | IllegalAccessException e)

@@ -10,7 +10,9 @@ import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.annot.setup.FxSetup;
 import bt.gui.fx.core.annot.setup.FxSetups;
+import bt.gui.fx.core.annot.setup.FxTextApply;
 import bt.gui.fx.core.exc.FxException;
+import bt.io.text.intf.TextLoader;
 import bt.log.Logger;
 import bt.reflect.annotation.Annotations;
 import javafx.scene.Node;
@@ -83,6 +85,63 @@ public final class FxAnnotationUtils
                          .setHandlerMethod(field.get(setupObj), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value(), fieldType);
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
+                {
+                    Logger.global().print(e1);
+                }
+            }
+        }
+    }
+
+    public static void applyText(Object setupObj, TextLoader textLoader)
+    {
+        for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxTextApply.class))
+        {
+            FxTextApply[] annotations = field.getAnnotationsByType(FxTextApply.class);
+            field.setAccessible(true);
+
+            for (FxTextApply annot : annotations)
+            {
+                try
+                {
+                    Object actionObj = null;
+
+                    if (annot.property().isEmpty())
+                    {
+                        actionObj = field.get(setupObj);
+
+                        if (actionObj == null)
+                        {
+                            throw new FxException("Attempting to apply a text to a null value.");
+                        }
+                    }
+                    else
+                    {
+                        // maybe the text should not be applied to the field directly but rather to a property of it
+                        Object fieldObj = field.get(setupObj);
+
+                        if (fieldObj == null)
+                        {
+                            throw new FxException("Attempting to apply a text to a null value.");
+                        }
+
+                        Method propertyGetter = fieldObj.getClass().getMethod(annot.property());
+                        propertyGetter.setAccessible(true);
+                        actionObj = propertyGetter.invoke(fieldObj);
+                    }
+
+                    Method setter = actionObj.getClass().getMethod(annot.method());
+                    setter.setAccessible(true);
+
+                    String text = annot.text();
+
+                    if (textLoader != null && annot.textId() != 0)
+                    {
+                        text = textLoader.get(annot.textId()).toString();
+                    }
+
+                    setter.invoke(actionObj, text);
+                }
+                catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
                     Logger.global().print(e1);
                 }

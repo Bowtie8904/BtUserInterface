@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
-import bt.utils.collections.array.Array;
 import bt.log.Logger;
+import bt.utils.Array;
 import javafx.beans.value.ChangeListener;
 
 /**

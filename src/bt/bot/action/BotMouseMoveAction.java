@@ -3,8 +3,8 @@ package bt.bot.action;
 import java.awt.MouseInfo;
 
 import bt.bot.BotActionExecutor;
-import bt.utils.exc.Exceptions;
 import bt.log.Logger;
+import bt.utils.Exceptions;
 
 /**
  * @author &#8904

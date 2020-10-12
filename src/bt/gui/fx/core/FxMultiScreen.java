@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bt.gui.fx.core.exc.FxException;
-import bt.log.Logger;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -115,7 +114,7 @@ public abstract class FxMultiScreen extends FxScreen
         catch (InstantiationException | IllegalAccessException
                | InvocationTargetException | SecurityException e1)
         {
-            Logger.global().print(e1);
+            e1.printStackTrace();
         }
         catch (NoSuchMethodException noEx)
         {

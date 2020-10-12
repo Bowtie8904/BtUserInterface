@@ -87,7 +87,7 @@ public final class FxAnnotationUtils
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
-                    Logger.global().print(e1);
+                    e1.printStackTrace();
                 }
             }
         }
@@ -151,14 +151,14 @@ public final class FxAnnotationUtils
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
                         {
-                            Logger.global().print(e);
+                            e.printStackTrace();
                         }
                     });
 
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
-                    Logger.global().print(e1);
+                    e1.printStackTrace();
                 }
             }
         }
@@ -208,7 +208,7 @@ public final class FxAnnotationUtils
                     }
                     catch (IllegalArgumentException | IllegalAccessException e)
                     {
-                        Logger.global().print(e);
+                        e.printStackTrace();
                     }
                 }
             }
@@ -330,7 +330,7 @@ public final class FxAnnotationUtils
         }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e)
         {
-            Logger.global().print(e);
+            e.printStackTrace();
         }
     }
 }

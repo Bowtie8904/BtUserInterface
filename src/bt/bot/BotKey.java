@@ -6,8 +6,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import bt.log.Logger;
-
 /**
  * @author &#8904
  *
@@ -46,7 +44,7 @@ public class BotKey
                 }
                 catch (Exception e)
                 {
-                    Logger.global().print(e);
+                    e.printStackTrace();
                 }
             }
         }

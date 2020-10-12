@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bt.log.Logger;
-
 /**
  * @author &#8904
  *
@@ -58,9 +56,7 @@ public class KeyActionSet
         List<KeyAction> actions = this.keyActions.get(keyCode);
         actions.add(action);
 
-        Logger.global()
-              .print(KeyBoardHook.get(),
-                     "Registered KeyAction: " + action);
+        System.out.println("Registered KeyAction: " + action);
     }
 
     protected void removeKeyAction(KeyAction action)

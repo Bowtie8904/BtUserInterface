@@ -8,7 +8,6 @@ import java.util.Map;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ApplicationStarted;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
-import bt.log.Logger;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -194,7 +193,7 @@ public abstract class FxScreenManager extends Application
         catch (InstantiationException | IllegalAccessException
                | InvocationTargetException | SecurityException e1)
         {
-            Logger.global().print(e1);
+            e1.printStackTrace();
         }
         catch (NoSuchMethodException noEx)
         {

@@ -57,7 +57,7 @@ public class BotActionExecutor
         }
         catch (AWTException e1)
         {
-            Logger.global().print(e1);
+            e1.printStackTrace();
         }
 
         int runs = 0;
@@ -72,7 +72,7 @@ public class BotActionExecutor
 
                 if (this.maxRuns > -1 && runs >= this.maxRuns)
                 {
-                    Logger.global().print("Exiting loop after " + runs + " runs.");
+                    System.out.println("Exiting loop after " + runs + " runs.");
                     index ++ ;
                     runs = 0;
                     this.maxRuns = -1;
@@ -80,7 +80,7 @@ public class BotActionExecutor
                 else
                 {
                     index = ((BotRepeatAction)action).from();
-                    Logger.global().print("Repeating from " + ((BotRepeatAction)action).from() + "  [Run: " + runs + "]");
+                    System.out.println("Repeating from " + ((BotRepeatAction)action).from() + "  [Run: " + runs + "]");
                 }
             }
             else

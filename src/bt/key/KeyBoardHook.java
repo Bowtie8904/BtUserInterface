@@ -6,7 +6,6 @@ import java.awt.event.KeyListener;
 import java.util.function.Consumer;
 
 import bt.key.KeyAction.Action;
-import bt.log.Logger;
 import bt.runtime.InstanceKiller;
 import bt.types.Killable;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
@@ -28,9 +27,6 @@ public class KeyBoardHook implements Killable
         if (instance == null)
         {
             instance = new KeyBoardHook();
-            Logger.global()
-                  .registerSource(instance,
-                                  "GLOBAL_KEYBOARD_HOOK");
             instance.setup();
             InstanceKiller.killOnShutdown(instance, 1);
         }
@@ -44,9 +40,7 @@ public class KeyBoardHook implements Killable
 
     private void setup()
     {
-        Logger.global()
-              .print(this,
-                     "Setting up a global keyboard hook.");
+        System.out.println("Setting up a global keyboard hook.");
 
         this.keyboardHook = new GlobalKeyboardHook(false);
         this.actionSet = new KeyActionSet();
@@ -76,9 +70,7 @@ public class KeyBoardHook implements Killable
         if (this.keyboardHook != null)
         {
             this.keyboardHook.shutdownHook();
-            Logger.global()
-                  .print(this,
-                         "Killed keyboard hook.");
+            System.out.println("Killed keyboard hook.");
         }
     }
 

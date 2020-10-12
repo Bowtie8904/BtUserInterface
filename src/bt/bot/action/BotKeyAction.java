@@ -2,7 +2,6 @@ package bt.bot.action;
 
 import bt.bot.BotActionExecutor;
 import bt.bot.BotKey;
-import bt.log.Logger;
 
 /**
  * @author &#8904
@@ -30,12 +29,12 @@ public class BotKeyAction extends BotAction
             if (this.pressRelease == PRESS)
             {
                 executor.getRobot().keyPress(this.key.getCode());
-                Logger.global().print("Pressed [" + this.key.getLiteral() + "]");
+                System.out.println("Pressed [" + this.key.getLiteral() + "]");
             }
             else if (this.pressRelease == RELEASE)
             {
                 executor.getRobot().keyRelease(this.key.getCode());
-                Logger.global().print("Released [" + this.key.getLiteral() + "]");
+                System.out.println("Released [" + this.key.getLiteral() + "]");
             }
         }
     }

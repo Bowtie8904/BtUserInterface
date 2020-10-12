@@ -8,7 +8,6 @@ import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.io.text.intf.TextLoader;
-import bt.log.Logger;
 import bt.reflect.annotation.Annotations;
 import bt.types.Killable;
 import bt.utils.Null;
@@ -48,7 +47,7 @@ public abstract class FxScreen implements Killable
 
     private Parent loadFxml(String fxmlFile) throws IOException
     {
-        Logger.global().print("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
+        System.out.println("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
 
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
@@ -77,7 +76,7 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                Logger.global().print(e);
+                e.printStackTrace();
             }
         }
     }
@@ -102,7 +101,7 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                Logger.global().print(e);
+                e.printStackTrace();
             }
         }
     }
@@ -127,7 +126,7 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                Logger.global().print(e);
+                e.printStackTrace();
             }
         }
     }
@@ -152,7 +151,7 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                Logger.global().print(e);
+                e.printStackTrace();
             }
         }
     }
@@ -177,7 +176,7 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                Logger.global().print(e);
+                e.printStackTrace();
             }
         }
     }
@@ -223,7 +222,7 @@ public abstract class FxScreen implements Killable
             }
             catch (IOException e)
             {
-                Logger.global().print(e);
+                e.printStackTrace();
             }
 
             prepareScreen();

@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
-import bt.log.Logger;
 import bt.utils.Array;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -89,7 +88,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            Logger.global().print(e1);
+                            e1.printStackTrace();
                         }
                     };
                 }
@@ -107,7 +106,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            Logger.global().print(e1);
+                            e1.printStackTrace();
                         }
                     };
                 }
@@ -128,7 +127,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            Logger.global().print(e1);
+                            e1.printStackTrace();
                         }
                     };
                 }
@@ -146,7 +145,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            Logger.global().print(e1);
+                            e1.printStackTrace();
                         }
                     };
                 }
@@ -154,7 +153,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
         }
         catch (NoSuchMethodException | SecurityException | IllegalArgumentException e)
         {
-            Logger.global().print(e);
+            e.printStackTrace();
         }
 
         return eventHandler;

@@ -6,7 +6,6 @@ import java.util.List;
 
 import bt.bot.action.BotAction;
 import bt.bot.action.BotRepeatAction;
-import bt.log.Logger;
 
 /**
  * @author &#8904
@@ -25,7 +24,7 @@ public class BotActionExecutor
         }
         catch (AWTException e)
         {
-            Logger.global().print(e);
+            e.printStackTrace();
         }
 
         this.maxRuns = -1;

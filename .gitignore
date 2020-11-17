@@ -30,3 +30,5 @@ hs_err_pid*
 src/test/Test.java
 sequence.txt
 src/test/Macro.java
+/.idea/
+*.iml

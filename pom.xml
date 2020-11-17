@@ -15,7 +15,6 @@
 				<configuration>
 					<source>15</source>
 					<target>15</target>
-					<release>15</release>
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>

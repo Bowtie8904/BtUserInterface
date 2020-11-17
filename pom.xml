@@ -11,10 +11,11 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>15</source>
 					<target>15</target>
+					<release>15</release>
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>

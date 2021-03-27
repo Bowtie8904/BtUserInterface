@@ -15,6 +15,7 @@ public class BotActionExecutor
 {
     private Robot robot;
     private int maxRuns;
+    private volatile boolean running;
 
     public BotActionExecutor()
     {
@@ -45,23 +46,19 @@ public class BotActionExecutor
         return this.robot;
     }
 
+    public void stop()
+    {
+        this.running = false;
+    }
+
     public void execute(List<? extends BotAction> actions)
     {
+        this.running = true;
         int index = 0;
-        BotAction action;
-        Robot robot = null;
-        try
-        {
-            robot = new Robot();
-        }
-        catch (AWTException e1)
-        {
-            e1.printStackTrace();
-        }
-
         int runs = 0;
+        BotAction action;
 
-        while (index < actions.size())
+        while (this.running && index < actions.size())
         {
             action = actions.get(index);
 

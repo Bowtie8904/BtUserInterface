@@ -1,9 +1,6 @@
 package bt.key;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author &#8904
@@ -20,25 +17,23 @@ public class KeyActionSet
 
     protected void dispatchEvent(KeyAction.Action actionType, KeyEventWrapper e)
     {
-        List<KeyAction> undefinedKeyActions = this.keyActions.get(KeyAction.UNDEFINED_KEY_ACTION_CODE);
-
-        if (undefinedKeyActions != null)
+        if (this.keyActions.containsKey(KeyAction.UNDEFINED_KEY_ACTION_CODE))
         {
-            for (KeyAction action : undefinedKeyActions)
+            List<KeyAction> copyActions = new ArrayList<>(this.keyActions.get(KeyAction.UNDEFINED_KEY_ACTION_CODE));
+
+            for (KeyAction action : copyActions)
             {
-                action.execute(actionType,
-                               e);
+                action.execute(actionType, e);
             }
         }
 
-        List<KeyAction> actions = this.keyActions.get(e.getKeyCode());
-
-        if (actions != null)
+        if (this.keyActions.containsKey(e.getKeyCode()))
         {
-            for (KeyAction action : actions)
+            List<KeyAction> copyActions = new ArrayList<>(this.keyActions.get(e.getKeyCode()));
+
+            for (KeyAction action : copyActions)
             {
-                action.execute(actionType,
-                               e);
+                action.execute(actionType, e);
             }
         }
     }

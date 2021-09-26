@@ -1,8 +1,7 @@
 package bt.gui.fx.util;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXButton.ButtonType;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 
 /**
@@ -14,18 +13,13 @@ public final class ButtonHandling
     public static Color HOVER_TEXT_COLOR = Color.WHITE;
     public static Color NO_HOVER_TEXT_COLOR = Color.BLACK;
 
-    public static ButtonType HOVER_BUTTON_TYPE = ButtonType.RAISED;
-    public static ButtonType NO_HOVER_BUTTON_TYPE = ButtonType.FLAT;
-
-    public static void onMouseEnter(JFXButton b)
+    public static void onMouseEnter(Button b)
     {
         b.setTextFill(HOVER_TEXT_COLOR);
-        b.setButtonType(HOVER_BUTTON_TYPE);
     }
 
-    public static void onMouseExit(JFXButton b)
+    public static void onMouseExit(Button b)
     {
         b.setTextFill(NO_HOVER_TEXT_COLOR);
-        b.setButtonType(NO_HOVER_BUTTON_TYPE);
     }
 }

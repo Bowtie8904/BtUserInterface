@@ -13,7 +13,6 @@ import bt.gui.fx.core.annot.setup.FxSetups;
 import bt.gui.fx.core.annot.setup.FxTextApply;
 import bt.gui.fx.core.exc.FxException;
 import bt.io.text.intf.TextLoader;
-import bt.log.Logger;
 import bt.reflect.annotation.Annotations;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -171,7 +170,7 @@ public final class FxAnnotationUtils
         for (var styleClass : FxCssLoader.loadCssClasses(setupObj.getClass()))
         {
             styleClassFile = "/" + styleClass + ".css";
-            Logger.global().print("Loading style class '" + styleClassFile + "' for class " + setupObj.getClass().getName() + ".");
+            System.out.println("Loading style class '" + styleClassFile + "' for class " + setupObj.getClass().getName() + ".");
             scene.getStylesheets().add(setupObj.getClass().getResource(styleClassFile).toString());
         }
     }

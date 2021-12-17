@@ -3,6 +3,7 @@ package bt.bot.action;
 import java.awt.MouseInfo;
 
 import bt.bot.BotActionExecutor;
+import bt.log.Log;
 import bt.utils.Exceptions;
 
 /**
@@ -45,7 +46,7 @@ public class BotMouseMoveAction extends BotAction
             double xStep = (this.x - currentX) / (double)this.steps;
             double yStep = (this.y - currentY) / (double)this.steps;
 
-            System.out.println(xStep + "   " + yStep);
+            Log.info(xStep + "   " + yStep);
 
             for (int i = 0; i < this.steps; i ++ )
             {
@@ -72,7 +73,7 @@ public class BotMouseMoveAction extends BotAction
             executor.getRobot().mouseMove(this.x, this.y);
         }
 
-        System.out.println("Moved [" + this.x + " | " + this.y + "]");
+        Log.info("Moved [" + this.x + " | " + this.y + "]");
     }
 
     @Override

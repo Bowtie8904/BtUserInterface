@@ -40,5 +40,5 @@ public @interface FxTextApply
      *
      * @return
      */
-    int textId() default 0;
+    String textId() default "";
 }

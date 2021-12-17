@@ -3,7 +3,7 @@ package bt.gui.fx.core.annot.handl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import bt.log.Logger;
+import bt.log.Log;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
@@ -29,8 +29,11 @@ public abstract class FxHandlerType<T>
      *            Indicates whether the handling method will use the defined parameters of the specific handler type.
      *            The parameters are defined by {@link #getHandlerParameterTypes()} in the subclasses.
      */
-    public void setHandlerMethod(T fieldObj, Object actionObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    public void setHandlerMethod(T fieldObj, Object actionObj, Object handlingObj, String handlerMethodName,
+                                 boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
+        Log.entry(fieldObj, actionObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+
         try
         {
             Method handlerSetMethod = actionObj.getClass().getMethod(getHandlerSetMethodName(), getSetMethodParameterTypes());
@@ -39,8 +42,10 @@ public abstract class FxHandlerType<T>
         }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
-            Logger.global().print(e);
+            Log.error("Failed to set handler method", e);
         }
+
+        Log.exit();
     }
 
     /**

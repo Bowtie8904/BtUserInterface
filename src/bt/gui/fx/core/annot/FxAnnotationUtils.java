@@ -13,6 +13,7 @@ import bt.gui.fx.core.annot.setup.FxSetups;
 import bt.gui.fx.core.annot.setup.FxTextApply;
 import bt.gui.fx.core.exc.FxException;
 import bt.io.text.intf.TextLoader;
+import bt.log.Log;
 import bt.reflect.annotation.Annotations;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -26,6 +27,8 @@ public final class FxAnnotationUtils
 {
     public static void populateFxHandlers(Object setupObj)
     {
+        Log.entry(setupObj);
+
         for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxHandler.class, FxHandlers.class))
         {
             FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
@@ -84,16 +87,21 @@ public final class FxAnnotationUtils
                          .newInstance()
                          .setHandlerMethod(field.get(setupObj), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value(), fieldType);
                 }
-                catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
+                catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
+                        InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
-                    e1.printStackTrace();
+                    Log.error("Failed to populate handler", e1);
                 }
             }
         }
+
+        Log.exit();
     }
 
     public static void applyText(Object setupObj, TextLoader textLoader)
     {
+        Log.entry(setupObj, textLoader);
+
         for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxTextApply.class))
         {
             FxTextApply[] annotations = field.getAnnotationsByType(FxTextApply.class);
@@ -134,7 +142,7 @@ public final class FxAnnotationUtils
 
                     String text = annot.text();
 
-                    if (textLoader != null && annot.textId() != 0)
+                    if (textLoader != null && !annot.textId().isEmpty())
                     {
                         text = textLoader.get(annot.textId()).toString();
                     }
@@ -150,33 +158,41 @@ public final class FxAnnotationUtils
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
                         {
-                            e.printStackTrace();
+                            Log.error("Failed to invoke text setter", e);
                         }
                     });
 
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
                 {
-                    e1.printStackTrace();
+                    Log.error("Failed to apply text", e1);
                 }
             }
         }
+
+        Log.exit();
     }
 
     public static void loadCssClasses(Scene scene, Object setupObj)
     {
+        Log.entry(scene, setupObj);
+
         String styleClassFile = null;
 
         for (var styleClass : FxCssLoader.loadCssClasses(setupObj.getClass()))
         {
             styleClassFile = "/" + styleClass + ".css";
-            System.out.println("Loading style class '" + styleClassFile + "' for class " + setupObj.getClass().getName() + ".");
+            Log.info("Loading style class '" + styleClassFile + "' for class " + setupObj.getClass().getName() + ".");
             scene.getStylesheets().add(setupObj.getClass().getResource(styleClassFile).toString());
         }
+
+        Log.exit();
     }
 
     public static void setupFields(Object setupObj)
     {
+        Log.entry(setupObj);
+
         for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxSetup.class, FxSetups.class))
         {
             FxSetup[] annotations = field.getAnnotationsByType(FxSetup.class);
@@ -207,17 +223,20 @@ public final class FxAnnotationUtils
                     }
                     catch (IllegalArgumentException | IllegalAccessException e)
                     {
-                        e.printStackTrace();
+                        Log.error("Failed add CSS class to node", e);
                     }
                 }
             }
         }
+
+        Log.exit();
     }
 
     private static void callSetupMethod(Object setupObj, Field field, FxSetup annot)
     {
-        Class<?> methodClass = annot.methodClass().equals(void.class) ? setupObj.getClass() : annot.methodClass();
+        Log.entry(setupObj, field, annot);
 
+        Class<?> methodClass = annot.methodClass().equals(void.class) ? setupObj.getClass() : annot.methodClass();
         Class<?> fieldType = annot.fieldType().equals(void.class) ? field.getType() : annot.fieldType();
 
         try
@@ -327,9 +346,12 @@ public final class FxAnnotationUtils
                 }
             }
         }
-        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e)
+        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
+                InvocationTargetException | InstantiationException e)
         {
-            e.printStackTrace();
+            Log.error("Failed to call setup method", e);
         }
+
+        Log.exit();
     }
 }

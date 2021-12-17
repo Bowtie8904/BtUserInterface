@@ -7,6 +7,7 @@ import java.awt.TrayIcon;
 
 import bt.gui.fx.core.tray.FxSystemTrayItem;
 import bt.gui.swing.tray.SwingSystemTrayItem;
+import bt.log.Log;
 
 /**
  * Offers static methods to work with {@link SystemTrayItem}s, i.e. sending them to and opening them from the system
@@ -33,13 +34,14 @@ public final class SystemTrayUtils
         if (!isInTray(trayItem))
         {
             trayItem.getFrame().setVisible(false);
+
             try
             {
                 tray.add(trayItem.getSystemTraySettings().getTrayIcon());
             }
             catch (AWTException awe)
             {
-                awe.printStackTrace();
+                Log.error("Failed to add icon to system tray", awe);
             }
         }
     }
@@ -80,7 +82,7 @@ public final class SystemTrayUtils
             }
             catch (AWTException awe)
             {
-                awe.printStackTrace();
+                Log.error("Failed to add icon to system tray", awe);
             }
         }
     }

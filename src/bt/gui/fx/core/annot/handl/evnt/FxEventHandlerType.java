@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.log.Log;
 import bt.utils.Array;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -27,8 +28,11 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
     }
 
     @Override
-    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
+                                                 boolean passField, String additionalValue, Class<?> fieldObjType)
     {
+        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+
         EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
         if (eventHandler == null)
@@ -36,11 +40,15 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
             eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
         }
 
-        return new Object[]
-        {
-          getEventType(),
-          eventHandler
-        };
+        Object[] ret = new Object[]
+                {
+                        getEventType(),
+                        eventHandler
+                };
+
+        Log.exit(ret);
+
+        return ret;
     }
 
     /**
@@ -59,13 +67,17 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
      * @return A fully usable EventHandler or null if no handler will be provided and one should be constructed
      *         normally.
      */
-    protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
+                                                boolean passField, String additionalValue, Class<?> fieldObjType)
     {
         return null;
     }
 
-    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
+                                                boolean passField, String additionalValue, Class<?> fieldObjType)
     {
+        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+
         EventHandler<K> eventHandler = null;
         Method handlerMethod;
 
@@ -88,7 +100,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -106,7 +118,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -127,7 +139,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -145,7 +157,7 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -153,8 +165,10 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
         }
         catch (NoSuchMethodException | SecurityException | IllegalArgumentException e)
         {
-            e.printStackTrace();
+            Log.error("Failed to find handler method", e);
         }
+
+        Log.exit(eventHandler);
 
         return eventHandler;
     }

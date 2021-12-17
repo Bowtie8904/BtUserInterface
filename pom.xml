@@ -18,18 +18,6 @@
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>
-			<plugin>  <!-- Create sources.jar -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 	<repositories>
@@ -60,17 +48,12 @@
 		<dependency>
 			<groupId>com.github.Bowtie8904</groupId>
 			<artifactId>BtCommons</artifactId>
-			<version>11ead9cbc6</version>
+			<version>9d8566dc</version>
 		</dependency>
 		<dependency>
             <groupId>com.github.Bowtie8904</groupId>
             <artifactId>BtIO</artifactId>
-            <version>9fd465bc15</version>
-        </dependency>
-		<dependency>
-            <groupId>com.github.Bowtie8904</groupId>
-            <artifactId>BtReflection</artifactId>
-            <version>21e4fe990e</version>
+            <version>d3e5790d</version>
         </dependency>
 		<dependency>
 			<groupId>lc.kra.system</groupId>

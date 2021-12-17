@@ -8,6 +8,7 @@ import java.util.Map;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ApplicationStarted;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
+import bt.log.Log;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,10 +43,14 @@ public abstract class FxScreenManager extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        Log.entry(primaryStage);
+
         this.primaryStage = primaryStage;
         loadScreens();
         startApplication();
         ScreenInstanceDispatcher.get().dispatch(new ApplicationStarted(this));
+
+        Log.exit();
     }
 
     public <T extends FxScreen> T getScreen(Class<T> screenType)
@@ -107,6 +112,8 @@ public abstract class FxScreenManager extends Application
 
     public <T extends FxScreen> void setScreen(Class<T> screenType, Stage stage, boolean forceReload)
     {
+        Log.entry(screenType, stage, forceReload);
+
         FxScreen screen = this.screens.get(screenType);
 
         if (screen == null || forceReload)
@@ -177,10 +184,14 @@ public abstract class FxScreenManager extends Application
         }
 
         finalScreen.show();
+
+        Log.exit(finalScreen);
     }
 
     private <T extends FxScreen> T constructScreenInstance(Class<T> screenType)
     {
+        Log.entry(screenType);
+
         T screen = null;
 
         try
@@ -193,12 +204,14 @@ public abstract class FxScreenManager extends Application
         catch (InstantiationException | IllegalAccessException
                | InvocationTargetException | SecurityException e1)
         {
-            e1.printStackTrace();
+            Log.error("Failed to construct screen instance", e1);
         }
         catch (NoSuchMethodException noEx)
         {
             throw new FxException("Screen class must implement a constructor without arguments.");
         }
+
+        Log.exit(screen);
 
         return screen;
     }

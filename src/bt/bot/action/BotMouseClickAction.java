@@ -3,6 +3,7 @@ package bt.bot.action;
 import java.awt.event.InputEvent;
 
 import bt.bot.BotActionExecutor;
+import bt.log.Log;
 
 /**
  * @author &#8904
@@ -35,12 +36,12 @@ public class BotMouseClickAction extends BotAction
         if (this.pressRelease == PRESS)
         {
             executor.getRobot().mousePress(this.button);
-            System.out.println("Pressed [" + buttonToString(this.button) + "]");
+            Log.info("Pressed [" + buttonToString(this.button) + "]");
         }
         else if (this.pressRelease == RELEASE)
         {
             executor.getRobot().mouseRelease(this.button);
-            System.out.println("Released [" + buttonToString(this.button) + "]");
+            Log.info("Released [" + buttonToString(this.button) + "]");
         }
     }
 

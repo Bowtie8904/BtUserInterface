@@ -8,6 +8,7 @@ import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
 import bt.io.text.intf.TextLoader;
+import bt.log.Log;
 import bt.reflect.annotation.Annotations;
 import bt.types.Killable;
 import bt.utils.Null;
@@ -47,17 +48,22 @@ public abstract class FxScreen implements Killable
 
     private Parent loadFxml(String fxmlFile) throws IOException
     {
-        System.out.println("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
+        Log.entry(fxmlFile);
+        Log.info("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
 
         this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = (Parent)this.loader.load();
         populateFxmlElements();
+
+        Log.exit(root);
 
         return root;
     }
 
     protected void populateFxmlElements()
     {
+        Log.entry();
+
         for (var field : Annotations.getFieldsAnnotatedWith(getClass(), FxmlElement.class))
         {
             FxmlElement annot = field.getAnnotation(FxmlElement.class);
@@ -76,13 +82,17 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                e.printStackTrace();
+                Log.error("Failed to set field value", e);
             }
         }
+
+        Log.exit();
     }
 
     protected void populateFxHandlers()
     {
+        Log.entry();
+
         FxAnnotationUtils.populateFxHandlers(this);
 
         Object obj;
@@ -101,13 +111,17 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                e.printStackTrace();
+                Log.error("Failed to populate handler", e);
             }
         }
+
+        Log.exit();
     }
 
     protected void loadCssClasses()
     {
+        Log.entry();
+
         FxAnnotationUtils.loadCssClasses(this.scene, this);
 
         Object obj;
@@ -126,13 +140,17 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                e.printStackTrace();
+                Log.error("Failed to load CSS classes", e);
             }
         }
+
+        Log.exit();
     }
 
     protected void applyTexts()
     {
+        Log.entry();
+
         FxAnnotationUtils.applyText(this, this.textLoader);
 
         Object obj;
@@ -151,13 +169,17 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                e.printStackTrace();
+                Log.error("Failed to apply text", e);
             }
         }
+
+        Log.exit();
     }
 
     protected void setupFields()
     {
+        Log.entry();
+
         FxAnnotationUtils.setupFields(this);
 
         Object obj;
@@ -176,9 +198,11 @@ public abstract class FxScreen implements Killable
             }
             catch (IllegalArgumentException | IllegalAccessException e)
             {
-                e.printStackTrace();
+                Log.error("Failed to setup field", e);
             }
         }
+
+        Log.exit();
     }
 
     public <T> T getElement(Class<T> type, String elementID)
@@ -200,6 +224,8 @@ public abstract class FxScreen implements Killable
 
     public Parent load()
     {
+        Log.entry();
+
         if (this.root == null)
         {
             if (this.screenName == null)
@@ -222,11 +248,13 @@ public abstract class FxScreen implements Killable
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                Log.error("Failed to load FXML", e);
             }
 
             prepareScreen();
         }
+
+        Log.exit(this.root);
 
         return this.root;
     }
@@ -429,8 +457,12 @@ public abstract class FxScreen implements Killable
     @Override
     public void kill()
     {
+        Log.entry();
+
         Null.checkRun(this.stage, () -> this.stage.close());
         Null.checkRun(this.parentStage, () -> this.parentStage.requestFocus());
+
+        Log.exit();
     }
 
     /**

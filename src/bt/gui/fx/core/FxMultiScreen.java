@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bt.gui.fx.core.exc.FxException;
+import bt.log.Log;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -41,6 +42,8 @@ public abstract class FxMultiScreen extends FxScreen
     @Override
     public Parent load()
     {
+        Log.entry();
+
         super.load();
         loadScreens();
 
@@ -48,6 +51,8 @@ public abstract class FxMultiScreen extends FxScreen
         {
             screen.load();
         }
+
+        Log.exit(this.root);
 
         return this.root;
     }
@@ -58,10 +63,14 @@ public abstract class FxMultiScreen extends FxScreen
     @Override
     protected void prepareScreen()
     {
+        Log.entry();
+
         for (FxScreen screen : this.screens.values())
         {
             screen.prepareScreen();
         }
+
+        Log.exit();
     }
 
     /**
@@ -70,6 +79,8 @@ public abstract class FxMultiScreen extends FxScreen
     @Override
     protected void prepareStage(Stage stage)
     {
+        Log.entry(stage);
+
         for (FxScreen screen : this.screens.values())
         {
             screen.setStage(stage);
@@ -77,6 +88,8 @@ public abstract class FxMultiScreen extends FxScreen
         }
 
         setupStage(stage);
+
+        Log.exit();
     }
 
     /**
@@ -85,6 +98,8 @@ public abstract class FxMultiScreen extends FxScreen
     @Override
     protected void prepareScene(Scene scene)
     {
+        Log.entry(scene);
+
         for (FxScreen screen : this.screens.values())
         {
             screen.setScene(scene);
@@ -98,10 +113,14 @@ public abstract class FxMultiScreen extends FxScreen
 
         setupScene(scene);
         finishSetup();
+
+        Log.exit();
     }
 
     private <T extends FxScreen> T constructScreenInstance(Class<T> screenType)
     {
+        Log.entry(screenType);
+
         T screen = null;
 
         try
@@ -114,12 +133,14 @@ public abstract class FxMultiScreen extends FxScreen
         catch (InstantiationException | IllegalAccessException
                | InvocationTargetException | SecurityException e1)
         {
-            e1.printStackTrace();
+            Log.error("Failed to construct screen instance", e1);
         }
         catch (NoSuchMethodException noEx)
         {
             throw new FxException("Screen class must implement a constructor without arguments.");
         }
+
+        Log.exit(screen);
 
         return screen;
     }

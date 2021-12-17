@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import bt.gui.fx.core.annot.handl.FxHandlerType;
+import bt.log.Log;
 import bt.utils.Array;
 import javafx.beans.value.ChangeListener;
 
@@ -23,8 +24,11 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
     }
 
     @Override
-    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
+                                                 boolean passField, String additionalValue, Class<?> fieldObjType)
     {
+        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+
         ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
         if (changeListener == null)
@@ -32,10 +36,14 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
             changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
         }
 
-        return new Object[]
-        {
-          changeListener
-        };
+        Object[] ret = new Object[]
+                {
+                        changeListener
+                };
+
+        Log.exit(ret);
+
+        return ret;
     }
 
     /**
@@ -61,6 +69,8 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
 
     protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
     {
+        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+
         ChangeListener<K> changeListener = null;
 
         Method handlerMethod;
@@ -84,7 +94,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -102,7 +112,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -123,7 +133,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -141,7 +151,7 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
                         }
                         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
                         {
-                            e1.printStackTrace();
+                            Log.error("Failed to invoke handler method", e1);
                         }
                     };
                 }
@@ -149,8 +159,10 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
         }
         catch (NoSuchMethodException | SecurityException | IllegalArgumentException e)
         {
-            e.printStackTrace();
+            Log.error("Failed to find handler method", e);
         }
+
+        Log.exit(changeListener);
 
         return changeListener;
     }

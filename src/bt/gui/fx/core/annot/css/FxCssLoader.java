@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bt.gui.fx.core.exc.FxException;
+import bt.log.Log;
 import bt.reflect.annotation.Annotations;
 
 /**
@@ -16,6 +17,8 @@ public final class FxCssLoader
 {
     public static List<String> loadCssClasses(Class<?> type)
     {
+        Log.entry(type);
+
         List<String> styleClasses = new ArrayList<>();
 
         for (var clsAnnot : type.getAnnotationsByType(FxStyleClass.class))
@@ -42,11 +45,15 @@ public final class FxCssLoader
             }
         }
 
+        Log.exit(styleClasses);
+
         return styleClasses;
     }
 
     public static String loadCssClass(Field field)
     {
+        Log.entry(field);
+
         String styleClass = null;
 
         if (!Modifier.isStatic(field.getModifiers()))
@@ -73,6 +80,8 @@ public final class FxCssLoader
             throw new FxException("Failed to load style class. "
                                   + "{" + field.getDeclaringClass().getName() + "." + field.getName() + "}", e);
         }
+
+        Log.exit(styleClass);
 
         return styleClass;
     }

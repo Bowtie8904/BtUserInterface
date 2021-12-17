@@ -1,6 +1,7 @@
 package bt.bot.action;
 
 import bt.bot.BotActionExecutor;
+import bt.log.Log;
 
 /**
  * @author &#8904
@@ -22,7 +23,7 @@ public class BotWaitAction extends BotAction
         {
             try
             {
-                System.out.println("Waiting " + this.waitTime);
+                Log.info("Waiting " + this.waitTime);
                 Thread.sleep(this.waitTime);
             }
             catch (InterruptedException e)

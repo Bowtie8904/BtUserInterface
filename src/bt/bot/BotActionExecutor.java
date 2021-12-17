@@ -6,6 +6,7 @@ import java.util.List;
 
 import bt.bot.action.BotAction;
 import bt.bot.action.BotRepeatAction;
+import bt.log.Log;
 
 /**
  * @author &#8904
@@ -25,7 +26,7 @@ public class BotActionExecutor
         }
         catch (AWTException e)
         {
-            e.printStackTrace();
+            Log.error("Failed to create robot", e);
         }
 
         this.maxRuns = -1;
@@ -68,7 +69,7 @@ public class BotActionExecutor
 
                 if (this.maxRuns > -1 && runs >= this.maxRuns)
                 {
-                    System.out.println("Exiting loop after " + runs + " runs.");
+                    Log.info("Exiting loop after " + runs + " runs.");
                     index ++ ;
                     runs = 0;
                     this.maxRuns = -1;
@@ -76,7 +77,7 @@ public class BotActionExecutor
                 else
                 {
                     index = ((BotRepeatAction)action).from();
-                    System.out.println("Repeating from " + ((BotRepeatAction)action).from() + "  [Run: " + runs + "]");
+                    Log.info("Repeating from " + ((BotRepeatAction)action).from() + "  [Run: " + runs + "]");
                 }
             }
             else
@@ -85,6 +86,5 @@ public class BotActionExecutor
                 index ++ ;
             }
         }
-
     }
 }

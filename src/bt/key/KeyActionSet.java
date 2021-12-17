@@ -1,5 +1,7 @@
 package bt.key;
 
+import bt.log.Log;
+
 import java.util.*;
 
 /**
@@ -51,7 +53,7 @@ public class KeyActionSet
         List<KeyAction> actions = this.keyActions.get(keyCode);
         actions.add(action);
 
-        System.out.println("Registered KeyAction: " + action);
+        Log.info("Registered KeyAction: " + action);
     }
 
     protected void removeKeyAction(KeyAction action)

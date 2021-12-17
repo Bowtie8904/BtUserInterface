@@ -1,5 +1,7 @@
 package bt.bot;
 
+import bt.log.Log;
+
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -44,7 +46,7 @@ public class BotKey
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    Log.error("Failed to add bot key", e);
                 }
             }
         }

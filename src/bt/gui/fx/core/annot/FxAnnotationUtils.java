@@ -62,7 +62,7 @@ public final class FxAnnotationUtils
 
                         if (actionObj == null)
                         {
-                            throw new FxException("Attempting to register a handler to a null value.");
+                            throw new FxException("Attempting to register a handler to a null value. {" + field.getType() + "}");
                         }
                     }
                     else
@@ -72,7 +72,7 @@ public final class FxAnnotationUtils
 
                         if (fieldObj == null)
                         {
-                            throw new FxException("Attempting to register a handler to a null value.");
+                            throw new FxException("Attempting to register a handler to a null value. {" + field.getType() + "}");
                         }
 
                         Method propertyGetter = fieldObj.getClass().getMethod(annot.property());
@@ -119,7 +119,7 @@ public final class FxAnnotationUtils
 
                         if (actionObj == null)
                         {
-                            throw new FxException("Attempting to apply a text to a null value.");
+                            throw new FxException("Attempting to apply a text to a null value. {" + field.getType() + "}");
                         }
                     }
                     else
@@ -129,7 +129,7 @@ public final class FxAnnotationUtils
 
                         if (fieldObj == null)
                         {
-                            throw new FxException("Attempting to apply a text to a null value.");
+                            throw new FxException("Attempting to apply a text to a null value. {" + field.getType() + "}");
                         }
 
                         Method propertyGetter = fieldObj.getClass().getMethod(annot.property());

@@ -28,7 +28,6 @@ import javafx.stage.Stage;
 public abstract class FxScreen implements Killable
 {
     protected FXMLLoader loader;
-    protected String screenName;
     protected Parent root;
     protected Stage stage;
     protected Stage parentStage;
@@ -207,6 +206,8 @@ public abstract class FxScreen implements Killable
 
     public <T> T getElement(Class<T> type, String elementID)
     {
+        Log.entry(type, elementID);
+
         if (this.loader == null)
         {
             throw new FxException("FXMLLoader has not been constructed yet. Call load() first.");
@@ -219,6 +220,8 @@ public abstract class FxScreen implements Killable
             throw new FxException("Could not find an FX element with the fx:id '" + elementID + "'.");
         }
 
+        Log.exit(element);
+
         return element;
     }
 
@@ -228,23 +231,9 @@ public abstract class FxScreen implements Killable
 
         if (this.root == null)
         {
-            if (this.screenName == null)
-            {
-                String className = getClass().getSimpleName();
-
-                if (className.contains("Screen"))
-                {
-                    this.screenName = className.substring(0, className.contains("Screen") ? className.lastIndexOf("Screen") : className.length());
-                }
-                else if (className.contains("View"))
-                {
-                    this.screenName = className.substring(0, className.contains("View") ? className.lastIndexOf("View") : className.length());
-                }
-            }
-
             try
             {
-                this.root = loadFxml("/" + this.screenName.toLowerCase() + ".fxml");
+                this.root = loadFxml(getFxmlPath().toLowerCase());
             }
             catch (IOException e)
             {
@@ -257,6 +246,22 @@ public abstract class FxScreen implements Killable
         Log.exit(this.root);
 
         return this.root;
+    }
+
+    protected String getFxmlPath()
+    {
+        String className = getClass().getSimpleName();
+
+        if (className.contains("Screen"))
+        {
+            className = className.substring(0, className.contains("Screen") ? className.lastIndexOf("Screen") : className.length());
+        }
+        else if (className.contains("View"))
+        {
+            className = className.substring(0, className.contains("View") ? className.lastIndexOf("View") : className.length());
+        }
+
+        return "/" + className + ".fxml";
     }
 
     /**
@@ -295,23 +300,6 @@ public abstract class FxScreen implements Killable
     {
         this.root = null;
         this.loader = null;
-    }
-
-    /**
-     * @return the shouldMaximize
-     */
-    public boolean shouldMaximize()
-    {
-        return this.shouldMaximize;
-    }
-
-    /**
-     * @param shouldMaximize
-     *            the shouldMaximize to set
-     */
-    public void setShouldMaximize(boolean shouldMaximize)
-    {
-        this.shouldMaximize = shouldMaximize;
     }
 
     /**
@@ -466,40 +454,6 @@ public abstract class FxScreen implements Killable
     }
 
     /**
-     * @return the x
-     */
-    public int getX()
-    {
-        return this.x;
-    }
-
-    /**
-     * @param x
-     *            the x to set
-     */
-    public void setX(int x)
-    {
-        this.x = x;
-    }
-
-    /**
-     * @return the y
-     */
-    public int getY()
-    {
-        return this.y;
-    }
-
-    /**
-     * @param y
-     *            the y to set
-     */
-    public void setY(int y)
-    {
-        this.y = y;
-    }
-
-    /**
      * Invoked during {@link #load()}.
      *
      * <p>
@@ -525,4 +479,9 @@ public abstract class FxScreen implements Killable
      * </p>
      */
     protected abstract void prepareScene(Scene scene);
+
+    /**
+     * Method called right before this Screen is set as the active one.
+     */
+    protected abstract void onStart();
 }

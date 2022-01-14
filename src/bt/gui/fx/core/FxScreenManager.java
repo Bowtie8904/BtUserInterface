@@ -85,6 +85,8 @@ public abstract class FxScreenManager extends Application
 
     public <T extends FxScreen> void addScreen(Class<T> screenType, T screen, boolean preload)
     {
+        Log.entry(screenType, screen, preload);
+
         this.screens.put(screenType, screen);
 
         screen.setScreenManager(this);
@@ -93,6 +95,8 @@ public abstract class FxScreenManager extends Application
         {
             screen.load();
         }
+
+        Log.exit();
     }
 
     public <T extends FxScreen> void setScreen(Class<T> screenType)
@@ -124,64 +128,25 @@ public abstract class FxScreenManager extends Application
             }
 
             screen = constructScreenInstance(screenType);
+
+            Parent root = screen.load();
+            screen.setStage(stage);
+            screen.prepareStage(stage);
+            Scene scene = new Scene(root, screen.getWidth(), screen.getHeight());
+            screen.setScene(scene);
+            screen.prepareScene(scene);
+            screen.loadCssClasses();
+            screen.setupFields();
+            screen.populateFxHandlers();
+            screen.setupStageListeners();
+            screen.applyTexts();
         }
 
         final FxScreen finalScreen = screen;
-
         stage.setOnCloseRequest(e -> finalScreen.kill());
 
-        Parent root = finalScreen.load();
-        finalScreen.setStage(stage);
-        finalScreen.prepareStage(stage);
-        Scene scene = new Scene(root, finalScreen.getWidth(), finalScreen.getHeight());
-        finalScreen.setScene(scene);
-        finalScreen.prepareScene(scene);
-        finalScreen.loadCssClasses();
-        finalScreen.setupFields();
-        finalScreen.populateFxHandlers();
-        finalScreen.setupStageListeners();
-        finalScreen.applyTexts();
-        stage.hide();
-        stage.setScene(scene);
-
-        if (finalScreen.shouldMaximize())
-        {
-            stage.setMaximized(true);
-        }
-        else if (finalScreen.getParentStage() != null)
-        {
-            double centerXPosition = finalScreen.getParentStage().getX() + finalScreen.getParentStage().getWidth() / 2d;
-            double centerYPosition = finalScreen.getParentStage().getY() + finalScreen.getParentStage().getHeight() / 2d;
-
-            stage.setOnShowing(ev -> stage.hide());
-
-            stage.setOnShown(ev ->
-            {
-                stage.setX(centerXPosition - stage.getWidth() / 2d);
-                stage.setY(centerYPosition - stage.getHeight() / 2d);
-                stage.show();
-            });
-        }
-        else
-        {
-            stage.setMaximized(false);
-
-            if (finalScreen.getX() == Integer.MIN_VALUE || finalScreen.getY() == Integer.MIN_VALUE)
-            {
-                stage.centerOnScreen();
-            }
-            else
-            {
-                stage.setOnShowing(ev -> stage.hide());
-
-                stage.setOnShown(ev ->
-                {
-                    stage.setX(finalScreen.getX());
-                    stage.setY(finalScreen.getY());
-                    stage.show();
-                });
-            }
-        }
+        screen.onStart();
+        stage.setScene(screen.getScene());
 
         finalScreen.show();
 

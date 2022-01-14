@@ -18,7 +18,7 @@ public class FxOnTextNotMatchRemoveCss extends FxStringChange<TextInputControl, 
      *      java.lang.String)
      */
     @Override
-    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String cssClass, boolean withParameters, boolean passField, String regex, Class<?> fieldObjType)
+    protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String cssClass, boolean withParameters, boolean passField, String regex, Class<?> fieldObjType, String fieldName)
     {
         if (regex.isEmpty())
         {

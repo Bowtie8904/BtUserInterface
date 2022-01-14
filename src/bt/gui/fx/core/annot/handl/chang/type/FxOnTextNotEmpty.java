@@ -15,9 +15,9 @@ public class FxOnTextNotEmpty extends FxStringChange<TextInputControl, String>
      */
     @Override
     protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue,
-                                                        Class<?> fieldObjType)
+                                                        Class<?> fieldObjType, String fieldName)
     {
-        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
 
         return (obs, ol, ne) ->
         {

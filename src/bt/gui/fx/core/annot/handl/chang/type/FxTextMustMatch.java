@@ -18,7 +18,7 @@ public class FxTextMustMatch extends FxStringChange<TextInputControl, String>
      */
     @Override
     protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String regex,
-                                                        Class<?> fieldObjType)
+                                                        Class<?> fieldObjType, String fieldName)
     {
         if (regex.isEmpty())
         {

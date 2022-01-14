@@ -18,14 +18,14 @@ public class FxOnTextMatch extends FxStringChange<TextInputControl, String>
      */
     @Override
     protected ChangeListener<String> getSpecialListener(TextInputControl fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String regex,
-                                                        Class<?> fieldObjType)
+                                                        Class<?> fieldObjType, String fieldName)
     {
         if (regex.isEmpty())
         {
             throw new FxException("Missing regular expression in 'value' field of FxHandler annotation.");
         }
 
-        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, regex, fieldObjType);
+        ChangeListener<String> defaultListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, regex, fieldObjType, fieldName);
         Pattern regexPattern = Pattern.compile(regex);
 
         return (obs, ol, ne) ->

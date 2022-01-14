@@ -29,15 +29,15 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
 
     @Override
     protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
-                                                 boolean passField, String additionalValue, Class<?> fieldObjType)
+                                                 boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
         Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
-        EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+        EventHandler<K> eventHandler = getSpecialHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
 
         if (eventHandler == null)
         {
-            eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+            eventHandler = getDefaultHandler(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
         }
 
         Object[] ret = new Object[]
@@ -68,18 +68,20 @@ public abstract class FxEventHandlerType<T, K extends Event> extends FxHandlerTy
      *         normally.
      */
     protected EventHandler<K> getSpecialHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
-                                                boolean passField, String additionalValue, Class<?> fieldObjType)
+                                                boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
         return null;
     }
 
     protected EventHandler<K> getDefaultHandler(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
-                                                boolean passField, String additionalValue, Class<?> fieldObjType)
+                                                boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
-        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
 
         EventHandler<K> eventHandler = null;
         Method handlerMethod;
+
+        handlerMethodName = determineHandlerMethodName(handlerMethodName, fieldName);
 
         try
         {

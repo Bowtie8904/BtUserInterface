@@ -64,7 +64,7 @@ public abstract class FxScreenManager extends Application
 
         if (preload)
         {
-            screen.load();
+            loadScreen(screen);
         }
 
         return screen;
@@ -74,8 +74,19 @@ public abstract class FxScreenManager extends Application
     {
         for (Class<T> type : screenTypes)
         {
-            constructScreenInstance(type);
+            addScreen(type);
         }
+    }
+
+    public <T extends FxScreen> void addScreen(Class<T> screenType)
+    {
+        addScreen(screenType, false);
+    }
+
+    public <T extends FxScreen> void addScreen(Class<T> screenType, boolean preload)
+    {
+        T screen = constructScreenInstance(screenType);
+        addScreen(screenType, screen, preload);
     }
 
     public <T extends FxScreen> void addScreen(Class<T> screenType, T screen)
@@ -93,7 +104,7 @@ public abstract class FxScreenManager extends Application
 
         if (preload)
         {
-            screen.load();
+            loadScreen(screen);
         }
 
         Log.exit();
@@ -128,18 +139,13 @@ public abstract class FxScreenManager extends Application
             }
 
             screen = constructScreenInstance(screenType);
-
-            Parent root = screen.load();
+            loadScreen(screen);
+        }
+        else
+        {
             screen.setStage(stage);
             screen.prepareStage(stage);
-            Scene scene = new Scene(root, screen.getWidth(), screen.getHeight());
-            screen.setScene(scene);
-            screen.prepareScene(scene);
-            screen.loadCssClasses();
-            screen.setupFields();
-            screen.populateFxHandlers();
             screen.setupStageListeners();
-            screen.applyTexts();
         }
 
         final FxScreen finalScreen = screen;
@@ -179,6 +185,18 @@ public abstract class FxScreenManager extends Application
         Log.exit(screen);
 
         return screen;
+    }
+
+    private <T extends FxScreen> void loadScreen(T screen)
+    {
+        Parent root = screen.load();
+        Scene scene = new Scene(root, screen.getWidth(), screen.getHeight());
+        screen.setScene(scene);
+        screen.prepareScene(scene);
+        screen.loadCssClasses();
+        screen.setupFields();
+        screen.populateFxHandlers();
+        screen.applyTexts();
     }
 
     protected abstract void loadScreens();

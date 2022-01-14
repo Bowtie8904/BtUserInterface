@@ -3,6 +3,7 @@ package bt.gui.fx.core.annot.handl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import bt.gui.fx.core.exc.FxException;
 import bt.log.Log;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -30,7 +31,7 @@ public abstract class FxHandlerType<T>
      *            The parameters are defined by {@link #getHandlerParameterTypes()} in the subclasses.
      */
     public void setHandlerMethod(T fieldObj, Object actionObj, Object handlingObj, String handlerMethodName,
-                                 boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+                                 boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
         Log.entry(fieldObj, actionObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
@@ -38,7 +39,7 @@ public abstract class FxHandlerType<T>
         {
             Method handlerSetMethod = actionObj.getClass().getMethod(getHandlerSetMethodName(), getSetMethodParameterTypes());
             handlerSetMethod.setAccessible(true);
-            handlerSetMethod.invoke(actionObj, createSetMethodParameters(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType));
+            handlerSetMethod.invoke(actionObj, createSetMethodParameters(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName));
         }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
@@ -46,6 +47,37 @@ public abstract class FxHandlerType<T>
         }
 
         Log.exit();
+    }
+
+    protected String determineHandlerMethodName(String handlerMethodName, String fieldName)
+    {
+        Log.entry(handlerMethodName, fieldName);
+
+        String finalHandlerMethodName = null;
+
+        if (handlerMethodName != null && !handlerMethodName.isEmpty())
+        {
+            finalHandlerMethodName = handlerMethodName;
+        }
+        else if (fieldName != null && !fieldName.isEmpty())
+        {
+            finalHandlerMethodName = getMethodNamePrefix() + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+        }
+        else
+        {
+            throw new FxException("Failed to determine handler method name because of invalid parameters");
+        }
+
+        Log.exit(finalHandlerMethodName);
+
+        return finalHandlerMethodName;
+    }
+
+    protected String getMethodNamePrefix()
+    {
+        String prefix = getClass().getSimpleName().replace("Fx", "");
+        prefix = Character.toLowerCase(prefix.charAt(0)) + prefix.substring(1);
+        return prefix;
     }
 
     /**
@@ -73,7 +105,7 @@ public abstract class FxHandlerType<T>
      * @return
      */
     protected abstract Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue,
-                                                          Class<?> fieldObjType);
+                                                          Class<?> fieldObjType, String fieldName);
 
     /**
      * Gets the name of the handler set method (i.e. setOnAction).

@@ -25,15 +25,15 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
 
     @Override
     protected Object[] createSetMethodParameters(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters,
-                                                 boolean passField, String additionalValue, Class<?> fieldObjType)
+                                                 boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
         Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
 
-        ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+        ChangeListener<K> changeListener = getSpecialListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
 
         if (changeListener == null)
         {
-            changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+            changeListener = getDefaultListener(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
         }
 
         Object[] ret = new Object[]
@@ -62,18 +62,20 @@ public abstract class FxChangeHandlerType<T, K> extends FxHandlerType<T>
      * @return A fully usable ChangeListener or null if no listener will be provided and one should be constructed
      *         normally.
      */
-    protected ChangeListener<K> getSpecialListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    protected ChangeListener<K> getSpecialListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
         return null;
     }
 
-    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType)
+    protected ChangeListener<K> getDefaultListener(T fieldObj, Object handlingObj, String handlerMethodName, boolean withParameters, boolean passField, String additionalValue, Class<?> fieldObjType, String fieldName)
     {
-        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType);
+        Log.entry(fieldObj, handlingObj, handlerMethodName, withParameters, passField, additionalValue, fieldObjType, fieldName);
 
         ChangeListener<K> changeListener = null;
 
         Method handlerMethod;
+
+        handlerMethodName = determineHandlerMethodName(handlerMethodName, fieldName);
 
         try
         {

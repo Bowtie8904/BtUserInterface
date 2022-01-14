@@ -31,6 +31,8 @@ public final class FxAnnotationUtils
 
         for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxHandler.class, FxHandlers.class))
         {
+            Log.debug("Populating handlers for field '{}'", field.getName());
+
             FxHandler[] annotations = field.getAnnotationsByType(FxHandler.class);
             field.setAccessible(true);
 
@@ -85,7 +87,15 @@ public final class FxAnnotationUtils
                     annot.type()
                          .getConstructor()
                          .newInstance()
-                         .setHandlerMethod(field.get(setupObj), actionObj, methodClassObj, annot.method(), annot.withParameters(), annot.passField(), annot.value(), fieldType);
+                         .setHandlerMethod(field.get(setupObj),
+                                           actionObj,
+                                           methodClassObj,
+                                           annot.method(),
+                                           annot.withParameters(),
+                                           annot.passField(),
+                                           annot.value(),
+                                           fieldType,
+                                           field.getName());
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
                         InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)
@@ -142,9 +152,16 @@ public final class FxAnnotationUtils
 
                     String text = annot.text();
 
-                    if (textLoader != null && !annot.textId().isEmpty())
+                    if (textLoader != null)
                     {
-                        text = textLoader.get(annot.textId()).toString();
+                        if (!annot.textId().isEmpty())
+                        {
+                            text = textLoader.get(annot.textId()).toString();
+                        }
+                        else
+                        {
+                            text = textLoader.get(field.getName() + ".text").toString();
+                        }
                     }
 
                     Object obj = actionObj;

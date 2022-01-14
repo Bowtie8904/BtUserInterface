@@ -229,6 +229,11 @@ public abstract class FxScreen implements Killable
     {
         Log.entry();
 
+        if (this.textLoader != null)
+        {
+            this.textLoader.load(getContextName());
+        }
+
         if (this.root == null)
         {
             try
@@ -248,20 +253,25 @@ public abstract class FxScreen implements Killable
         return this.root;
     }
 
+    protected String getContextName()
+    {
+        String contextName = getClass().getSimpleName();
+
+        if (contextName.contains("Screen"))
+        {
+            contextName = contextName.substring(0, contextName.contains("Screen") ? contextName.lastIndexOf("Screen") : contextName.length());
+        }
+        else if (contextName.contains("View"))
+        {
+            contextName = contextName.substring(0, contextName.contains("View") ? contextName.lastIndexOf("View") : contextName.length());
+        }
+
+        return contextName;
+    }
+
     protected String getFxmlPath()
     {
-        String className = getClass().getSimpleName();
-
-        if (className.contains("Screen"))
-        {
-            className = className.substring(0, className.contains("Screen") ? className.lastIndexOf("Screen") : className.length());
-        }
-        else if (className.contains("View"))
-        {
-            className = className.substring(0, className.contains("View") ? className.lastIndexOf("View") : className.length());
-        }
-
-        return "/" + className + ".fxml";
+        return "/" + getContextName() + ".fxml";
     }
 
     /**
@@ -466,7 +476,7 @@ public abstract class FxScreen implements Killable
      * Invoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
      *
      * <p>
-     * Second prepare method to be called.
+     * Third prepare method to be called.
      * </p>
      */
     protected abstract void prepareStage(Stage stage);
@@ -475,7 +485,7 @@ public abstract class FxScreen implements Killable
      * Invoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
      *
      * <p>
-     * Third prepare method to be called.
+     * second prepare method to be called.
      * </p>
      */
     protected abstract void prepareScene(Scene scene);

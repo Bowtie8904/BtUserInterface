@@ -114,6 +114,8 @@ public final class FxAnnotationUtils
 
         for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxTextApply.class))
         {
+            Log.debug("Applying text to field '{}'", field.getName());
+
             FxTextApply[] annotations = field.getAnnotationsByType(FxTextApply.class);
             field.setAccessible(true);
 
@@ -212,6 +214,8 @@ public final class FxAnnotationUtils
 
         for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxSetup.class, FxSetups.class))
         {
+            Log.debug("Setting up field '{}'", field.getName());
+
             FxSetup[] annotations = field.getAnnotationsByType(FxSetup.class);
 
             field.setAccessible(true);

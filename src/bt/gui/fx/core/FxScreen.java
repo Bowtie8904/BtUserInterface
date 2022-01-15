@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -465,30 +466,42 @@ public abstract class FxScreen implements Killable
 
     /**
      * Invoked during {@link #load()}.
-     *
-     * <p>
-     * First prepare method to be called.
-     * </p>
      */
     protected abstract void prepareScreen();
 
     /**
      * Invoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
-     *
-     * <p>
-     * Third prepare method to be called.
-     * </p>
      */
     protected abstract void prepareStage(Stage stage);
 
     /**
      * Invoked by the {@link FxScreenManager} within {@link FxScreenManager#setScreen(Class, Stage, boolean)}
-     *
-     * <p>
-     * second prepare method to be called.
-     * </p>
      */
-    protected abstract void prepareScene(Scene scene);
+    protected Scene createScene(Stage stage)
+    {
+        if (this.scene != null)
+        {
+            // replace old root so that it can be reused in the new scene
+            this.scene.setRoot(new BorderPane());
+        }
+
+        Scene scene = null;
+
+        if (getWidth() > 0 || getHeight() > 0)
+        {
+            scene = new Scene(this.root, getWidth(), getHeight());
+        }
+        else if (stage.getScene() != null)
+        {
+            scene = new Scene(this.root, stage.getScene().getWidth(), stage.getScene().getHeight());
+        }
+        else
+        {
+            scene = new Scene(this.root);
+        }
+
+        return scene;
+    }
 
     /**
      * Method called right before this Screen is set as the active one.

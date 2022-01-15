@@ -96,14 +96,15 @@ public abstract class FxMultiScreen extends FxScreen
      * @see bt.gui.fx.core.FxScreen#prepareScene(javafx.scene.Scene)
      */
     @Override
-    protected void prepareScene(Scene scene)
+    protected Scene createScene(Stage stage)
     {
-        Log.entry(scene);
+        Log.entry(stage);
+
+        Scene scene = new Scene(this.root, -1, -1);
 
         for (FxScreen screen : this.screens.values())
         {
             screen.setScene(scene);
-            screen.prepareScene(scene);
             screen.loadCssClasses();
             screen.setupFields();
             screen.populateFxHandlers();
@@ -114,7 +115,9 @@ public abstract class FxMultiScreen extends FxScreen
         setupScene(scene);
         finishSetup();
 
-        Log.exit();
+        Log.exit(scene);
+
+        return scene;
     }
 
     private <T extends FxScreen> T constructScreenInstance(Class<T> screenType)

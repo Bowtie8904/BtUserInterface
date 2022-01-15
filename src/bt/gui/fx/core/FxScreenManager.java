@@ -148,6 +148,9 @@ public abstract class FxScreenManager extends Application
             screen.setupStageListeners();
         }
 
+        Scene scene = screen.createScene(stage);
+        screen.setScene(scene);
+
         final FxScreen finalScreen = screen;
         stage.setOnCloseRequest(e -> finalScreen.kill());
 
@@ -190,9 +193,6 @@ public abstract class FxScreenManager extends Application
     private <T extends FxScreen> void loadScreen(T screen)
     {
         Parent root = screen.load();
-        Scene scene = new Scene(root, screen.getWidth(), screen.getHeight());
-        screen.setScene(scene);
-        screen.prepareScene(scene);
         screen.loadCssClasses();
         screen.setupFields();
         screen.populateFxHandlers();

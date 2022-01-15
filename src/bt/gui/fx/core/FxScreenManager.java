@@ -3,6 +3,7 @@ package bt.gui.fx.core;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import bt.gui.fx.core.exc.FxException;
@@ -24,6 +25,8 @@ public abstract class FxScreenManager extends Application
 
     protected Stage primaryStage;
     protected Map<Class<? extends FxScreen>, FxScreen> screens;
+    protected Class<? extends FxScreen> currentScreen;
+    protected Class<? extends FxScreen> previousScreen;
 
     public static FxScreenManager get()
     {
@@ -129,6 +132,9 @@ public abstract class FxScreenManager extends Application
     {
         Log.entry(screenType, stage, forceReload);
 
+        this.previousScreen = this.currentScreen;
+        this.currentScreen = screenType;
+
         FxScreen screen = this.screens.get(screenType);
 
         if (screen == null || forceReload)
@@ -190,13 +196,33 @@ public abstract class FxScreenManager extends Application
         return screen;
     }
 
-    private <T extends FxScreen> void loadScreen(T screen)
+    protected <T extends FxScreen> void loadScreen(T screen)
     {
         Parent root = screen.load();
         screen.loadCssClasses();
         screen.setupFields();
         screen.populateFxHandlers();
         screen.applyTexts();
+    }
+
+    public Class<? extends FxScreen> getCurrentScreen()
+    {
+        return currentScreen;
+    }
+
+    public void setCurrentScreen(Class<? extends FxScreen> currentScreen)
+    {
+        this.currentScreen = currentScreen;
+    }
+
+    public Class<? extends FxScreen> getPreviousScreen()
+    {
+        return previousScreen;
+    }
+
+    public void setPreviousScreen(Class<? extends FxScreen> previousScreen)
+    {
+        this.previousScreen = previousScreen;
     }
 
     protected abstract void loadScreens();

@@ -1,16 +1,9 @@
 package bt.gui.fx.core.annot;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-
 import bt.gui.fx.core.annot.css.FxCssLoader;
 import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
-import bt.gui.fx.core.annot.setup.FxSetup;
-import bt.gui.fx.core.annot.setup.FxSetups;
-import bt.gui.fx.core.annot.setup.FxTextApply;
+import bt.gui.fx.core.annot.setup.*;
 import bt.gui.fx.core.exc.FxException;
 import bt.io.text.intf.TextLoader;
 import bt.log.Log;
@@ -18,13 +11,75 @@ import bt.reflect.annotation.Annotations;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * @author &#8904
- *
  */
 public final class FxAnnotationUtils
 {
+    public static void populateFxComboBoxOptions(Object setupObj, TextLoader textLoader)
+    {
+        Log.entry(setupObj, textLoader);
+
+        for (var field : Annotations.getFieldsAnnotatedWith(setupObj.getClass(), FxComboBoxOption.class, FxComboBoxOptions.class))
+        {
+            Log.debug("Populating combo box options for field '{}'", field.getName());
+
+            try
+            {
+                field.setAccessible(true);
+                Object fieldObj = field.get(setupObj);
+                ComboBox comboBox = null;
+
+                if (fieldObj == null)
+                {
+                    throw new FxException("Attempting to register combo box options to a null value. {" + field.getType() + "}");
+                }
+
+                try
+                {
+                    comboBox = ComboBox.class.cast(fieldObj);
+                }
+                catch (ClassCastException e)
+                {
+                    throw new FxException("Only subclasses of " + ComboBox.class.getSimpleName() + " can have options registered.", e);
+                }
+
+                FxComboBoxOption[] annotations = field.getAnnotationsByType(FxComboBoxOption.class);
+
+                for (FxComboBoxOption annot : annotations)
+                {
+                    String text = annot.text();
+
+                    if (textLoader != null && !annot.textId().isEmpty())
+                    {
+                        text = textLoader.get(annot.textId()).getText();
+                    }
+
+                    Log.debug("Registering option '{}' for field '{}'", text, field.getName());
+                    comboBox.getItems().add(text);
+
+                    if (annot.selected())
+                    {
+                        comboBox.getSelectionModel().select(text);
+                    }
+                }
+            }
+            catch (IllegalAccessException e)
+            {
+                Log.error("Failed to register combo box option.", e);
+            }
+        }
+
+        Log.exit();
+    }
+
     public static void populateFxHandlers(Object setupObj)
     {
         Log.entry(setupObj);
@@ -158,11 +213,11 @@ public final class FxAnnotationUtils
                     {
                         if (!annot.textId().isEmpty())
                         {
-                            text = textLoader.get(annot.textId()).toString();
+                            text = textLoader.get(annot.textId()).getText();
                         }
                         else
                         {
-                            text = textLoader.get(field.getName() + ".text").toString();
+                            text = textLoader.get(field.getName() + ".text").getText();
                         }
                     }
 
@@ -170,16 +225,16 @@ public final class FxAnnotationUtils
                     String finalText = text;
 
                     Platform.runLater(() ->
-                    {
-                        try
-                        {
-                            setter.invoke(obj, finalText);
-                        }
-                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-                        {
-                            Log.error("Failed to invoke text setter", e);
-                        }
-                    });
+                                      {
+                                          try
+                                          {
+                                              setter.invoke(obj, finalText);
+                                          }
+                                          catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+                                          {
+                                              Log.error("Failed to invoke text setter", e);
+                                          }
+                                      });
 
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | FxException e1)

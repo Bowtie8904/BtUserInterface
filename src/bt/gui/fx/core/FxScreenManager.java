@@ -1,11 +1,5 @@
 package bt.gui.fx.core;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import bt.gui.fx.core.exc.FxException;
 import bt.gui.fx.core.instance.ApplicationStarted;
 import bt.gui.fx.core.instance.ScreenInstanceDispatcher;
@@ -15,9 +9,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author &#8904
- *
  */
 public abstract class FxScreenManager extends Application
 {
@@ -28,16 +26,16 @@ public abstract class FxScreenManager extends Application
     protected Class<? extends FxScreen> currentScreen;
     protected Class<? extends FxScreen> previousScreen;
 
-    public static FxScreenManager get()
-    {
-        return instance;
-    }
-
     public FxScreenManager()
     {
         instance = this;
         this.screens = new HashMap<>();
         ScreenInstanceDispatcher.get().dispatch(this);
+    }
+
+    public static FxScreenManager get()
+    {
+        return instance;
     }
 
     /**
@@ -147,12 +145,10 @@ public abstract class FxScreenManager extends Application
             screen = constructScreenInstance(screenType);
             loadScreen(screen);
         }
-        else
-        {
-            screen.setStage(stage);
-            screen.prepareStage(stage);
-            screen.setupStageListeners();
-        }
+
+        screen.setStage(stage);
+        screen.prepareStage(stage);
+        screen.setupStageListeners();
 
         Scene scene = screen.createScene(stage);
         screen.setScene(scene);
@@ -182,7 +178,7 @@ public abstract class FxScreenManager extends Application
             addScreen(screenType, screen);
         }
         catch (InstantiationException | IllegalAccessException
-               | InvocationTargetException | SecurityException e1)
+                | InvocationTargetException | SecurityException e1)
         {
             Log.error("Failed to construct screen instance", e1);
         }
@@ -203,6 +199,7 @@ public abstract class FxScreenManager extends Application
         screen.setupFields();
         screen.populateFxHandlers();
         screen.applyTexts();
+        screen.populateFxComboBoxOptions();
     }
 
     public Class<? extends FxScreen> getCurrentScreen()
@@ -223,6 +220,11 @@ public abstract class FxScreenManager extends Application
     public void setPreviousScreen(Class<? extends FxScreen> previousScreen)
     {
         this.previousScreen = previousScreen;
+    }
+
+    public boolean isPreviousScreen(Class<? extends FxScreen> screen)
+    {
+        return this.previousScreen != null && this.previousScreen.equals(screen);
     }
 
     protected abstract void loadScreens();

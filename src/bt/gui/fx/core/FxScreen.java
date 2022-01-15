@@ -1,8 +1,5 @@
 package bt.gui.fx.core;
 
-import java.io.IOException;
-import java.util.stream.Stream;
-
 import bt.gui.fx.core.annot.FxAnnotationUtils;
 import bt.gui.fx.core.annot.FxmlElement;
 import bt.gui.fx.core.exc.FxException;
@@ -22,9 +19,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.stream.Stream;
+
 /**
  * @author &#8904
- *
  */
 public abstract class FxScreen implements Killable
 {
@@ -83,6 +82,35 @@ public abstract class FxScreen implements Killable
             catch (IllegalArgumentException | IllegalAccessException e)
             {
                 Log.error("Failed to set field value", e);
+            }
+        }
+
+        Log.exit();
+    }
+
+    protected void populateFxComboBoxOptions()
+    {
+        Log.entry();
+
+        FxAnnotationUtils.populateFxComboBoxOptions(this, this.textLoader);
+
+        Object obj;
+
+        for (var field : getClass().getDeclaredFields())
+        {
+            try
+            {
+                field.setAccessible(true);
+                obj = field.get(this);
+
+                if (obj != null)
+                {
+                    FxAnnotationUtils.populateFxComboBoxOptions(obj, this.textLoader);
+                }
+            }
+            catch (IllegalArgumentException | IllegalAccessException e)
+            {
+                Log.error("Failed to populate handler", e);
             }
         }
 
@@ -284,8 +312,7 @@ public abstract class FxScreen implements Killable
     }
 
     /**
-     * @param fxScreenManager
-     *            the screenManager to set
+     * @param fxScreenManager the screenManager to set
      */
     public void setScreenManager(FxScreenManager fxScreenManager)
     {
@@ -322,8 +349,7 @@ public abstract class FxScreen implements Killable
     }
 
     /**
-     * @param textLoader
-     *            the textLoader to set
+     * @param textLoader the textLoader to set
      */
     public void setTextLoader(TextLoader textLoader)
     {
@@ -339,8 +365,7 @@ public abstract class FxScreen implements Killable
     }
 
     /**
-     * @param stage
-     *            the stage to set
+     * @param stage the stage to set
      */
     public void setStage(Stage stage)
     {
@@ -396,22 +421,21 @@ public abstract class FxScreen implements Killable
     }
 
     /**
-     * @param parentStage
-     *            the parentStage to set
+     * @param parentStage the parentStage to set
      */
     public void setParentStage(Stage parentStage)
     {
         this.parentStage = parentStage;
     }
 
-    public void setScene(Scene scene)
-    {
-        this.scene = scene;
-    }
-
     public Scene getScene()
     {
         return this.scene;
+    }
+
+    public void setScene(Scene scene)
+    {
+        this.scene = scene;
     }
 
     public void show()
@@ -438,13 +462,13 @@ public abstract class FxScreen implements Killable
             this.stage.initModality(Modality.APPLICATION_MODAL);
 
             this.stage.focusedProperty().addListener(e ->
-            {
-                if (this.stage.isFocused())
-                {
-                    Null.checkRun(this.parentStage, () -> this.parentStage.toFront());
-                    this.stage.toFront();
-                }
-            });
+                                                     {
+                                                         if (this.stage.isFocused())
+                                                         {
+                                                             Null.checkRun(this.parentStage, () -> this.parentStage.toFront());
+                                                             this.stage.toFront();
+                                                         }
+                                                     });
         }
     }
 

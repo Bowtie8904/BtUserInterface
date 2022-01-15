@@ -25,5 +25,18 @@ public @interface FxComboBoxOption
      */
     String textId() default "";
 
+    /**
+     * Determines if this option will be selected by default.
+     *
+     * @return
+     */
     boolean selected() default false;
+
+    /**
+     * Determines the value of this option.
+     * If no value is given then the textId is used as a value. If no textId is given then the text is used as a value.
+     *
+     * @return
+     */
+    String value() default "";
 }

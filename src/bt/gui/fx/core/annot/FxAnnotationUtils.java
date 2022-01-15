@@ -4,6 +4,7 @@ import bt.gui.fx.core.annot.css.FxCssLoader;
 import bt.gui.fx.core.annot.handl.FxHandler;
 import bt.gui.fx.core.annot.handl.FxHandlers;
 import bt.gui.fx.core.annot.setup.*;
+import bt.gui.fx.core.comp.ComboBoxOption;
 import bt.gui.fx.core.exc.FxException;
 import bt.io.text.intf.TextLoader;
 import bt.log.Log;
@@ -35,7 +36,7 @@ public final class FxAnnotationUtils
             {
                 field.setAccessible(true);
                 Object fieldObj = field.get(setupObj);
-                ComboBox comboBox = null;
+                ComboBox<ComboBoxOption> comboBox = null;
 
                 if (fieldObj == null)
                 {
@@ -56,6 +57,19 @@ public final class FxAnnotationUtils
                 for (FxComboBoxOption annot : annotations)
                 {
                     String text = annot.text();
+                    String value = annot.value();
+
+                    if (annot.value().isEmpty())
+                    {
+                        if (!annot.textId().isEmpty())
+                        {
+                            value = annot.textId();
+                        }
+                        else
+                        {
+                            value = annot.text();
+                        }
+                    }
 
                     if (textLoader != null && !annot.textId().isEmpty())
                     {
@@ -63,11 +77,14 @@ public final class FxAnnotationUtils
                     }
 
                     Log.debug("Registering option '{}' for field '{}'", text, field.getName());
-                    comboBox.getItems().add(text);
+
+                    ComboBoxOption option = new ComboBoxOption(text, value);
+
+                    comboBox.getItems().add(option);
 
                     if (annot.selected())
                     {
-                        comboBox.getSelectionModel().select(text);
+                        comboBox.getSelectionModel().select(option);
                     }
                 }
             }

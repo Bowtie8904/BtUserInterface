@@ -300,7 +300,7 @@ public abstract class FxScreen implements Killable
 
     protected String getFxmlPath()
     {
-        return "/" + getContextName() + ".fxml";
+        return this.screenManager.getFxmlBasePath() + getContextName() + ".fxml";
     }
 
     /**

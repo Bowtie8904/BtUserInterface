@@ -25,6 +25,7 @@ public abstract class FxScreenManager extends Application
     protected Map<Class<? extends FxScreen>, FxScreen> screens;
     protected Class<? extends FxScreen> currentScreen;
     protected Class<? extends FxScreen> previousScreen;
+    protected String fxmlBasePath = "/";
 
     public FxScreenManager()
     {
@@ -225,6 +226,16 @@ public abstract class FxScreenManager extends Application
     public boolean isPreviousScreen(Class<? extends FxScreen> screen)
     {
         return this.previousScreen != null && this.previousScreen.equals(screen);
+    }
+
+    public String getFxmlBasePath()
+    {
+        return fxmlBasePath;
+    }
+
+    public void setFxmlBasePath(String fxmlBasePath)
+    {
+        this.fxmlBasePath = fxmlBasePath;
     }
 
     protected abstract void loadScreens();

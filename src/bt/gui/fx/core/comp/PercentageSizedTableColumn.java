@@ -26,6 +26,7 @@ public class PercentageSizedTableColumn<T> extends TableColumn<T, String>
                 {
                     prefWidthProperty().unbind();
                 }
+                
                 prefWidthProperty().bind(newValue.widthProperty().multiply(PercentageSizedTableColumn.this.percentageWidth));
             }
         });

@@ -53,7 +53,7 @@
         <dependency>
             <groupId>com.github.Bowtie8904</groupId>
             <artifactId>BtIO</artifactId>
-            <version>d42dd7f739</version>
+            <version>89c717fecd</version>
         </dependency>
         <dependency>
             <groupId>lc.kra.system</groupId>

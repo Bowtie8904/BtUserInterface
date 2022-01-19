@@ -19,7 +19,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.stream.Stream;
 
 /**
@@ -50,7 +52,16 @@ public abstract class FxScreen implements Killable
         Log.entry(fxmlFile);
         Log.info("Trying to load FXML file '" + fxmlFile + "' for class " + getClass().getName() + ".");
 
-        this.loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        URL fxmlUrl = getClass().getResource(fxmlFile);
+
+        // maybe the file is not inside the jar file
+        // check for an external file
+        if (fxmlUrl == null)
+        {
+            fxmlUrl = new File(fxmlFile).toURI().toURL();
+        }
+
+        this.loader = new FXMLLoader(fxmlUrl);
         Parent root = (Parent)this.loader.load();
         populateFxmlElements();
 

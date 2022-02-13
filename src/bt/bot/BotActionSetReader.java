@@ -1,5 +1,9 @@
 package bt.bot;
 
+import bt.bot.action.*;
+import bt.bot.exc.BotActionFormatException;
+import bt.utils.FileUtils;
+
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,22 +11,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bt.bot.action.BotAction;
-import bt.bot.action.BotDoAction;
-import bt.bot.action.BotKeyAction;
-import bt.bot.action.BotMouseClickAction;
-import bt.bot.action.BotMouseMoveAction;
-import bt.bot.action.BotRepeatAction;
-import bt.bot.action.BotWaitAction;
-import bt.bot.exc.BotActionFormatException;
-import bt.utils.FileUtils;
-
 /**
  * @author &#8904
- *
  */
 public class BotActionSetReader
 {
+    public static final String WAIT_ACTION_KEYWORD = "wait";
+    public static final String PRESS_ACTION_KEYWORD = "press";
+    public static final String RELEASE_ACTION_KEYWORD = "release";
+    public static final String MOUSE_PRESS_ACTION_KEYWORD = "mouse press";
+    public static final String MOUSE_RELEASE_ACTION_KEYWORD = "mouse release";
+    public static final String MOUSE_MOVE_FAST_ACTION_KEYWORD = "move fast";
+    public static final String MOUSE_MOVE_SLOW_ACTION_KEYWORD = "move slow";
+    public static final String REPEAT_FROM_ACTION_KEYWORD = "repeatfrom";
+    public static final String DO_ACTION_KEYWORD = "do";
+
     private List actionSet;
 
     public BotActionSetReader()
@@ -51,7 +54,7 @@ public class BotActionSetReader
      * </p>
      *
      * <h1>Available actions</h1>
-     *
+     * <p>
      * Any line that does not start with any of the action commands below will be ignored.
      *
      * <pre>
@@ -122,16 +125,17 @@ public class BotActionSetReader
      * Sets how many times the next repeatfrom action should be executed
      * before exiting that loop. The action 'do: 10' means that the next
      * repeatfrom action will be executed 10 times, including the repeated
-     * block, before the loop exits and the next acttion is executed.
+     * block, before the loop exits and the next action is executed.
      * The do line has to appear before the repeatfrom line but does need
      * to appear before the repeated block of actions.
      * It is not possible to create a loop inside another loop with this.
      * </pre>
      *
-     * @param sequenceFile
-     *            The file to load the action sequence from. Each action has to be on a separate line. Empty lines and
-     *            lines with content that is not an action are allowed.
+     * @param sequenceFile The file to load the action sequence from. Each action has to be on a separate line. Empty lines and
+     *                     lines with content that is not an action are allowed.
+     *
      * @return A list containing all actions that were loaded from the given file.
+     *
      * @throws BotActionFormatException
      * @throws IOException
      * @throws FileNotFoundException
@@ -147,41 +151,41 @@ public class BotActionSetReader
             line = line.toLowerCase().trim();
             BotAction action = null;
 
-            if (line.startsWith("repeatfrom:"))
+            if (line.startsWith(REPEAT_FROM_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("repeatfrom", line.split(" ")[1]));
+                currentActions.add(createBotAction(REPEAT_FROM_ACTION_KEYWORD, line.split(" ")[1]));
             }
-            else if (line.startsWith("wait:"))
+            else if (line.startsWith(WAIT_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("wait", line.split(" ")[1]));
+                currentActions.add(createBotAction(WAIT_ACTION_KEYWORD, line.split(" ")[1]));
             }
-            else if (line.startsWith("do:"))
+            else if (line.startsWith(DO_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("do", line.split(" ")[1]));
+                currentActions.add(createBotAction(DO_ACTION_KEYWORD, line.split(" ")[1]));
             }
-            else if (line.startsWith("press:"))
+            else if (line.startsWith(PRESS_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("press", line.replace("press:", "").trim()));
+                currentActions.add(createBotAction(PRESS_ACTION_KEYWORD, line.replace(PRESS_ACTION_KEYWORD + ":", "").trim()));
             }
-            else if (line.startsWith("release:"))
+            else if (line.startsWith(RELEASE_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("release", line.replace("release:", "").trim()));
+                currentActions.add(createBotAction(RELEASE_ACTION_KEYWORD, line.replace(RELEASE_ACTION_KEYWORD + ":", "").trim()));
             }
-            else if (line.startsWith("move fast:"))
+            else if (line.startsWith(MOUSE_MOVE_FAST_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("move fast", line.replace("move fast:", "").trim()));
+                currentActions.add(createBotAction(MOUSE_MOVE_FAST_ACTION_KEYWORD, line.replace(MOUSE_MOVE_FAST_ACTION_KEYWORD + ":", "").trim()));
             }
-            else if (line.startsWith("move slow"))
+            else if (line.startsWith(MOUSE_MOVE_SLOW_ACTION_KEYWORD))
             {
-                currentActions.add(createBotAction("move slow", line.replace("move slow", "").trim()));
+                currentActions.add(createBotAction(MOUSE_MOVE_SLOW_ACTION_KEYWORD, line.replace(MOUSE_MOVE_SLOW_ACTION_KEYWORD, "").trim()));
             }
-            else if (line.startsWith("mouse press:"))
+            else if (line.startsWith(MOUSE_PRESS_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("mouse press", line.replace("mouse press:", "").trim()));
+                currentActions.add(createBotAction(MOUSE_PRESS_ACTION_KEYWORD, line.replace(MOUSE_PRESS_ACTION_KEYWORD + ":", "").trim()));
             }
-            else if (line.startsWith("mouse release:"))
+            else if (line.startsWith(MOUSE_RELEASE_ACTION_KEYWORD + ":"))
             {
-                currentActions.add(createBotAction("mouse release", line.replace("mouse release:", "").trim()));
+                currentActions.add(createBotAction(MOUSE_RELEASE_ACTION_KEYWORD, line.replace(MOUSE_RELEASE_ACTION_KEYWORD + ":", "").trim()));
             }
             else if (!line.isEmpty())
             {
@@ -206,7 +210,7 @@ public class BotActionSetReader
 
         try
         {
-            if (keyword.equals("repeatfrom"))
+            if (keyword.equals(REPEAT_FROM_ACTION_KEYWORD))
             {
                 try
                 {
@@ -218,15 +222,15 @@ public class BotActionSetReader
                     action = new BotRepeatAction(0);
                 }
             }
-            else if (keyword.equals("wait"))
+            else if (keyword.equals(WAIT_ACTION_KEYWORD))
             {
                 action = new BotWaitAction(Integer.parseInt(value));
             }
-            else if (keyword.equals("do"))
+            else if (keyword.equals(DO_ACTION_KEYWORD))
             {
                 action = new BotDoAction(Integer.parseInt(value));
             }
-            else if (keyword.equals("press"))
+            else if (keyword.equals(PRESS_ACTION_KEYWORD))
             {
                 BotKey key = BotKey.forLiteral(value);
 
@@ -239,7 +243,7 @@ public class BotActionSetReader
                     throw new IllegalArgumentException("Invalid key literal: " + value);
                 }
             }
-            else if (keyword.equals("release"))
+            else if (keyword.equals(RELEASE_ACTION_KEYWORD))
             {
                 BotKey key = BotKey.forLiteral(value);
 
@@ -252,14 +256,14 @@ public class BotActionSetReader
                     throw new IllegalArgumentException("Invalid key literal: " + value);
                 }
             }
-            else if (keyword.equals("move fast"))
+            else if (keyword.equals(MOUSE_MOVE_FAST_ACTION_KEYWORD))
             {
                 String[] parts = value.split(" ");
                 int x = Integer.parseInt(parts[0]);
                 int y = Integer.parseInt(parts[1]);
                 action = new BotMouseMoveAction(x, y);
             }
-            else if (keyword.equals("move slow"))
+            else if (keyword.equals(MOUSE_MOVE_SLOW_ACTION_KEYWORD))
             {
                 String[] parts = value.split(":");
                 int x = Integer.parseInt(parts[1].trim().split(" ")[0]);
@@ -269,7 +273,7 @@ public class BotActionSetReader
 
                 action = new BotMouseMoveAction(x, y, time);
             }
-            else if (keyword.equals("mouse press"))
+            else if (keyword.equals(MOUSE_PRESS_ACTION_KEYWORD))
             {
                 switch (value)
                 {
@@ -286,7 +290,7 @@ public class BotActionSetReader
                         throw new IllegalArgumentException("Use [left, right, middle]");
                 }
             }
-            else if (keyword.equals("mouse release"))
+            else if (keyword.equals(MOUSE_RELEASE_ACTION_KEYWORD))
             {
                 switch (value)
                 {

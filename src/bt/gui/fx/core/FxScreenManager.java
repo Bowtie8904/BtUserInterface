@@ -66,7 +66,7 @@ public abstract class FxScreenManager extends Application
 
         if (preload)
         {
-            loadScreen(screen);
+            loadScreen(screen, this.primaryStage);
         }
 
         return screen;
@@ -106,7 +106,7 @@ public abstract class FxScreenManager extends Application
 
         if (preload)
         {
-            loadScreen(screen);
+            loadScreen(screen, this.primaryStage);
         }
 
         Log.exit();
@@ -144,15 +144,18 @@ public abstract class FxScreenManager extends Application
             }
 
             screen = constructScreenInstance(screenType);
-            loadScreen(screen);
+
+            loadScreen(screen, stage);
         }
+        else
+        {
+            screen.setStage(stage);
+            screen.prepareStage(stage);
+            screen.setupStageListeners();
 
-        screen.setStage(stage);
-        screen.prepareStage(stage);
-        screen.setupStageListeners();
-
-        Scene scene = screen.createScene(stage);
-        screen.setScene(scene);
+            Scene scene = screen.createScene(stage);
+            screen.setScene(scene);
+        }
 
         final FxScreen finalScreen = screen;
         stage.setOnCloseRequest(e -> finalScreen.kill());
@@ -193,9 +196,17 @@ public abstract class FxScreenManager extends Application
         return screen;
     }
 
-    protected <T extends FxScreen> void loadScreen(T screen)
+    protected <T extends FxScreen> void loadScreen(T screen, Stage stage)
     {
         Parent root = screen.load();
+
+        screen.setStage(stage);
+        screen.prepareStage(stage);
+        screen.setupStageListeners();
+
+        Scene scene = screen.createScene(stage);
+        screen.setScene(scene);
+
         screen.loadCssClasses();
         screen.setupFields();
         screen.populateFxHandlers();

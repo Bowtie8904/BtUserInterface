@@ -514,6 +514,8 @@ public abstract class FxScreen implements Killable
      */
     protected Scene createScene(Stage stage)
     {
+        Log.entry(stage);
+
         if (this.scene != null)
         {
             // replace old root so that it can be reused in the new scene
@@ -534,6 +536,8 @@ public abstract class FxScreen implements Killable
         {
             scene = new Scene(this.root);
         }
+
+        Log.exit(scene);
 
         return scene;
     }
